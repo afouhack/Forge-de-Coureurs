@@ -1,0 +1,2169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Création rapide de personnages pour le jeu de rôle Coureurs d'Orages : fiche PDF et feuille de jeu sur téléphone.">
+<meta name="theme-color" content="#335f82">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-192.png">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>Forge de Coureurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Alegreya+Sans:ital,wght@0,400;1,400&family=Alegreya+Sans+SC:wght@500;700&family=MedievalSharp&family=Pirata+One&family=Rye&family=Oswald:wght@500&family=Special+Elite&family=Orbitron:wght@600&family=Exo+2:wght@600&family=Audiowide&family=Caveat+Brush&family=Cinzel:wght@600&family=Limelight&family=Stardos+Stencil:wght@700&family=Playfair+Display+SC:wght@700&display=swap">
+<style>
+/* Layout : bandeau des thèmes, puis atelier en deux colonnes (étapes de création | fiche vivante collante), puis aperçu PDF. */
+:root{
+  --bg:#e5e8ec; --surface:#f5f6f7; --ink:#1c2230; --muted:#5a6372; --line:#bcc3cc;
+  --accent:#335f82; --accent-ink:#ffffff; --accent-soft:#d6e2ec; --spark:#b5821f;
+  --f-display:"IM Fell English SC", "Times New Roman", serif;
+  --f-body:"Alegreya", Georgia, serif;
+  --f-label:"Alegreya Sans SC", "Trebuchet MS", sans-serif;
+  --f-small:"Alegreya Sans", "Trebuchet MS", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161d; --surface:#1a2029; --ink:#e3e7ec; --muted:#97a1af; --line:#313a47;
+  --accent:#7fa9cc; --accent-ink:#0f1620; --accent-soft:#22364a; --spark:#e2b455; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161d; --surface:#1a2029; --ink:#e3e7ec; --muted:#97a1af; --line:#313a47;
+  --accent:#7fa9cc; --accent-ink:#0f1620; --accent-soft:#22364a; --spark:#e2b455; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:4px}
+.eyebrow{font-family:var(--f-label);letter-spacing:.08em;color:var(--muted);font-size:14px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,6vw,52px);line-height:1;margin:0;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:400;font-size:24px;margin:0;text-wrap:balance}
+h2 .n{color:var(--spark);margin-right:.35em}
+.bolt{display:block;width:min(420px,100%);height:14px;color:var(--spark)}
+.lede{color:var(--muted);max-width:62ch;margin:4px 0 0}
+button{font-family:var(--f-label);font-size:15px;letter-spacing:.05em;border-radius:4px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label{font-family:var(--f-label);font-size:13px;letter-spacing:.06em;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+select,input,textarea{font:inherit;font-family:var(--f-body);font-size:16px;letter-spacing:0;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:7px 9px;width:100%}
+textarea{resize:vertical;min-height:64px;line-height:1.35}
+
+/* Thèmes */
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.theme{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px;font-family:var(--f-body);letter-spacing:0}
+.theme b{font-family:var(--f-display);font-weight:400;font-size:19px;line-height:1.1}
+.theme span{font-family:var(--f-small);font-size:13px;color:var(--muted);line-height:1.25}
+.theme[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.theme[aria-pressed="true"] span{color:var(--accent-ink);opacity:.85}
+
+/* Atelier */
+.atelier{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,330px);gap:24px;align-items:start}
+@media (max-width:900px){.atelier{grid-template-columns:minmax(0,1fr)}.fiche{position:static!important}}
+.etapes{display:flex;flex-direction:column;gap:18px;min-width:0}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.step-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.step-h small{font-family:var(--f-small);font-size:14px;color:var(--muted)}
+.sub{font-family:var(--f-label);font-size:13px;letter-spacing:.06em;color:var(--muted);margin:2px 0 -2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--f-body);letter-spacing:0;font-size:15px;padding:5px 11px;border-radius:999px;display:inline-flex;gap:6px;align-items:baseline;background:var(--bg)}
+.chip .t{font-family:var(--f-small);font-size:12px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] .t{color:var(--accent-ink);opacity:.85}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.card{text-align:left;font-family:var(--f-body);letter-spacing:0;font-size:15px;padding:9px 11px;display:flex;flex-direction:column;gap:2px;background:var(--bg)}
+.card b{font-weight:600}
+.card span{font-family:var(--f-small);font-size:13.5px;color:var(--muted);line-height:1.3}
+.card .fx{color:var(--spark);font-family:var(--f-label);font-size:12px;letter-spacing:.05em}
+.card[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.toggle{display:flex;align-items:center;gap:8px;flex-direction:row;font-family:var(--f-small);font-size:15px;letter-spacing:0;color:var(--ink)}
+.toggle input{width:auto}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+@media (max-width:560px){.row2{grid-template-columns:minmax(0,1fr)}}
+
+/* Fiche vivante */
+.fiche{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.idrow{display:flex;gap:8px;align-items:end}
+.idrow label{flex:1}
+.dice{padding:7px 10px;font-size:18px;line-height:1}
+.portrait{display:flex;flex-direction:column;gap:8px;align-items:center}
+.portrait canvas{width:100%;max-width:220px;height:auto;aspect-ratio:4/5;border-radius:3px;border:1px solid var(--line);background:#ece6d8}
+.pbtns{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+.pbtns button{flex:1 1 auto;font-size:13px;padding:6px 8px}
+.credit{font-family:var(--f-small);font-size:12.5px;line-height:1.3;color:var(--muted);margin:0;text-align:center}
+.credit cite{font-style:italic;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.stat{border:1px solid var(--line);border-radius:4px;padding:6px 6px 5px;display:flex;flex-direction:column;align-items:center;gap:0;background:var(--bg);min-width:0}
+.stat .k{font-family:var(--f-label);font-size:11.5px;letter-spacing:.05em;color:var(--muted);text-align:center;line-height:1.15}
+.stat output{font-family:var(--f-display);font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat output.small{font-size:19px;line-height:1.45}
+.stat .w{font-family:var(--f-small);font-size:11.5px;color:var(--muted);text-align:center;line-height:1.2;min-height:1.2em}
+.stat.up output{color:var(--spark)}
+.lvl{display:flex;gap:8px;align-items:end}
+.lvl label{flex:0 0 90px}
+.lvl button{flex:1}
+.status{font-family:var(--f-small);font-size:14px;color:var(--muted);min-height:1.2em;margin:0}
+
+.preview{display:flex;flex-direction:column;gap:8px}
+.faces{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
+.face{display:flex;flex-direction:column;gap:6px;min-width:0}
+.face span{font-family:var(--f-label);font-size:13px;letter-spacing:.06em;color:var(--muted)}
+.face canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:3px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ajout{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border:1px dashed var(--line);border-radius:6px}
+.ajout input{flex:1 1 160px;width:auto;padding:5px 8px;font-size:15px}
+.ajout select{width:auto;padding:5px 6px;font-size:15px}
+.ajout button{padding:6px 12px;font-size:14px}
+.ajout .toggle{font-size:14px}
+.chip.plus{border-style:dashed;color:var(--muted)}
+.perso{display:inline-flex;align-items:stretch}
+.perso .chip{border-top-right-radius:0;border-bottom-right-radius:0}
+.perso .x{border-left:0;border-radius:0 999px 999px 0;padding:0 9px;font-size:13px;color:var(--muted);background:var(--bg)}
+.cardwrap{position:relative;display:flex}
+.cardwrap .card{flex:1}
+.cardwrap .x{position:absolute;top:4px;right:4px;padding:1px 7px;font-size:12px;color:var(--muted)}
+.hint{font-size:14px;color:var(--muted);margin:0}
+details{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+summary{cursor:pointer;font-family:var(--f-label);letter-spacing:.05em;font-size:15px}
+details .inner{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+details p{color:var(--muted);font-size:14px;max-width:72ch;margin:0}
+@media (prefers-reduced-motion:no-preference){.stat output{transition:color .3s}}
+
+/* ---------- Téléphone : Forge ---------- */
+.chip,.card{min-height:38px}
+.mbar{display:none}
+@media (max-width:900px){
+  .fiche{order:-1}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;gap:10px;
+    padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+    background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08)}
+  .mbar span{flex:1;min-width:0;font-family:var(--f-small);font-size:14px;line-height:1.25;font-variant-numeric:tabular-nums}
+  .mbar b{font-family:var(--f-label);letter-spacing:.04em;font-weight:700}
+  body.forge{padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:600px){
+  .themes{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-inline:-4px;padding-inline:4px}
+  .theme{flex:0 0 148px;scroll-snap-align:start}
+  .step{padding:12px}
+  h2{font-size:22px}
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .chip{font-size:15px;padding:7px 12px}
+  .stat output{font-size:24px}
+  .idrow input{font-size:18px}
+}
+
+/* ---------- Feuille de jeu ---------- */
+.jcol{display:flex;flex-direction:column;gap:14px}
+.jeu{--t-acc:var(--t-acc0,var(--accent));--t-font:var(--f-display);max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
+  padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .jeu{--t-acc:color-mix(in srgb,var(--t-acc0) 45%,#ffffff)}}
+:root[data-theme="dark"] .jeu{--t-acc:color-mix(in srgb,var(--t-acc0) 45%,#ffffff)}
+.jtop{display:flex;gap:8px;align-items:center}
+.jtop select{flex:1;min-width:0}
+.jtop button{flex:0 0 auto}
+.jtete{display:flex;flex-direction:column;gap:2px;border-left:4px solid var(--t-acc);padding-left:12px}
+.jtete .eyebrow{color:var(--t-acc)}
+.jtete h1{font-family:var(--t-font);font-size:clamp(28px,8vw,40px);line-height:1.05}
+.jtete p{margin:0;color:var(--muted);font-size:15px}
+.jcarte{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.jlab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-family:var(--t-font);font-size:20px;color:var(--t-acc)}
+.jlab small{font-family:var(--f-small);font-size:13px;color:var(--muted)}
+.jpv{display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums}
+.jpv output{font-family:var(--t-font);font-size:56px;line-height:1}
+.jpv span{font-size:22px;color:var(--muted)}
+.barre{height:10px;border-radius:5px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.barre i{display:block;height:100%;background:var(--t-acc);transition:width .2s}
+.barre.bas i{background:#b3261e}
+.jbtns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.jbtns.deux{grid-template-columns:repeat(2,minmax(0,1fr))}
+.jbtns button{min-height:48px;font-size:18px;padding:6px}
+.jetat{margin:0;font-family:var(--f-small);font-size:14px;color:var(--muted);min-height:1.2em}
+.jetat.alerte{color:#b3261e;font-weight:700}
+.pips{display:flex;flex-wrap:wrap;gap:8px}
+.pip{width:48px;height:48px;border-radius:8px;border:2px solid var(--t-acc);background:var(--bg);display:grid;place-items:center;padding:0}
+.pip svg{width:26px;height:26px;fill:var(--t-acc)}
+.pip.vide{border-style:dashed;opacity:.45}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;border-radius:0;min-height:42px;font-size:14px;background:var(--bg)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--t-acc);color:var(--bg)}
+.jets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.jet{min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px}
+.jet b{font-family:var(--t-font);font-weight:400;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.jet span{font-size:12.5px;line-height:1.15;text-align:center}
+.jres{border-radius:8px;border:1px solid var(--line);background:var(--bg);padding:10px 12px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;align-items:center;min-height:84px}
+.jres .tot{font-family:var(--t-font);font-size:52px;line-height:1;grid-row:span 3;font-variant-numeric:tabular-nums;min-width:1.4em;text-align:center}
+.jres .quoi{font-family:var(--f-label);letter-spacing:.04em;font-size:15px}
+.jres .det{font-family:var(--f-small);font-size:14px;color:var(--muted)}
+.jres .ver{font-family:var(--f-label);font-size:15px;letter-spacing:.04em}
+.ver.ok{color:#1e7b34}.ver.ko{color:#b3261e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ver.ok{color:#7fd492}:root:not([data-theme="light"]) .ver.ko{color:#ff8a80}}
+:root[data-theme="dark"] .ver.ok{color:#7fd492}:root[data-theme="dark"] .ver.ko{color:#ff8a80}
+.jres.vide{display:block;color:var(--muted);font-size:15px}
+.armes{display:flex;flex-direction:column;gap:8px}
+.armes button{display:flex;justify-content:space-between;align-items:center;min-height:48px;text-align:left;font-family:var(--f-body);letter-spacing:0;font-size:16px}
+.armes button span{font-family:var(--f-label);font-size:14px;color:var(--t-acc)}
+.des{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.des button{min-height:44px;padding:4px;font-size:15px}
+.journal{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-family:var(--f-small);font-size:14px}
+.journal li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
+.journal li b{font-variant-numeric:tabular-nums}
+.journal .vide{color:var(--muted);border:0}
+.jdons{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.jdons li{font-size:15px;line-height:1.35}
+.jdons b{font-weight:600}
+.stats3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;font-family:var(--f-small);font-size:13px;color:var(--muted);text-align:center}
+.stats3 b{display:block;font-family:var(--t-font);font-weight:400;font-size:22px;color:var(--ink)}
+details.jcarte summary{font-family:var(--t-font);font-size:20px;color:var(--t-acc);letter-spacing:0}
+details.jcarte[open] summary{margin-bottom:6px}
+.jcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;min-height:80px}
+.danger{color:#b3261e;border-color:#b3261e}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .danger{color:#ff8a80;border-color:#ff8a80}}
+:root[data-theme="dark"] .danger{color:#ff8a80;border-color:#ff8a80}
+.vide-jeu{text-align:center;color:var(--muted);padding:30px 10px}
+@media (prefers-reduced-motion:reduce){.barre i{transition:none}}
+@media (prefers-reduced-motion:no-preference){.jres.anim .tot{animation:pop .25s ease-out}@keyframes pop{from{transform:scale(.6);opacity:.3}to{transform:scale(1);opacity:1}}}
+
+.sorts{display:flex;flex-direction:column;gap:8px}
+.sort{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-left:4px solid var(--t-acc);border-radius:6px;padding:8px 8px 8px 12px;background:var(--bg)}
+.sort div{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sort b{font-weight:600;font-size:16px}
+.sort span{font-family:var(--f-small);font-size:14px;color:var(--muted);line-height:1.3}
+.sort .lire{flex:0 0 auto;min-height:44px;min-width:96px}
+.sortform{display:flex;flex-direction:column;gap:8px;border:1px dashed var(--line);border-radius:6px;padding:10px}
+.sortlibre{display:flex;flex-direction:column;gap:8px}
+#jSortsLus summary{font-family:var(--f-small);font-size:14px;color:var(--muted);cursor:pointer}
+
+#jProg{gap:10px}
+#jProg[open]{display:flex;flex-direction:column}
+.nivpanneau{display:flex;flex-direction:column;gap:10px;border:1px dashed var(--t-acc);border-radius:6px;padding:12px}
+.nivpanneau b{font-family:var(--t-font);font-weight:400;font-size:22px}
+.nivliste{margin:0;padding-left:18px;font-family:var(--f-small);font-size:15px;line-height:1.4}
+.hold{position:relative;overflow:hidden;min-height:54px;font-size:17px;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.hold::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.35);transform:scaleX(0);transform-origin:left}
+.hold.tient::before{transform:scaleX(1);transition:transform 1.5s linear}
+.hold span{position:relative}
+@media (prefers-reduced-motion:reduce){.hold.tient::before{transition:none;transform:scaleX(.5)}}
+
+.sort .note{color:var(--t-acc);font-family:var(--f-label);font-size:12.5px;letter-spacing:.04em}
+#jInit{min-height:44px}
+#jCmd .pip{font-size:20px;color:var(--t-acc)}
+
+.resactions{display:flex;flex-direction:column;gap:8px}
+.resactions button{min-height:46px}
+.talents{display:flex;flex-direction:column;gap:8px}
+.talent{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-left:4px solid var(--t-acc);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.talent>div:first-child{display:flex;flex-direction:column;gap:2px}
+.talent b{font-weight:600;font-size:16px}
+.talent span{font-family:var(--f-small);font-size:14px;color:var(--muted);line-height:1.3}
+.talbtns{display:flex;flex-wrap:wrap;gap:8px}
+.talbtns:empty{display:none}
+.talbtns button{flex:1 1 auto;min-height:44px}
+#jManadh .seg{grid-template-columns:repeat(3,minmax(0,1fr))}
+#jManadh .seg button{font-size:12.5px}
+#jTalRes button{grid-column:1/-1;margin-top:6px;min-height:42px}
+
+.armes .deuxarmes{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;font-family:var(--f-label);letter-spacing:.04em}
+.armes .deuxarmes span{font-family:var(--f-small);font-size:13px;letter-spacing:0;color:inherit;opacity:.85}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Coureurs d'Orages · création rapide de personnage</span>
+    <h1>Forge de Coureurs</h1>
+    <svg class="bolt" viewBox="0 0 420 14" aria-hidden="true"><polyline points="0,7 120,7 132,1 140,12 150,3 158,7 420,7" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <p class="lede">Choisis un thème : un coureur complet est tiré tout de suite. Change ensuite ce que tu veux, étape par étape ; les points de vie et les bonus suivent tes choix.</p>
+  </header>
+
+  <section aria-labelledby="tT" class="step">
+    <div class="step-h"><h2 id="tT"><span class="n">1</span>Thème</h2><small>Changer de thème tire un nouveau coureur.</small></div>
+    <div class="themes" id="themes" role="group" aria-label="Thème"></div>
+  </section>
+
+  <div class="atelier">
+    <div class="etapes">
+      <section class="step" aria-labelledby="t2">
+        <div class="step-h"><h2 id="t2"><span class="n">2</span>Aspects</h2><small id="roleNote"></small></div>
+        <p class="sub">Aspect 1 · passé</p>
+        <div class="chips" id="cPasse" role="group" aria-label="Passé"></div>
+        <form class="ajout" id="fPasse" hidden><input id="iPasse" placeholder="Ton propre passé, ex. Ancien chef de gang" aria-label="Nouveau passé"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <p class="sub">Aspect 2 · métier</p>
+        <div class="chips" id="cMetier" role="group" aria-label="Métier"></div>
+        <form class="ajout" id="fMetier" hidden><input id="iMetier" placeholder="Ton propre métier, ex. Dompteur de griffons" aria-label="Nouveau métier"><select id="rMetier" aria-label="Profil"><option value="c">Combattant (d10)</option><option value="p" selected>Polyvalent (d8)</option><option value="f">Fin (d6)</option></select><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <div id="blocAspect3" hidden><p class="sub">Aspect 3 · Talents variés</p><input id="iAspect3" aria-label="Troisième aspect" placeholder="ex. Ancien marin"></div>
+      </section>
+
+      <section class="step" aria-labelledby="t3">
+        <div class="step-h"><h2 id="t3"><span class="n">3</span>Armure et armes</h2><small>3 armes au plus</small></div>
+        <p class="sub">Armure (plus elle protège, moins on est agile)</p>
+        <div class="chips" id="cArmure" role="group" aria-label="Armure"></div>
+        <label class="toggle" id="lBouclier"><input type="checkbox" id="bouclier"> <span id="bouclierNom">Bouclier</span> : +1 en Défense, −1 aux Arts du mouvement</label>
+        <p class="sub">Armes</p>
+        <div class="chips" id="cArmes" role="group" aria-label="Armes"></div>
+        <p class="hint" id="armesNote" aria-live="polite"></p>
+        <form class="ajout" id="fArme" hidden><input id="iArme" placeholder="Ton arme, ex. Trident" aria-label="Nouvelle arme"><select id="dArme" aria-label="Dé de dégâts"><option>d4</option><option>d6</option><option value="d6+1">d6+1 (pistolet)</option><option value="d6+2">d6+2 (fusil)</option><option selected>d8</option><option>d10</option><option>d12</option></select><label class="toggle"><input type="checkbox" id="xArme"> à distance</label><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+      </section>
+
+      <section class="step" aria-labelledby="t4">
+        <div class="step-h"><h2 id="t4"><span class="n">4</span>Équipement</h2><button class="chip" id="btnCurio" type="button">Autre objet curieux</button></div>
+        <div class="cards" id="cKit" role="group" aria-label="Paquetage"></div>
+        <form class="ajout" id="fKit" hidden><input id="iKit" placeholder="Nom du paquetage" aria-label="Nom du paquetage" style="flex-basis:140px"><input id="cKitTxt" placeholder="Contenu, séparé par des virgules" aria-label="Contenu du paquetage" style="flex-basis:240px"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+      </section>
+
+      <section class="step" aria-labelledby="t5">
+        <div class="step-h"><h2 id="t5"><span class="n">5</span>Dons</h2><small id="donsNote"></small></div>
+        <div class="cards" id="cDons" role="group" aria-label="Dons"></div>
+        <form class="ajout" id="fDon" hidden><input id="iDon" placeholder="Nom du don" aria-label="Nom du don" style="flex-basis:140px"><input id="eDon" placeholder="Effet en jeu" aria-label="Effet du don" style="flex-basis:220px">
+          <select id="xDon" aria-label="Effet chiffré"><option value="">Sans effet chiffré</option><option value="pvNiv=2">+2 PV par niveau</option><option value="pv=3">+3 PV</option><option value="def=1">+1 Défense</option><option value="mvt=1">+1 Arts du mouvement</option><option value="std=1">+1 Standard</option><option value="dh=1">+1 dé d'héroïsme</option></select>
+          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <div id="blocArtefact" hidden><p class="sub">Artefact porté (livre p. 23-24)</p><div class="cards" id="cArtefact" role="group" aria-label="Artefact"></div></div>
+      </section>
+
+      <section class="step" aria-labelledby="t5s">
+        <div class="step-h"><h2 id="t5s"><span class="n">6</span><span id="sortsTitre">Sorts</span></h2><small id="sortsNote"></small></div>
+        <p class="hint" id="sortsAide"></p>
+        <div class="chips" id="cDepart" role="group" aria-label="Nombre de sorts au départ"></div>
+        <div class="cards" id="cSorts" role="group" aria-label="Sorts"></div>
+        <form class="ajout" id="fSort" hidden><input id="iSort" placeholder="Nom du sort" aria-label="Nom du sort" style="flex-basis:140px"><input id="eSort" placeholder="Effet en jeu" aria-label="Effet du sort" style="flex-basis:220px">
+          <select id="nSort" aria-label="Niveau du sort"><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option></select>
+          <select id="dSort" aria-label="Dés lancés"><option value="">Sans dé</option><option>1d6</option><option>2d4</option><option>2d6</option><option>3d6</option><option>1d8</option><option>2d8</option></select>
+          <select id="tSort" aria-label="Type d'effet"><option value="degats">Dégâts</option><option value="soin">Soin</option><option value="autre">Autre</option></select>
+          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <div id="blocConnus" hidden><p class="sub">Sorts connus · dons de magie : une fois chacun entre deux repos longs, sans parchemin</p><div id="cConnus"></div></div>
+      </section>
+
+      <section class="step" aria-labelledby="t6">
+        <div class="step-h"><h2 id="t6"><span class="n">7</span>Fiche</h2><small>Recto-verso, habillée selon le thème</small></div>
+        <p class="sub">Format</p>
+        <div class="chips" id="cFormat" role="group" aria-label="Format"></div>
+        <p class="sub">Illustration</p>
+        <div class="chips" id="cIllu" role="group" aria-label="Illustration"></div>
+      </section>
+    </div>
+
+    <aside class="fiche" aria-label="Fiche du coureur">
+      <div class="idrow">
+        <label for="nom">Nom<input id="nom"></label>
+        <button class="dice" id="btnNom" type="button" aria-label="Autre nom" title="Autre nom">⚄</button>
+      </div>
+      <div class="portrait" id="blocPortrait">
+        <canvas id="cv" width="600" height="750" aria-label="Portrait du personnage"></canvas>
+        <div class="pbtns">
+          <button id="btnPortrait" type="button">Autre gravure</button>
+          <button id="btnMode" type="button">Dessin à l'encre</button>
+          <button id="btnImport" type="button">Importer une image</button>
+          <button id="btnDessin" type="button" hidden>Retirer l'image importée</button>
+        </div>
+        <input type="file" id="file" accept="image/*" hidden>
+        <p class="credit" id="credit"></p>
+      </div>
+      <div class="lvl">
+        <label for="niveau">Niveau
+          <select id="niveau"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+        </label>
+        <button id="btnTirer" type="button">Tout retirer au hasard</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="k">Points de vie</span><output id="pv"></output><span class="w" id="wPv"></span></div>
+        <div class="stat"><span class="k">Dés de vie</span><output id="dv" class="small"></output><span class="w" id="wDv"></span></div>
+        <div class="stat"><span class="k">Dés d'héroïsme</span><output id="dh"></output><span class="w" id="wDh"></span></div>
+        <div class="stat"><span class="k">Standard</span><output id="standard"></output><span class="w" id="wStd"></span></div>
+        <div class="stat"><span class="k">Arts du mouv.</span><output id="mouvement"></output><span class="w" id="wMvt"></span></div>
+        <div class="stat"><span class="k">Défense</span><output id="defense"></output><span class="w" id="wDef"></span></div>
+      </div>
+      <button id="btnPv" type="button">Relancer les PV</button>
+      <button id="btnPdf" class="primary" type="button">Télécharger la fiche PDF</button>
+      <button id="btnJouer" type="button">Ouvrir la feuille de jeu</button>
+      <p class="status" id="status" role="status"></p>
+    </aside>
+  </div>
+
+  <section class="preview" aria-labelledby="apercuT">
+    <h2 id="apercuT">Aperçu de la fiche</h2>
+    <div class="faces">
+      <div class="face"><span>Recto</span><canvas id="apercu" aria-label="Aperçu du recto de la fiche"></canvas></div>
+      <div class="face"><span>Verso</span><canvas id="apercu2" aria-label="Aperçu du verso de la fiche"></canvas></div>
+    </div>
+    <p class="hint" id="formatHint"></p>
+  </section>
+
+  <details>
+    <summary>Retoucher le texte de la fiche</summary>
+    <div class="inner">
+      <p>Ces champs partent dans le PDF tels quels. Un choix modifié plus haut réécrit le champ concerné.</p>
+      <div class="row2">
+        <label for="aspect1">Aspect 1<input id="aspect1"></label>
+        <label for="aspect2">Aspect 2<input id="aspect2"></label>
+      </div>
+      <label for="aspect3">Aspect 3 (Talents variés)<input id="aspect3"></label>
+      <label for="origine">Origine<input id="origine"></label>
+      <label for="armure">Armure et bouclier<input id="armure"></label>
+      <div class="row2">
+        <label for="armes">Armes<textarea id="armes"></textarea></label>
+        <label for="equipement">Équipement<textarea id="equipement"></textarea></label>
+      </div>
+      <label for="dons">Dons et sorts<textarea id="dons" rows="4"></textarea></label>
+      <label for="parchemins">Sorts à usage unique (verso, un par ligne)<textarea id="parchemins" rows="3"></textarea></label>
+      <label for="description">Description et passé (page 2)<textarea id="description" rows="3"></textarea></label>
+    </div>
+  </details>
+
+  <details>
+    <summary>Règles de calcul</summary>
+    <div class="inner">
+      <p>D'après le livre : PV = niveau × dé de vie (d8) + niveau + 4. Standard = niveau, Arts du mouvement = niveau + 6 − armure, Défense = armure (0, 2, 4 ou 6, +1 avec un bouclier). Dés d'héroïsme = niveau + 3. Un don par niveau, parmi les seize du livre, avec leurs niveaux minimums. Parchemins lisibles selon le niveau : 2-3, sorts de niveau 1 ; 4-5, niveau 2 ; 6, niveau 3.</p>
+      <p>Les effets chiffrés des dons sont comptés : Vigueur et Magie changent le dé de vie, Esquive acrobatique et Maîtrise des armures changent la Défense ou les Arts du mouvement, Armes de prédilection augmente le dé des armes, Chance passe les dés d'héroïsme en d8.</p>
+      <p class="sub">Règles maison (à cocher si ta table les utilise)</p>
+      <label class="toggle"><input type="checkbox" id="regleMaison"> Dé de vie selon le métier (combattant d10, polyvalent d8, fin d6) au lieu du d8 pour tous.</label>
+      <label class="toggle"><input type="checkbox" id="donsMaison"> Ajouter les dons du thème (non officiels) à la liste.</label>
+      <label class="toggle"><input type="checkbox" id="lectureLibre"> Lire les sorts de niveau 1 dès le niveau 1.</label>
+      <p>Sorts au départ : 1 ou 2, à usage unique (choix de ta table, le livre ne fixe pas de nombre).</p>
+    </div>
+  </details>
+</div>
+
+
+<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span><button class="primary" id="mJouer" type="button">Jouer</button></div>
+
+<div class="jeu" id="vueJouer" hidden>
+  <div class="jtop">
+    <button id="jRetour" type="button">← Forge</button>
+    <select id="jListe" aria-label="Mes coureurs"></select>
+  </div>
+  <div id="jVide" class="vide-jeu" hidden>
+    <p>Aucun coureur enregistré sur cet appareil.</p>
+    <button class="primary" id="jVersForge" type="button">Créer un coureur</button>
+  </div>
+  <div id="jCorps" class="jcol">
+    <header class="jtete">
+      <span class="eyebrow" id="jTheme"></span>
+      <h1 id="jNom"></h1>
+      <p id="jAspects"></p>
+    </header>
+
+    <section class="jcarte" aria-labelledby="jPvT">
+      <div class="jlab"><span id="jPvT">Points de vie</span><small id="jDv"></small></div>
+      <div class="jpv"><output id="jPv" aria-live="polite"></output><span>/ <span id="jPvMax"></span></span></div>
+      <div class="barre" id="jBarre"><i></i></div>
+      <div class="jbtns">
+        <button type="button" data-pv="-5" aria-label="Perdre 5 PV">−5</button>
+        <button type="button" data-pv="-1" aria-label="Perdre 1 PV">−1</button>
+        <button type="button" data-pv="1" aria-label="Regagner 1 PV">+1</button>
+        <button type="button" data-pv="5" aria-label="Regagner 5 PV">+5</button>
+      </div>
+      <p class="jetat" id="jPvEtat"></p>
+      <button type="button" id="jRelanceDV" hidden>Relancer mes dés de vie (après le repos)</button>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jDhT">
+      <div class="jlab"><span id="jDhT">Dés d'héroïsme</span><small id="jDhDe">touche un dé pour le lancer</small></div>
+      <div class="pips" id="jDh"></div>
+      <div class="jbtns deux">
+        <button type="button" id="jDhPlus">Récupérer 1 dé</button>
+        <button type="button" id="jRepos">Repos long</button>
+      </div>
+      <div id="jManadh" hidden><p class="sub" style="margin:0" id="jFortune"></p><div class="seg" id="jManadhSeg" role="group" aria-label="Mode du prochain dé d'héroïsme"></div></div>
+      <div id="jCmd" hidden><p class="sub" style="margin:0">Jetons de relance (Commandement) : touche pour en donner un</p><div class="pips" id="jJetons"></div></div>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jJetT">
+      <div class="jlab"><span id="jJetT">Jets</span><small>1d20 + bonus</small></div>
+      <div class="jres vide" id="jRes" aria-live="polite">Touche un jet ou un dé : le résultat s'affiche ici.</div>
+      <div class="resactions" id="jResActions" hidden></div>
+      <div class="seg" role="group" aria-label="Mode de jet">
+        <button type="button" data-mode="des" aria-pressed="false">Désavantage</button>
+        <button type="button" data-mode="norm" aria-pressed="true">Normal</button>
+        <button type="button" data-mode="av" aria-pressed="false">Avantage</button>
+      </div>
+      <div class="jets">
+        <button class="jet" type="button" data-jet="std"><b id="jStd"></b><span>Standard</span></button>
+        <button class="jet" type="button" data-jet="mvt"><b id="jMvt"></b><span>Arts du mouvement</span></button>
+        <button class="jet" type="button" data-jet="def"><b id="jDef"></b><span>Défense</span></button>
+      </div>
+      <button type="button" id="jInit">Initiative du groupe (d6)</button>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jArmT">
+      <div class="jlab"><span id="jArmT">Dégâts</span><small>touche une arme</small></div>
+      <div class="jres vide" id="jDegRes" aria-live="polite">Touche une arme : les dégâts s'affichent ici.</div>
+      <div class="armes" id="jArmes"></div>
+      <label class="toggle"><input type="checkbox" id="jVicieux"> <span id="jVicieuxTxt">Coup vicieux : +1d4</span></label>
+      <p class="jetat" id="jBonusDeg" aria-live="polite"></p>
+      <div class="des" id="jDes" role="group" aria-label="Dés libres"></div>
+    </section>
+
+    <section class="jcarte" id="jTalentsCarte" aria-labelledby="jTaT" hidden>
+      <div class="jlab"><span id="jTaT">Dons en jeu</span><small>appliqués par la feuille</small></div>
+      <div class="jres vide" id="jTalRes" aria-live="polite" hidden></div>
+      <div class="talents" id="jTalents"></div>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jLogT">
+      <div class="jlab"><span id="jLogT">Derniers jets</span></div>
+      <ul class="journal" id="jLog"></ul>
+    </section>
+
+    <details class="jcarte" open>
+      <summary>Dons et talents</summary>
+      <ul class="jdons" id="jDons"></ul>
+    </details>
+
+    <section class="jcarte" id="jConnusCarte" aria-labelledby="jCoT" hidden>
+      <div class="jlab"><span id="jCoT">Sorts connus</span><small>une fois chacun par repos long</small></div>
+      <div class="jres vide" id="jConnusRes" aria-live="polite" hidden></div>
+      <div class="sorts" id="jConnus"></div>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jSoT">
+      <div class="jlab"><span id="jSoT">Sorts</span><small id="jSoNote"></small></div>
+      <div class="jres vide" id="jSortRes" aria-live="polite" hidden></div>
+      <div class="sorts" id="jSorts"></div>
+      <div class="jbtns deux">
+        <button type="button" id="jSortHasard">＋ Au hasard</button>
+        <button type="button" id="jSortChoisir">＋ Choisir</button>
+      </div>
+      <form class="sortform" id="jSortForm" hidden>
+        <label for="jSortSel">Sort gagné<select id="jSortSel"></select></label>
+        <div id="jSortLibre" class="sortlibre" hidden>
+          <input id="jSortNom" placeholder="Nom du sort" aria-label="Nom du sort">
+          <input id="jSortEff" placeholder="Effet" aria-label="Effet du sort">
+          <div class="jbtns deux">
+            <select id="jSortNiv" aria-label="Niveau du sort"><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option></select>
+            <select id="jSortDe" aria-label="Dés lancés"><option value="">Sans dé</option><option>1d6</option><option>2d4</option><option>2d6</option><option>3d6</option><option>1d8</option><option>2d8</option></select>
+            <select id="jSortType" aria-label="Type d'effet"><option value="degats">Dégâts</option><option value="soin">Soin (ajoute aux PV)</option><option value="autre">Autre</option></select>
+          </div>
+        </div>
+        <div class="jbtns deux"><button class="primary">Ajouter</button><button type="button" id="jSortFermer">Fermer</button></div>
+      </form>
+      <label class="toggle" id="jEresseaL" hidden><input type="checkbox" id="jEressea"> Dépenser 3 âmes d'Eressëa pour garder le prochain parchemin lu</label>
+      <details id="jSortsLus" hidden><summary>Déjà lus (<span id="jLusN">0</span>)</summary>
+        <ul class="journal" id="jLusListe"></ul>
+        <button type="button" id="jLusVider" style="margin-top:8px">Effacer l'historique</button>
+      </details>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jEqT">
+      <div class="jlab"><span id="jEqT">Équipement</span><small>modifiable</small></div>
+      <textarea id="jEquip" rows="5" aria-labelledby="jEqT"></textarea>
+    </section>
+
+    <section class="jcarte" aria-labelledby="jNoT">
+      <div class="jlab"><span id="jNoT">Notes, butin et blessures</span></div>
+      <textarea id="jNotes" rows="6" aria-labelledby="jNoT" placeholder="Ce qui s'est passé, ce que tu as trouvé, qui te doit quoi…"></textarea>
+    </section>
+
+    <details class="jcarte">
+      <summary>Passé et rappel des règles</summary>
+      <p id="jPasse" style="margin:0"></p>
+      <ul class="jdons" id="jRegles"></ul>
+    </details>
+
+    <details class="jcarte" id="jProg">
+      <summary>Progression</summary>
+      <p class="hint">Le Conteur décide quand le coureur monte de niveau : après un moment clé, une session ou un scénario.</p>
+      <button type="button" id="jNivOuvrir">Passer au niveau suivant…</button>
+      <div id="jNivApres6" hidden>
+        <p class="jetat">Niveau 6 atteint. Le livre permet encore de progresser, au rythme des aventures :</p>
+        <div class="jbtns deux"><button type="button" id="jNivDhBtn">+1 dé d'héroïsme…</button><button type="button" id="jNivDonBtn">Don exceptionnel…</button></div>
+      </div>
+      <div class="nivpanneau" id="jNivPanneau" hidden>
+        <b id="jNivTitre"></b>
+        <ul class="nivliste" id="jNivListe"></ul>
+        <div id="jNivBlocDon" class="sortlibre">
+          <label for="jNivDon">Nouveau don<select id="jNivDon"></select></label>
+          <div class="sortlibre" id="jNivLibre" hidden>
+            <input id="jNivNom" placeholder="Nom du don" aria-label="Nom du nouveau don">
+            <input id="jNivEff" placeholder="Effet" aria-label="Effet du nouveau don">
+          </div>
+          <div class="sortlibre" id="jNivExtra"></div>
+        </div>
+        <button type="button" id="jNivHold" class="primary hold" disabled><span>Maintenir pour valider</span></button>
+        <p class="jetat" id="jNivAide"></p>
+        <button type="button" id="jNivFermer">Ne rien changer</button>
+      </div>
+      <p class="jetat" id="jNivEtat" aria-live="polite"></p>
+      <button type="button" id="jNivUndo" class="danger" hidden></button>
+      <div class="jbtns deux" id="jNivUndoOk" hidden>
+        <button type="button" id="jNivUndoOui" class="danger">Oui, annuler</button>
+        <button type="button" id="jNivUndoNon">Garder le niveau</button>
+      </div>
+      <button type="button" id="jPdf">Télécharger la fiche à jour (PDF)</button>
+      <p class="jetat" id="jPdfEtat" aria-live="polite"></p>
+    </details>
+
+    <details class="jcarte">
+      <summary>Appareil et sauvegarde</summary>
+      <label class="toggle"><input type="checkbox" id="jEveil"> Garder l'écran allumé pendant la partie</label>
+      <p class="jetat" id="jEveilEtat"></p>
+      <p class="hint">Les coureurs sont enregistrés dans le navigateur de cet appareil. Pour les garder ailleurs ou les changer de téléphone, copie le code de sauvegarde et colle-le sur l'autre appareil.</p>
+      <div class="jbtns deux">
+        <button type="button" id="jCopier">Copier le code</button>
+        <button type="button" id="jImporter">Importer un code</button>
+      </div>
+      <textarea id="jCode" class="jcode" hidden aria-label="Code de sauvegarde"></textarea>
+      <button type="button" id="jImporterOk" class="primary" hidden>Importer ce code</button>
+      <p class="jetat" id="jSauvEtat"></p>
+      <button type="button" id="jSuppr" class="danger">Supprimer ce coureur</button>
+      <div class="jbtns deux" id="jSupprOk" hidden>
+        <button type="button" id="jSupprOui" class="danger">Oui, supprimer</button>
+        <button type="button" id="jSupprNon">Annuler</button>
+      </div>
+    </details>
+  </div>
+</div>
+
+<script src="pdf-lib.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+/* Données par thème. Formats compacts :
+   métiers "Nom:rôle" (c = combattant d10, p = polyvalent d8, f = fin d6)
+   armes   "Nom:dé" ou "Nom:dé:dist"
+   kits    "Nom=contenu"
+   dons    "Nom|effet|fx" avec fx = "pvNiv=2,def=1" (pvNiv, pv, def, mvt, std, dh) */
+const DONS_COMMUNS=[
+"Peau de cuir|+2 PV par niveau.|pvNiv=2",
+"Increvable|Une fois par jour, reste à 1 PV au lieu de tomber hors de combat.|",
+"Esquive|+1 aux Arts du mouvement.|mvt=1",
+"Garde haute|+1 en Défense.|def=1",
+"Tête brûlée|+1 dé d'héroïsme.|dh=1",
+"Aguerri|+1 aux tests standard.|std=1",
+"Ambidextre|Combat avec deux armes légères et garde le meilleur des deux dés de dégâts.|",
+"Troisième aspect|Gagne un troisième aspect.|",
+"Érudit|Commence la partie avec un sort de plus.|parch=1"
+];
+const THEMES=[
+{id:"fantasy",nom:"Fantasy",acc:"Sorcellerie, monstres et ruines",grav:true,monnaie:"pièces d'argent",bouclier:"Bouclier rond",
+ origines:["des fjords gelés de Hrolm","des cités-marchandes du Sud","des steppes de Khoral","des marais de Vel-Annar","de la capitale décadente d'Ysh","des montagnes de Karr","des forêts de l'Est","des îles de la Mer Rouge"],
+ passes:["Pillard des fjords","Gladiateur affranchi","Courtisan déchu","Fils de marchand ruiné","Ancien galérien","Novice défroqué","Déserteur","Pilleur de tombes"],
+ metiers:["Mercenaire:c","Berserker:c","Garde du corps:c","Chasseur de sorcières:p","Archer des forêts:p","Cavalier des steppes:p","Voleur de la guilde:p","Barde itinérant:f","Rebouteux:f","Lecteur de runes:f"],
+ armures:["Vêtements de route","Cuir clouté","Cotte de mailles","Harnois dépareillé"],
+ armes:["Épée large:d8","Hache d'armes:d8","Lance:d8","Hache à deux mains:d10","Épée à deux mains:d10","Dague:d4","Arc court:d6:dist","Arbalète légère:d6:dist","Couteaux de jet:d4:dist"],
+ kits:["Aventurier=Sac, couverture, briquet, corde (15 m), gourde, rations pour 3 jours","Pilleur de ruines=Pied-de-biche, lanterne et huile, craie, grappin, sacs de toile","Herboriste=Trousse de soins (3 usages), herbes séchées, mortier, fioles vides"],
+ curios:["un dé en os","une dent de troll","une plume de corbeau","une amulette de fer froid","une carte déchirée","une fiole de poison (1 dose)"],
+ dons:["Lecteur de runes|Commence la partie avec un parchemin de plus.|parch=1","Sang-froid|Avantage aux sauvegardes contre la peur et la magie mentale.|","Brute|+2 aux dégâts avec une arme lourde.|","Tireur d'élite|Avantage à la première attaque à distance de chaque combat.|","Cavalier|Avantage à cheval ; en charge, +1 dé de dégâts.|","Tueur de monstres|Avantage aux tests de connaissance des créatures.|"],
+ noms:{m:["Thurim","Kael","Orvan","Brann","Halvar","Corvin","Ragnor","Varek"],f:["Sigrun","Ysolde","Kethra","Nerys","Brunhild","Zora","Morrigane","Asra"],s:[["le Balafré","la Balafrée"],["Main-Rouge"],["le Muet","la Muette"],["Œil-de-Corbeau"],["le Loup","la Louve"],["Sans-Clan"],["Trois-Doigts"],["Sel-Noir"]]},
+ recits:["Doit une dette de sang à un prince marchand.","Cherche le sorcier qui a maudit son village.","Porte un anneau volé que quelqu'un réclame.","A vu ce qui dort sous la cité et refuse d'en parler.","Garde une carte vers un tombeau que nul n'a pillé."]},
+{id:"medieval",nom:"Moyen Âge",acc:"Guerres de seigneurs, sans magie",grav:true,monnaie:"deniers",bouclier:"Écu",
+ origines:["d'un bourg de Flandre","des marches d'Écosse","d'Aquitaine","de Bohême","des cités de Lombardie","de Castille","d'une abbaye de Bourgogne","du port de Gênes"],
+ passes:["Fils de forgeron","Novice défroqué","Écuyer sans seigneur","Ancien routier","Serf en fuite","Fils de marchand ruiné","Bâtard de seigneur","Pèlerin de Compostelle"],
+ metiers:["Homme d'armes:c","Chevalier errant:c","Coutilier:c","Arbalétrier génois:p","Braconnier:p","Messager:p","Coupe-jarret:p","Chirurgien-barbier:f","Jongleur:f","Moine copiste:f"],
+ armures:["Vêtements de laine","Gambison","Haubert de mailles","Harnois de plates"],
+ armes:["Épée bâtarde:d8","Masse d'armes:d8","Vouge:d10","Fléau d'armes:d10","Coutelas:d4","Arc long:d6:dist","Arbalète:d6:dist","Couteaux de jet:d4:dist"],
+ kits:["Voyageur=Besace, couverture, briquet, corde, outre, pain et lard pour 3 jours","Soldat=Pierre à aiguiser, gamelle, couverture, sel, ficelle, aiguilles","Lettré=Écritoire, plumes, parchemins, cire à cacheter, livre d'heures"],
+ curios:["une relique douteuse","une lettre scellée","une coquille de pèlerin","un dé pipé","un sauf-conduit périmé","une bague gravée"],
+ dons:["Tir en volée|Avantage aux tirs à longue distance.|","Désarçonneur|Avantage pour faire tomber un cavalier.|","Prière du soir|Une fois par jour, récupère 1 dé d'héroïsme.|","Latin et écritures|Avantage pour lire, écrire et traiter avec le clergé.|","Coup de grâce|Dégâts doublés contre un adversaire à terre.|","Pied sûr|Avantage aux tests d'escalade et de course.|"],
+ noms:{m:["Guillaume","Bertrand","Enguerrand","Jehan","Thibaut","Arnaud","Gautier","Raoul"],f:["Aliénor","Isabeau","Mahaut","Jehanne","Béatrice","Ermengarde","Agnès","Blanche"],s:[["le Borgne","la Borgne"],["Tête-de-Fer"],["le Roux","la Rousse"],["Sans-Terre"],["le Boiteux","la Boiteuse"],["Brise-Écu"],["de Nulle-Part"],["Cœur-de-Chêne"]]},
+ recits:["A survécu à une épidémie qui a vidé son village.","Fuit un seigneur dont il a tué le bailli.","Porte une lettre qu'il ne sait pas lire.","Cherche son frère enrôlé par une compagnie de routiers.","Doit sa vie à une abbesse qui réclame un service."]},
+{id:"pirates",nom:"Pirates",acc:"Sabres, poudre et mers chaudes",grav:true,monnaie:"pièces de huit",bouclier:"Rondache",
+ origines:["de Port-Royal","de Tortuga","de Saint-Malo","de Nassau","de Carthagène","de la côte de Guinée","d'un village basque","de Bristol"],
+ passes:["Mousse enrôlé de force","Esclave évadé","Marin de la Royale","Fils de planteur","Contrebandier","Forçat évadé","Corsaire du roi","Plongeur de perles"],
+ metiers:["Canonnier:c","Quartier-maître:c","Abordeur:c","Gabier:p","Boucanier:p","Espion du gouverneur:p","Capitaine déchu:p","Chirurgien de bord:f","Navigateur:f","Cambusier:f"],
+ armures:["Chemise et culotte","Gilet de cuir","Cuirasse légère","Cuirasse et morion"],
+ armes:["Sabre d'abordage:d8","Hache d'abordage:d8","Pique:d8","Espadon:d10","Dague:d4","Pistolet à silex:d6+1:dist","Mousquet:d6+2:dist","Couteaux de jet:d4:dist"],
+ kits:["Matelot=Sac de toile, hamac, couteau à épisser, corde, biscuit de mer, rhum","Boucanier=Poire à poudre, balles, viande boucanée, briquet, tabac","Navigateur=Sextant, cartes marines, longue-vue, compas"],
+ curios:["une carte au trésor déchirée","un doublon espagnol","une dent de requin","une bouteille de vieux rhum","une lettre de marque","un perroquet bavard"],
+ dons:["Pied marin|Avantage pour tout ce qui se fait sur un pont qui tangue.|","Bordée|Tire avec deux pistolets dans le même tour.|","Nageur|Avantage pour nager, plonger et retenir son souffle.|","Mauvaise réputation|Avantage pour intimider.|","Œil de la vigie|Avantage pour repérer une voile ou une embuscade.|","Rat de cale|Avantage pour se cacher et se faufiler à bord.|"],
+ noms:{m:["Jack","Bartholomew","Esteban","Morgan","Silas","Ned","Yves","Kofi"],f:["Anne","Mary","Rosalia","Grace","Jacquotte","Inès","Bonnie","Ching"],s:[["Barbe-Grise"],["Sans-Quartier"],["Main-de-Fer"],["le Basque","la Basque"],["Jambe-de-Bois"],["la Morue"],["Poudre-Noire"],["Trois-Doublons"]]},
+ recits:["A enterré un trésor et perdu la carte.","Est recherché par la Royale pour mutinerie.","A survécu trois jours sur un radeau.","Doit une fortune à un armateur de Saint-Malo.","Cherche le capitaine qui l'a abandonné sur un îlot."]},
+{id:"western",nom:"Western",acc:"Colts, poussière et chasseurs de primes",grav:false,monnaie:"dollars",bouclier:"",
+ origines:["du Texas","de La Nouvelle-Orléans","du Montana","des Grandes Plaines","de Boston","du Mexique","d'Irlande","de Californie"],
+ passes:["Vétéran de la guerre de Sécession","Orphelin de la ruée vers l'or","Ancien bagnard","Fils de pasteur","Joueur ruiné","Déserteur de la cavalerie","Immigrant","Ancien esclave"],
+ metiers:["Pistolero:c","Chasseur de primes:c","Shérif adjoint:c","Cow-boy:p","Éclaireur:p","Prospecteur:p","Pilleur de trains:p","Docteur:f","Joueur professionnel:f","Prédicateur:f"],
+ armures:["Vêtements de route","Cache-poussière et cuir","Gilet renforcé","Plastron d'acier"],
+ armes:["Colt Peacemaker:d6+1:dist","Winchester:d6+2:dist","Fusil de chasse:d6+2:dist","Derringer:d4+1:dist","Couteau Bowie:d4","Hachette:d8","Fusil comme massue:d10","Couteaux de lancer:d4:dist"],
+ kits:["Cavalier=Selle, couverture, gourde, café, haricots, allumettes","Prospecteur=Pioche, batée, tamis, lanterne, mule","Médecin=Trousse chirurgicale, whisky, laudanum, bandages"],
+ curios:["une pépite d'or","un jeu de cartes marqué","une étoile de shérif volée","un avis de recherche","une montre gousset arrêtée","une bible trouée par une balle"],
+ dons:["Dégaine rapide|+2 à l'initiative.|","Tir en éventail|Deux tirs au revolver dans le même tour.|","Cavalier émérite|Avantage à cheval et en poursuite.|","Bluff|Avantage aux jeux de cartes et aux mensonges.|","Pisteur|Avantage pour suivre une piste.|","Sang-froid sous le feu|Avantage contre la peur.|"],
+ noms:{m:["Jesse","Wyatt","Caleb","Hank","Eli","Diego","Ezra","Clay"],f:["Annie","Belle","Martha","Rosa","Sadie","Pearl","Clementine","Josie"],s:[["McCoy"],["Dalton"],["Harper"],["Vasquez"],["O'Malley"],["Black"],["Cassidy"],["Moore"]]},
+ recits:["A été témoin d'un massacre et ne l'a jamais raconté.","Sa tête est mise à prix dans deux territoires.","Cherche l'homme qui a brûlé son ranch.","A gagné une concession minière au poker.","Doit rapporter un cercueil jusqu'à Santa Fe."]},
+{id:"contemporain",nom:"Contemporain",acc:"Ici et maintenant, en plus dangereux",grav:false,monnaie:"euros",bouclier:"Bouclier anti-émeute",
+ origines:["de Marseille","de Bruxelles","de Montréal","de Dakar","de Lagos","de Berlin","de Lyon","de la banlieue parisienne"],
+ passes:["Ancien militaire","Ex-détenu","Étudiant en médecine","Enfant de diplomates","Sportif blessé","Ancien flic","Hacker repenti","Fils de banquier"],
+ metiers:["Garde du corps:c","Agent de sécurité:c","Pompier:c","Coursier:p","Mécanicien:p","Détective privé:p","Traceur parkour:p","Ambulancier:f","Journaliste:f","Avocat:f"],
+ armures:["Vêtements de ville","Blouson de cuir","Gilet pare-balles léger","Gilet pare-balles lourd"],
+ armes:["Pistolet 9 mm:d6+1:dist","Fusil à pompe:d6+2:dist","Matraque télescopique:d4","Batte de baseball:d8","Pied-de-biche:d8","Couteau:d4","Taser:d4:dist","Hache d'incendie:d10"],
+ kits:["Urbain=Smartphone, chargeur, sac à dos, lampe torche, couteau suisse","Secouriste=Trousse de premiers secours, garrot, couverture de survie","Enquêteur=Appareil photo, carnet, dictaphone, fausses cartes de visite"],
+ curios:["une clé USB chiffrée","une photo ancienne","un billet d'avion aller simple","la carte de visite d'un inconnu","un badge d'accès","une alliance"],
+ dons:["Self-défense|Avantage pour désarmer ou immobiliser.|","Conducteur|Avantage au volant.|","Débrouillard|Trouve toujours ce qu'il faut dans une ville.|","Réseau|Connaît quelqu'un utile, une fois par séance.|","Premiers secours|Rend 1d6 PV à un allié après un combat.|","Tireur entraîné|Avantage au premier tir de chaque combat.|"],
+ noms:{m:["Karim","Lucas","Mathieu","Yannick","Thomas","Moussa","Hugo","Jonas"],f:["Sarah","Inès","Léa","Fatou","Camille","Nadia","Chloé","Julie"],s:[["Martin"],["Benali"],["Dubois"],["Diallo"],["Lambert"],["Kowalski"],["Moreau"],["Nguyen"]]},
+ recits:["A vu quelque chose qu'il n'aurait pas dû voir.","Doit de l'argent à des gens dangereux.","Cherche une sœur disparue depuis cinq ans.","A été licencié pour avoir dit la vérité.","Garde une valise qu'on lui a confiée."]},
+{id:"postapo",nom:"Post-apocalypse",acc:"Ruines, ferraille et eau rare",grav:false,monnaie:"capsules",bouclier:"Panneau de signalisation",
+ origines:["des ruines de Lyon","d'un abri souterrain","des Terres brûlées","d'une communauté de fermiers","d'un convoi nomade","des docks engloutis","d'un camp de pillards","d'une ancienne base militaire"],
+ passes:["Né dans l'abri","Ancien pillard","Survivant solitaire","Enfant des caravanes","Mutant toléré","Milicien","Fermier dépossédé","Chasseur de rats"],
+ metiers:["Garde de convoi:c","Gladiateur d'arène:c","Pilleur:c","Ferrailleur:p","Mécano:p","Éclaireur des ruines:p","Dresseur de chiens:p","Toubib:f","Marchand d'eau:f","Prêcheur de l'Aube:f"],
+ armures:["Haillons","Cuir et pneus","Plaques de tôle","Armure anti-émeute rafistolée"],
+ armes:["Machette:d8","Masse de chantier:d10","Tuyau clouté:d8","Couteau:d4","Arc de fortune:d6:dist","Fusil artisanal:d6+2:dist","Arbalète à ressort:d6:dist","Boulons de jet:d4:dist"],
+ kits:["Ferrailleur=Pied-de-biche, sac, ruban adhésif, filtre à eau, briquet","Nomade=Couverture, gourde, conserves, boussole, masque à gaz","Toubib=Seringues, bandages, antibiotiques périmés, alcool"],
+ curios:["un compteur Geiger qui grésille","une photo d'avant","une capsule de soda","une clé de voiture sans voiture","une boîte de munitions vide","un vieux baladeur"],
+ dons:["Estomac d'acier|Avantage contre les poisons et les radiations.|","Bricoleur|Répare ou improvise un objet en une heure.|","Charognard|Trouve de quoi manger ou troquer dans les ruines.|","Instinct|+2 à l'initiative.|","Peau épaisse|Mutation : +1 en Défense.|def=1","Chien fidèle|Un chien de garde l'accompagne.|"],
+ noms:{m:["Rouille","Kurt","Silex","Tank","Jojo","Mako","Ziggy","Brann"],f:["Cendre","Vipère","Lune","Rosie","Kaya","Nova","Moxie","Tess"],s:[["Dent-de-Fer"],["la Mule"],["Deux-Bidons"],["Poussière"],["Pneu-Crevé"],["Sans-Abri"],["Croc"],["Fumée"]]},
+ recits:["Cherche l'abri dont parlait sa mère.","A échangé son vrai nom contre de l'eau.","Porte la seule carte d'une source propre.","A fui une secte qui adore les bombes.","Doit trois vies au chef d'un convoi."]},
+{id:"cyberpunk",nom:"Cyberpunk",acc:"Néons, implants et corporations",grav:false,monnaie:"eurodollars",bouclier:"Bouclier balistique",
+ origines:["des bas-fonds de Neo-Lyon","d'une arcologie corporatiste","des Barrens","des marchés flottants","d'une famille de techs","d'une mégatour de Kowloon-Sud","d'un gang de rue","des zones portuaires"],
+ passes:["Ancien employé corpo","Gamin des rues","Ex-flic de la Brigade","Fixer ruiné","Cobaye de laboratoire","Musicien underground","Soldat démobilisé","Enfant d'un cadre disparu"],
+ metiers:["Solo:c","Garde du corps:c","Chasseur d'implants:c","Techie:p","Nomade:p","Infiltrateur:p","Netrunner:f","Médtech:f","Fixer:f","Rockerboy:f"],
+ armures:["Veste synthétique","Veste blindée","Gilet en kevlar tissé","Armure corpo intégrale"],
+ armes:["Pistolet lourd:d6+1:dist","Pistolet-mitrailleur:d6+1:dist","Fusil d'assaut:d6+2:dist","Katana monomoléculaire:d10","Lames d'avant-bras:d4","Matraque électrique:d8","Couteau:d4","Shurikens:d4:dist"],
+ kits:["Runner=Cyberdeck, câbles, lunettes tête haute, puce de crédit","Rue=Téléphone jetable, holo-déguisement, crochets électroniques","Médtech=Injecteurs de stimulants, mousse hémostatique, scanner"],
+ curios:["une puce de données volée","un implant d'occasion","un jeton de casino","un tatouage animé défectueux","une carte d'accès corpo","un chat robot"],
+ dons:["Réflexes câblés|+2 à l'initiative.|","Peau blindée|Implant sous-cutané : +1 en Défense.|def=1","Jockey de la matrice|Avantage pour pirater un système.|","Contacts de rue|Trouve un revendeur ou une info, une fois par séance.|","Visée assistée|Avantage au premier tir de chaque combat.|","Organes renforcés|+3 PV.|pv=3"],
+ noms:{m:["Kenji","Dex","Rico","Viktor","Zane","Hiro","Malik","Jax"],f:["Yuki","Nyx","Lena","Raven","Mira","Kiko","Sasha","Juno"],s:[["« Glitch »"],["« Chrome »"],["« Zéro »"],["« Static »"],["« Néon »"],["« Byte »"],["« Spectre »"],["« Rouille »"]]},
+ recits:["A volé des données qui valent une fortune.","Une corpo veut récupérer son implant.","Cherche le charcudoc qui l'a opéré sans son accord.","Doit une dette à un clan yakuza.","A fait tomber un réseau et en paie le prix."]},
+{id:"scifi",nom:"Science-fiction",acc:"Colonies, vide spatial et inconnu",grav:false,monnaie:"crédits",bouclier:"Bouclier énergétique",
+ origines:["de la colonie martienne d'Arès","d'une station orbitale","de la Terre surpeuplée","d'un vaisseau-génération","d'une mine de la Ceinture","d'Europe sous la glace","d'une colonie agricole de Titan","d'un avant-poste abandonné"],
+ passes:["Ancien mineur d'astéroïdes","Colon de deuxième génération","Clone en fuite","Militaire de la Flotte","Chercheur discrédité","Contrebandier","Rescapé d'une épave","Pilote réformé"],
+ metiers:["Marine colonial:c","Agent de sécurité:c","Pilote:p","Ingénieur de bord:p","Technicien EVA:p","Prospecteur:p","Éclaireur planétaire:p","Xénobiologiste:f","Médecin de bord:f","Androïde de service:f"],
+ armures:["Combinaison de vol","Combinaison renforcée","Armure tactique","Exosquelette de combat"],
+ armes:["Pistolet laser:d6+1:dist","Fusil à impulsions:d6+2:dist","Fusil à fléchettes:d6:dist","Découpeuse plasma:d10","Matraque paralysante:d8","Clé de serrage:d8","Couteau de survie:d4","Couteaux de lancer:d4:dist"],
+ kits:["Spatial=Combinaison EVA, oxygène pour 6 h, balise, rations","Technicien=Outil multifonction, scanner, câble, soudeur","Médical=Médikit, injecteurs, scanner biologique"],
+ curios:["un échantillon extraterrestre","une carte stellaire corrompue","la plaque d'identité d'un mort","un drone de poche","une graine venue de la Terre","un journal de bord effacé"],
+ dons:["Pilote d'exception|Avantage aux commandes de tout véhicule.|","Habitué de l'apesanteur|Avantage en gravité zéro.|","Ingénieux|Répare n'importe quel système avec des pièces de fortune.|","Analyste|Avantage pour identifier une technologie ou une créature.|","Combat rapproché|+2 aux dégâts au corps à corps.|","Résistant au vide|+3 PV.|pv=3"],
+ noms:{m:["Elias","Tomasz","Kofi","Ravi","Anders","Dmitri","Jun","Luca"],f:["Ada","Mireille","Sora","Ingrid","Amara","Lin","Vera","Noor"],s:[["Okafor"],["Vance"],["Chen"],["Lindqvist"],["Moreau"],["Petrov"],["Tanaka"],["Reyes"]]},
+ recits:["Est le seul survivant d'une colonie devenue silencieuse.","Possède les codes d'un vaisseau disparu.","Fuit un contrat de travail de quarante ans.","A capté un signal que personne d'autre n'entend.","Cherche à prouver qu'une IA a menti."]},
+{id:"spaceop",nom:"Space opera",acc:"Empires galactiques et sabres d'énergie",grav:false,monnaie:"crédits",bouclier:"Bouclier personnel",
+ origines:["de la capitale impériale de Corvalis","d'une planète de la Bordure","d'un monde-forêt","d'une station de contrebandiers","d'un monde désertique","d'une flotte nomade","d'un monde-océan","d'une lune minière"],
+ passes:["Noble déchu","Ancien soldat de l'Empire","Rebelle","Esclave affranchi","Apprenti mystique","Enfant de contrebandiers","Diplomate disgracié","Gladiateur des arènes"],
+ metiers:["Chevalier mystique:c","Chasseur de primes:c","Garde impérial:c","Mercenaire alien:c","Contrebandier:p","Pilote de chasse:p","Mécanicien de vaisseau:p","Espion de la Rébellion:p","Diplomate:f","Mystique:f"],
+ armures:["Tenue de voyage","Armure légère de pilote","Armure de mercenaire","Armure de garde impérial"],
+ armes:["Blaster:d6+1:dist","Fusil blaster:d6+2:dist","Arbalète énergétique:d6+1:dist","Sabre d'énergie:d10","Vibrolame:d8","Bâton de combat:d8","Couteau:d4","Dagues de jet:d4:dist"],
+ kits:["Voyageur=Comlink, rations, gourde, crédits cachés, macrojumelles","Pilote=Casque, kit de survie, balise, outils","Mystique=Cristal, robe, holocron, encens"],
+ curios:["un holocron muet","une médaille impériale","une dette envers un seigneur du crime","un droïde grincheux","un fragment de cristal","une carte vers un monde perdu"],
+ dons:["Le Flux|Une fois par scène, relance un jet raté.|","Pilote as|Avantage en combat spatial.|","Réputation|On le reconnaît dans tous les ports de la Bordure.|","Visée infaillible|Avantage au premier tir de chaque combat.|","Parade au sabre|+1 en Défense.|def=1","Ami des créatures|Avantage pour calmer ou monter une bête.|"],
+ noms:{m:["Kael","Dax","Torin","Varr","Jorin","Zev","Orrin","Talon"],f:["Lyra","Séraphine","Vesh","Nyra","Kaela","Ilyx","Tamsin","Rhee"],s:[["Starhaven"],["Kesh"],["Valtorr"],["Drax"],["Ashkar"],["Morrow"],["Solenne"],["Vey"]]},
+ recits:["Porte un message pour un chef rebelle.","Est l'héritier caché d'une maison noble.","Doit sa liberté à un seigneur du crime.","A déserté la flotte impériale.","Rêve chaque nuit d'une planète oubliée."]},
+{id:"prehistoire",nom:"Préhistoire",acc:"Silex, mammouths et clans",grav:false,monnaie:"coquillages",bouclier:"Bouclier de peau",
+ origines:["du clan de l'Ours","des grottes du Grand Fleuve","des steppes à mammouths","du peuple des lacs","des falaises aux hirondelles","d'un clan nomade du Nord","des forêts de chênes","du rivage aux coquillages"],
+ passes:["Enfant de chef","Orphelin recueilli","Banni du clan","Survivant d'un hiver noir","Gardien du feu","Fils de chamane","Captif d'un clan rival","Pisteur de troupeaux"],
+ metiers:["Chasseur de mammouths:c","Guerrier du clan:c","Lanceur de sagaies:p","Pisteur:p","Tailleur de silex:p","Pêcheur:p","Cueilleur:f","Chamane:f","Peintre des grottes:f","Conteur:f"],
+ armures:["Peaux de bête","Cuir épais","Cuir et os","Carapace d'os et de bois"],
+ armes:["Massue:d8","Lance à pointe de silex:d8","Hache de pierre:d8","Gourdin lourd:d10","Couteau de silex:d4","Propulseur et sagaies:d6:dist","Fronde:d4:dist","Bolas:d4:dist"],
+ kits:["Chasseur=Peaux, sac en vessie, pierre à feu, lanières, viande séchée","Chamane=Pochette d'ocre, os gravés, plantes, tambour","Voyageur=Fourrure, outre, silex de rechange, corde en tendons"],
+ curios:["une dent de lion des cavernes","un galet peint","une flûte en os","un collier de coquillages","une statuette de terre","une griffe d'ours"],
+ dons:["Pisteur hors pair|Avantage pour suivre une piste.|","Maître du feu|Allume un feu en toutes circonstances.|","Ami des bêtes|Avantage pour calmer un animal.|","Endurci|+3 PV.|pv=3","Lanceur précis|Avantage au premier tir de chaque combat.|","Voix du clan|Avantage pour rallier ou intimider.|"],
+ noms:{m:["Tok","Ourg","Brakk","Aru","Kesh","Mog","Tarn","Eno"],f:["Ayla","Nouk","Ila","Sena","Kaya","Mira","Ouna","Théa"],s:[["Dent-de-Lion"],["Œil-de-Feu"],["Pied-Rapide"],["Fils de l'Ours","Fille de l'Ours"],["Main-Rouge"],["Sans-Clan"],["Crin-de-Mammouth"],["Silex-Noir"]]},
+ recits:["A vu l'esprit du grand cerf et doit le retrouver.","A été chassé de son clan pour une faute qu'il nie.","Cherche la grotte où son père a peint les ancêtres.","Porte le dernier feu de son clan éteint.","Doit une vie au chamane d'un clan rival."]},
+{id:"antiquite",nom:"Antiquité",acc:"Cités, légions et oracles",grav:false,monnaie:"drachmes",bouclier:"Scutum",
+ origines:["d'Athènes","de Sparte","de Rome","d'Alexandrie","de Carthage","de Thèbes","des tribus de Gaule","de Perse"],
+ passes:["Esclave affranchi","Fils de sénateur ruiné","Ancien hoplite","Gladiateur","Marin phénicien","Prêtre défroqué","Exilé politique","Athlète olympique"],
+ metiers:["Légionnaire:c","Hoplite:c","Gladiateur:c","Archer crétois:p","Frondeur des Baléares:p","Marchand voyageur:p","Voleur de Subure:p","Philosophe:f","Médecin grec:f","Devin:f"],
+ armures:["Tunique","Linothorax","Lorica hamata","Cuirasse d'hoplite"],
+ armes:["Glaive:d8","Lance d'hoplite:d8","Falcata:d8","Hache bipenne:d10","Sarisse:d10","Pugio:d4","Arc composite:d6:dist","Javelots:d4:dist","Fronde:d4:dist"],
+ kits:["Soldat=Sac de marche, gamelle, pieu, couverture, pain dur, vin coupé","Voyageur=Besace, outre, manteau, lampe à huile, figues sèches","Lettré=Tablettes de cire, stylet, rouleaux, sceau"],
+ curios:["une obole pour Charon","une amulette en scarabée","une lettre de recommandation","un osselet porte-bonheur","une tablette de malédiction","une pièce à l'effigie d'un tyran"],
+ dons:["Formation serrée|Avantage en défense aux côtés d'un allié.|","Rhétorique|Avantage pour convaincre une assemblée.|","Pied marin|Avantage sur un navire.|","Favori des dieux|+1 dé d'héroïsme.|dh=1","Coriace|+3 PV.|pv=3","Tir de fronde|Avantage au premier tir de chaque combat.|"],
+ noms:{m:["Marcus","Lysandre","Titus","Démétrios","Gaius","Hannon","Kléon","Darius"],f:["Livia","Thaïs","Aspasie","Julia","Cléa","Myrrhine","Sophonisbe","Lydia"],s:[["le Borgne","la Borgne"],["l'Exilé","l'Exilée"],["de Corinthe"],["Ahenobarbus"],["le Crétois","la Crétoise"],["Fils de Mars","Fille de Mars"],["le Phénicien","la Phénicienne"],["Sans-Patrie"]]},
+ recits:["A consulté l'oracle et n'aime pas la réponse.","Est recherché pour avoir profané un temple.","Doit racheter sa liberté avant la fin de l'année.","Garde le sceau d'un général assassiné.","Cherche le navire qui a emporté sa famille."]},
+{id:"annees20",nom:"Années 1920",acc:"Prohibition, jazz et occultisme",grav:false,monnaie:"dollars",bouclier:"",
+ origines:["de Chicago","de New York","de La Nouvelle-Orléans","de Paris","de Berlin","de Londres","d'Arkham","de Montmartre"],
+ passes:["Vétéran de la Grande Guerre","Héritier ruiné","Immigrant italien","Ancien flic véreux","Enfant de la balle","Pilote de l'escadrille","Contrebandier d'alcool","Musicien de jazz"],
+ metiers:["Homme de main:c","Boxeur:c","Détective privé:p","Chauffeur de la pègre:p","Journaliste:p","Cambrioleur:p","Archéologue:f","Médecin:f","Médium:f","Chanteur de cabaret:f"],
+ armures:["Costume trois-pièces","Manteau de cuir","Gilet pare-balles d'époque","Plastron d'acier"],
+ armes:["Colt 1911:d6+1:dist","Thompson:d6+2:dist","Fusil de chasse:d6+2:dist","Derringer:d4+1:dist","Matraque:d4","Coup-de-poing américain:d4","Batte de baseball:d8","Rasoir:d4","Couteaux de lancer:d4:dist"],
+ kits:["Détective=Carnet, loupe, lampe torche, appareil photo, flasque","Pègre=Gants, pied-de-biche, cigarettes, faux papiers","Savant=Carnet de notes, lampe, livres anciens, trousse de premiers secours"],
+ curios:["un billet pour un speakeasy","une photo compromettante","une statuette étrange","un jeton de casino","une lettre en latin","une montre arrêtée à minuit"],
+ dons:["Gueule d'ange|Avantage pour séduire ou mentir.|","Pilote|Avantage au volant.|","Contacts dans la pègre|Trouve une arme ou de l'alcool, une fois par séance.|","Sang-froid|Avantage contre la peur et l'horreur.|","Rafale|Deux tirs dans le même tour avec une arme automatique.|","Érudit occulte|Avantage pour identifier un rituel.|"],
+ noms:{m:["Johnny","Vito","Frank","Eddie","Lucien","Harold","Sal","Archie"],f:["Dolores","Ruby","Mae","Joséphine","Lillian","Colette","Zelda","Hazel"],s:[["Malone"],["« Deux-Flingues »"],["Capelli"],["O'Hara"],["Delacroix"],["« la Fouine »"],["Moretti"],["Whitmore"]]},
+ recits:["Doit une faveur à un parrain de Chicago.","A vu quelque chose dans une crypte sous Arkham.","Cherche son frère disparu en Égypte.","Est recherché par les agents de la Prohibition.","Garde un journal qui n'est pas le sien."]},
+{id:"uchronie",nom:"Uchronie 1960",acc:"L'Axe a gagné, la Résistance continue",grav:false,monnaie:"marks d'occupation",bouclier:"",
+ origines:["du Paris occupé","de Londres sous couvre-feu","des maquis du Vercors","d'une vallée libre des Alpes","de New York, ville neutre","du réseau de Lisbonne","d'un camp de travail, évadé","d'Alger la rebelle"],
+ passes:["Soldat de l'armée vaincue","Évadé d'un camp","Fils de collaborateur repenti","Instituteur clandestin","Ancien pilote de chasse","Cheminot saboteur","Réfugié apatride","Étudiant exclu"],
+ metiers:["Maquisard:c","Saboteur:c","Garde du corps du réseau:c","Tireur d'élite:p","Faussaire:p","Contrebandier:p","Opérateur radio:p","Médecin clandestin:f","Agent infiltré:f","Imprimeur de tracts:f"],
+ armures:["Vêtements civils","Blouson de cuir","Gilet renforcé","Casque et plastron récupérés"],
+ armes:["Pistolet automatique:d6+1:dist","Mitraillette Sten:d6+2:dist","Fusil à lunette:d6+2:dist","Pistolet silencieux:d6+1:dist","Couteau de commando:d4","Garrot:d4","Pelle de tranchée:d8","Grenades:d6:dist"],
+ kits:["Maquis=Sac à dos, couverture, rations, boussole, carte d'état-major","Réseau=Faux papiers, poste radio miniature, carnet de codes, encre sympathique","Saboteur=Explosif plastique, détonateurs, pinces, cordeau"],
+ curios:["une photo de famille d'avant","un laissez-passer volé","une capsule de cyanure","un disque de jazz interdit","une carte du réseau en code","une médaille de l'armée vaincue"],
+ dons:["Faussaire|Fabrique des papiers crédibles en une nuit.|","Ombre|Avantage pour s'infiltrer en zone gardée.|","Sang-froid|Avantage aux contrôles et interrogatoires.|","Radio|Contacte le réseau une fois par séance.|","Coriace|+3 PV.|pv=3","Explosifs|Avantage pour poser ou désamorcer une charge.|"],
+ noms:{m:["Jean","Pierre","Thomas","Henri","Marek","Arthur","Paul","Lucien"],f:["Marie","Odette","Simone","Lise","Irena","Madeleine","Hélène","Violette"],s:[["dit « le Renard »","dite « la Renarde »"],["Moreau"],["dit « Nuit »","dite « Nuit »"],["Lefèvre"],["Kowalski"],["dit « Corbeau »","dite « Corbeau »"],["Garnier"],["dit « l'Abbé »","dite « Sœur Anne »"]]},
+ recits:["Doit faire passer un savant de l'autre côté des Alpes.","A perdu tout son réseau dans une trahison.","Garde les plans d'une base de fusées.","Cherche sa sœur déportée à l'Est.","Est recherché sous trois noms différents."]},
+{id:"steampunk",nom:"Steampunk",acc:"Vapeur, laiton et dirigeables",grav:false,monnaie:"souverains",bouclier:"Bouclier à rouages",
+ origines:["de Londres la fumante","du Paris des Expositions","de la cité volante d'Aéropolis","des docks de Liverpool","de la colonie de Bombay","de Vienne l'horlogère","des mines de Cornouailles","du Transsibérien à vapeur"],
+ passes:["Apprenti mécanicien","Aristocrate ruiné","Ramoneur","Officier de la flotte aérienne","Inventeur raté","Orphelin des usines","Explorateur colonial","Ancien bagnard"],
+ metiers:["Aéronaute de combat:c","Garde mécanique:c","Boxeur des docks:c","Ingénieur:p","Pilote de dirigeable:p","Cambrioleur des toits:p","Explorateur:p","Savant excentrique:f","Médecin légiste:f","Journaliste:f"],
+ armures:["Redingote","Cuir et laiton","Plaques rivetées","Scaphandre à vapeur"],
+ armes:["Pistolet à vapeur:d6+1:dist","Fusil électrique:d6+2:dist","Canne-épée:d8","Clé à molette géante:d10","Gantelet à piston:d8","Rasoir:d4","Arbalète à répétition:d6:dist","Couteaux de lancer:d4:dist"],
+ kits:["Mécanicien=Caisse à outils, lunettes, huile, ressorts, burette","Aéronaute=Lunettes, écharpe, boussole, parachute, longue-vue","Gentleman=Haut-de-forme, montre à gousset, cartes de visite, flasque de thé"],
+ curios:["un engrenage en or","une lettre de la Reine","un automate de poche","une carte des routes aériennes","un éclat de cristal lumineux","une montre qui avance"],
+ dons:["Bricoleur de génie|Répare ou améliore un engin en une heure.|","Aéronaute|Avantage aux commandes d'un dirigeable.|","Prothèse mécanique|+1 en Défense.|def=1","Flegme|Avantage contre la peur.|","Coriace|+3 PV.|pv=3","Tir de précision|Avantage au premier tir de chaque combat.|"],
+ noms:{m:["Archibald","Phileas","Nikola","Edmund","Silas","Rupert","Jules","Barnaby"],f:["Ada","Victoria","Elspeth","Nellie","Ottilie","Imogen","Clémence","Beatrix"],s:[["Cogsworth"],["Brassfield"],["Lord Hawke","Lady Hawke"],["Fogg"],["Steamwright"],["« Clé-Molette »"],["Van Tassel"],["Blackwood"]]},
+ recits:["A construit un engin que l'Empire veut saisir.","Doit retrouver un dirigeable disparu au-dessus des nuages.","Est poursuivi par une société secrète d'horlogers.","A volé les plans d'une machine à remonter le temps.","Cherche le créateur de son bras mécanique."]}
+];
+
+
+/* ---------- Sorts et parchemins (liste du livre, p. 21-22) ----------
+   Mêmes effets dans tous les thèmes, nom et objet changent.
+   type : projectile, soin, duree (1d6 minutes) ou autre */
+const SORTS_BASE=[
+ {k:"alarme",niv:1,e:"Entrer dans la zone protégée déclenche une alarme, audible de tous ou télépathique au choix.",c:"alarme sur une zone",type:"autre"},
+ {k:"langues",niv:1,e:"Comprend toutes les langues, sans pour autant les parler.",c:"comprend toutes les langues",type:"autre"},
+ {k:"animaux",niv:1,e:"Fait passer aux bêtes des messages simples : apaisement, intimidation, appel au secours.",c:"parle aux bêtes",type:"autre"},
+ {k:"feuille",niv:1,e:"La créature ciblée tombe lentement sans se faire mal, quelle que soit la hauteur.",c:"chute sans dommage",type:"autre"},
+ {k:"telek",niv:1,e:"Manipule jusqu'à 2 kg de matière à distance, tant que la concentration tient.",c:"télékinésie, 2 kg",type:"autre"},
+ {k:"message",niv:1,e:"Chuchote avec une personne éloignée sans être entendu des indésirables.",c:"message à distance",type:"autre"},
+ {k:"monture",niv:1,e:"Fait apparaître une monture magique tout équipée qui porte fidèlement le lanceur.",c:"monture magique",type:"autre"},
+ {k:"projectile",niv:1,e:"Lance (niveau du lanceur ÷ 2, arrondi au supérieur) projectiles de 1d4 + 1 dégâts chacun.",c:"(niv ÷ 2) × 1d4+1 dégâts",type:"projectile"},
+ {k:"soins",niv:1,e:"Rend 1 dé de vie + niveau du lanceur PV à un personnage blessé depuis son dernier repos long.",c:"rend 1 DV + niveau PV",type:"soin"},
+ {k:"invis",niv:2,e:"Invisible pendant 1d6 minutes, ou jusqu'à ce qu'il attaque un adversaire.",c:"invisible 1d6 min",type:"duree"},
+ {k:"apparence",niv:2,e:"Prend la forme humanoïde de son choix : taille, poids, sexe, peau, peuple…",c:"change d'apparence",type:"autre"},
+ {k:"souffle",niv:2,e:"Respire sous l'eau comme un poisson.",c:"respire sous l'eau",type:"autre"},
+ {k:"verite",niv:2,e:"Les créatures présentes dans la zone ne peuvent pas mentir.",c:"zone sans mensonge",type:"autre"},
+ {k:"clair",niv:3,e:"Entend ou voit à distance pendant 1d6 minutes.",c:"voit ou entend au loin, 1d6 min",type:"duree"},
+ {k:"vol",niv:3,e:"Vole comme un oiseau pendant 1d6 minutes.",c:"vole 1d6 min",type:"duree"},
+ {k:"morts",niv:3,e:"Un cadavre répond à trois questions posées précisément.",c:"un mort répond à 3 questions",type:"autre"}
+];
+const SORTS_THEME={
+ fantasy:{titre:"Parchemins",un:"parchemin",noms:["Alarme","Compréhension des langues","Empathie avec les animaux","Feuille morte","Manipulation à distance","Message","Monture","Projectile magique","Soins légers","Invisibilité","Modification d'apparence","Souffle liquide","Zone de vérité","Clairaudience/Clairvoyance","Vol","Communication avec les morts"]},
+ medieval:{titre:"Reliques",un:"relique",noms:["Clochette du guet","Langue de Pentecôte","Médaille de saint François","Plume d'ange","Gant du thaumaturge","Murmure du confesseur","Destrier du saint","Pierres de David","Os de saint Roch","Manteau du pèlerin","Masque du mystère","Fiole de saint Brendan","Sceau de vérité","Œil du prophète","Ailes de l'archange","Cierge des trépassés"]},
+ pirates:{titre:"Gris-gris",un:"gris-gris",noms:["Grelot de vigie","Coquillage des marées","Plume de perroquet","Plume d'albatros","Main du noyé","Conque murmurante","Hippocampe","Dents de requin","Rhum du sorcier","Brume de mer","Masque de carnaval","Écaille de triton","Doublon de vérité","Longue-vue d'os","Ailes de frégate","Crâne bavard"]},
+ western:{titre:"Élixirs",un:"élixir",noms:["Poudre de veille","Tisane du trappeur","Sifflet du chaman","Gouttes de plume","Huile de poltergeist","Fumée-signal","Cheval fantôme","Balles d'argent","Tonique miracle","Poudre de coyote","Fard du bonimenteur","Gorgée de crapaud","Whisky de vérité","Gouttes de faucon","Élixir de l'aigle","Tabac des ancêtres"]},
+ contemporain:{titre:"Talismans",un:"talisman",noms:["Grigri de porte","Appli maudite","Sifflet à chiens","Parachute de poche","Télécommande hantée","Talkie fantôme","Clé de moto fantôme","Fléchettes ensorcelées","Pansement runique","Ticket d'invisibilité","Masque de latex","Pastille d'apnée","Enregistreur de vérité","Webcam fantôme","Ballon d'hélium","Planche ouija"]},
+ postapo:{titre:"Fétiches",un:"fétiche",noms:["Boîte à grelots","Puce traductrice","Sifflet à rats","Parapente plié","Gant aimanté","Radio fantôme","Clé de la bécane","Clous rouillés","Seringue mutagène","Spray caméléon","Masque de chair","Branchies mutantes","Compteur de mensonges","Drone de reconnaissance","Jetpack bricolé","Dosimètre des morts"]},
+ cyberpunk:{titre:"Daemons",un:"daemon",noms:["Tripwire","Traducteur neural","Interface animale","Amortisseur cinétique","Contrôle de drone","Canal crypté","Véhicule piraté","Essaim de micro-drones","Nanobots réparateurs","Cape optique","Holo-masque","Poumons synthétiques","Détecteur de mensonges","Accès caméras","Propulseurs dorsaux","Lecture de mémoire morte"]},
+ scifi:{titre:"Nanocapsules",un:"nanocapsule",noms:["Balise de périmètre","Linguiciel","Interface xéno","Anti-grav personnel","Champ tracteur","Comm quantique","Rover d'urgence","Micro-missiles","Capsule médicale","Camouflage actif","Holo-déguisement","Branchies synthétiques","Analyseur de vérité","Sonde à distance","Ceinture anti-grav","Lecteur neural post-mortem"]},
+ prehistoire:{titre:"Totems",un:"totem",noms:["Os à grelots","Langue des ancêtres","Esprit-loup","Plume de l'aigle","Souffle du chamane","Fumée parlante","Mammouth des rêves","Pierres chantantes","Onguent d'ocre","Peau de brume","Masque d'esprit","Écaille du grand poisson","Cercle de vérité","Œil du corbeau","Ailes de l'esprit","Crâne des aïeux"]},
+ antiquite:{titre:"Papyrus",un:"papyrus",noms:["Oie du Capitole","Don d'Hermès","Lyre d'Orphée","Plume d'Icare","Main de Prométhée","Message d'Iris","Pégase","Traits d'Artémis","Baume d'Asclépios","Casque d'Hadès","Masque de Protée","Souffle de Poséidon","Serment du Styx","Œil de la Pythie","Ailes d'Hermès","Obole de Charon"]},
+ annees20:{titre:"Charmes",un:"charme",noms:["Clochette spirite","Disque du polyglotte","Sifflet du dresseur","Ombrelle ascendante","Main de la médium","Téléphone de l'au-delà","Automobile fantôme","Balles bénites","Élixir du docteur","Cape du prestidigitateur","Fard de vaudeville","Gomme d'apnée","Sérum de vérité","Boule de cristal","Montgolfière de poche","Séance spirite"]},
+ uchronie:{titre:"Gadgets",un:"gadget",noms:["Fil piège","Écouteur traducteur","Sifflet à chiens","Parachute de poche","Aimant de crochetage","Émetteur miniature","Moto de l'estafette","Stylo-pistolet","Morphine de campagne","Fumigène","Kit de déguisement","Recycleur d'air","Sérum de vérité","Micro espion","Planeur pliant","Carnet du disparu"]},
+ steampunk:{titre:"Engins",un:"engin",noms:["Grelot à ressort","Phonographe traducteur","Sifflet à vapeur","Parachute à baleines","Bras télescopique","Télégraphe de poche","Vélocipède à vapeur","Fusées miniatures","Élixir galvanique","Manteau caméléon","Masque de cire","Scaphandre de poche","Détecteur de mensonges","Périscope","Ailes à ressorts","Électrode de Galvani"]},
+ spaceop:{titre:"Sceaux",un:"sceau",noms:["Sceau de garde","Écho universel","Lien du Flux","Chute du Flux","Poigne du Flux","Murmure du Flux","Monture du Flux","Dards du Flux","Sceau de guérison","Voile du Flux","Illusion du Flux","Souffle des abysses","Sceau de vérité","Vision lointaine","Lévitation","Voix des morts"]}
+};
+THEMES.forEach(t=>{const st=SORTS_THEME[t.id];t.sortsTitre=st.titre;t.sortsUn=st.un;t.P=SORTS_BASE.map((b,i)=>Object.assign({n:st.noms[i]},b))});
+const FMT_SORT=s=>s.n+(s.niv?" (niv. "+s.niv+")":"")+" : "+(s.c||s.e);
+/* Niveau de sort lisible selon le niveau du personnage (livre p. 21) */
+function lisibleMax(niv,libre){return niv>=6?3:niv>=4?2:niv>=2?1:(libre?1:0)}
+function niveauPourLire(sn){return sn>=3?6:sn===2?4:2}
+
+/* ---------- Dons du livre (p. 6-7) ---------- */
+const DONS_OFF=[
+ {n:"Armes de prédilection (contact)",e:"Le dé de dégâts des armes de contact augmente d'une taille.",fx:{predi:"contact"}},
+ {n:"Armes de prédilection (distance)",e:"Le dé de dégâts des armes à distance augmente d'une taille.",fx:{predi:"dist"}},
+ {n:"Artefact légendaire",e:"Porte un puissant objet magique.",min:4,unique:true},
+ {n:"Attaque sournoise",e:"Un coup vicieux réussi sur un adversaire pris au dépourvu inflige +1d8 au lieu de +1d4.",fx:{sournois:1}},
+ {n:"Chance",e:"Les dés d'héroïsme sont des d8 au lieu de d6.",unique:true,fx:{chance:1}},
+ {n:"Combat à deux armes",e:"Arme intermédiaire et arme légère : lance les deux dés de dégâts, garde le meilleur."},
+ {n:"Commandement",e:"Deux jetons de relance à offrir aux autres joueurs, récupérés au repos long.",unique:true,fx:{cmd:2}},
+ {n:"Enchaînement",e:"Après une attaque réussie, enchaîne une deuxième attaque.",min:3},
+ {n:"Enchaînement (second)",e:"Si la deuxième attaque réussit, enchaîne une troisième.",min:5,req:"Enchaînement"},
+ {n:"Esquive acrobatique",e:"Sans armure ou en armure légère : +2 à la valeur d'armure (Défense).",fx:{esquive:1}},
+ {n:"Magie du cercle premier",e:"Connaît deux sorts de niveau 1, lancés une fois chacun entre deux repos longs, sans parchemin. Dé de vie diminué d'une taille.",min:4,fx:{dv:-1,magie1:2}},
+ {n:"Magie du cercle second",e:"Connaît un sort de niveau 2, lancé une fois entre deux repos longs, sans parchemin. Dé de vie diminué d'une taille.",min:4,fx:{dv:-1,magie2:1}},
+ {n:"Maîtrise des armures",e:"En armure mixte ou lourde : malus d'encombrement réduit de 2 (+2 aux Arts du mouvement).",fx:{maitrise:1}},
+ {n:"Maîtrise des boucliers",e:"Peut sacrifier son bouclier pour annuler les dégâts d'une attaque."},
+ {n:"Science de l'initiative",e:"Le groupe lance un d8 au lieu d'un d6 pour l'initiative.",unique:true,fx:{init:1}},
+ {n:"Talents variés",e:"Gagne un troisième aspect.",min:4,fx:{aspect3:1}},
+ {n:"Vigueur",e:"Le dé de vie augmente d'une taille.",fx:{dv:1}},
+ {n:"Vigueur (seconde)",e:"Le dé de vie augmente encore d'une taille.",fx:{dv:1},req:"Vigueur"},
+ {n:"Vision nocturne",e:"Peuple non humain, mutation ou implants : se passe de lumière dans la plupart des situations.",creation:true}
+];
+const ARTEFACTS=[
+ {id:"bastion",n:"Bastion, le bouclier des justes",e:"Pavois sans malus d'encombrement. Au début de chaque combat, 2d4 PV à donner quand tu veux à un membre de l'équipe. Sacrifié avec Maîtrise des boucliers, il se répare en quelques minutes. Son porteur ne peut plus mentir ni revenir sur sa parole."},
+ {id:"ilmare",n:"Ilmarë, la lanterne du Phénix",e:"Éclaire comme trois braseros ; sa lumière inflige 1d6 dégâts par tour aux morts-vivants. Libérer le phénix détruit la lanterne mais ramène un mort à la vie."},
+ {id:"epine",n:"Épine, la colère du Vert",e:"Épée longue en Bois-Sorcier (d8) : avantage sur tous les jets de dégâts. Tue toujours à 0 PV ; une fois dégainée, quelqu'un doit mourir."},
+ {id:"ravages",n:"Ravages, le croc du tonnerre",e:"Poignard en dent de dragon (d4) : 1 dégât à chaque attaque, même ratée. Sur un coup vicieux, un dé de plus frappe la cible et le porteur."},
+ {id:"eressea",n:"Eressëa, le dernier des 5 anneaux",e:"Quand quelqu'un tombe à 0 PV à proximité, 1d6 : sur 1 ou 2, il meurt et l'anneau garde son âme. Trois âmes dépensées gardent un parchemin intact après usage."},
+ {id:"manadh",n:"Manadh, l'étendard de la Fortune",e:"Un dé d'héroïsme lancé avec désavantage charge un point de fortune (3 au plus) ; un point dépensé donne l'avantage à un dé d'héroïsme."}
+];
+function donDispo(d,niv,possedes,creation){if(d.min&&niv<d.min)return false;if(d.req&&!possedes.includes(d.req))return false;if(d.creation&&!creation)return false;return true}
+function raisonDon(d,niv,possedes,creation){if(d.min&&niv<d.min)return "dès le niveau "+d.min;if(d.req&&!possedes.includes(d.req))return "demande "+d.req;if(d.creation&&!creation)return "à la création seulement";return ""}
+const TAILLES_DE=[4,6,8,10,12];
+function tailleDe(base,pas){let i=TAILLES_DE.indexOf(base);if(i<0)i=2;return TAILLES_DE[Math.max(0,Math.min(TAILLES_DE.length-1,i+pas))]}
+function deArme(d,pas){return pas?String(d).replace(/^d(\d+)/,(m,n)=>"d"+tailleDe(+n,pas)):d}
+function fxDons(noms,D){
+  const fx={pvNiv:0,pv:0,def:0,mvt:0,std:0,dh:0,parch:0,dv:0,esquive:0,maitrise:0,chance:0,aspect3:0,magie1:0,magie2:0,init:0,sournois:0,cmd:0,predi:[]},src={};
+  noms.forEach(n=>{const d=D.find(x=>x.n===n);if(!d||!d.fx)return;Object.keys(d.fx).forEach(k=>{if(k==="predi")fx.predi.push(d.fx.predi);else if(k in fx)fx[k]+=d.fx[k];(src[k]=src[k]||[]).push(d.n)})});
+  return {fx,src};
+}
+
+/* ---------- Réglages de table (gardés dans ce navigateur) ---------- */
+const LSR="cdo-regles-v1";
+let REG={dvMetier:false,donsMaison:false,lectureLibre:false};
+try{Object.assign(REG,JSON.parse(localStorage.getItem(LSR)||"{}"))}catch(e){}
+function sauverReg(){try{localStorage.setItem(LSR,JSON.stringify(REG))}catch(e){}}
+function donsTheme(t,maison){return DONS_OFF.concat(maison?t.Dm:[])}
+
+/* ---------- Hasard ---------- */
+function rng(seed){let a=seed>>>0;return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const R=rng(Date.now()%2147483647);
+const pick=(arr)=>arr[Math.floor(R()*arr.length)];
+const pickR=(r,arr)=>arr[Math.floor(r()*arr.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const sign=n=>(n>=0?"+":"−")+Math.abs(n);
+const v=k=>$(k).value;
+
+/* ---------- Analyse des données ---------- */
+const ROLES={c:{nom:"combattant",de:10},p:{nom:"polyvalent",de:8},f:{nom:"fin",de:6}};
+const FXN={parch:"sort au départ",pvNiv:"PV par niveau",pv:"PV",def:"Défense",mvt:"Arts du mouvement",std:"Standard",dh:"dé d'héroïsme"};
+function parseDon(s){const [n,e,f]=s.split("|");const fx={};(f||"").split(",").filter(Boolean).forEach(kv=>{const [k,x]=kv.split("=");fx[k]=+x});return {n,e,fx}}
+THEMES.forEach(t=>{
+  t.M=t.metiers.map(s=>{const [n,r]=s.split(":");return {n,r}});
+  t.A=t.armes.map(s=>{const [n,d,x]=s.split(":");return {n,d,dist:x==="dist"}});
+  t.K=t.kits.map(s=>{const i=s.indexOf("=");return {n:s.slice(0,i),c:s.slice(i+1)}});
+  t.Dm=t.dons.map(parseDon).concat(DONS_COMMUNS.map(parseDon)).map(d=>Object.assign(d,{maison:true}));
+});
+const ARMV=[0,2,4,6], ARMK=["aucune","legere","mixte","lourde"], ARMC=["aucune","légère","mixte","lourde"];
+const PHYS=[["grand et sec","grande et sèche"],["massif","massive"],["noueux et nerveux","noueuse et nerveuse"],["trapu","trapue"],["élancé","élancée"],["voûté mais vif","voûtée mais vive"],["large d'épaules","large d'épaules"]];
+const CAR=[["taciturne","taciturne"],["rieur et cruel","rieuse et cruelle"],["superstitieux","superstitieuse"],["joueur invétéré","joueuse invétérée"],["loyal jusqu'à l'absurde","loyale jusqu'à l'absurde"],["cupide","cupide"],["fier","fière"],["prudent","prudente"],["colérique","colérique"],["rêveur","rêveuse"]];
+
+/* ---------- Choix personnels (gardés dans ce navigateur, par thème) ---------- */
+const LSP="cdo-perso-v1";
+let PERSO={};
+try{PERSO=JSON.parse(localStorage.getItem(LSP)||"{}")||{}}catch(e){PERSO={}}
+function C(){const id=S.theme;if(!PERSO[id])PERSO[id]={};["passes","metiers","armes","kits","dons","sorts"].forEach(k=>{if(!Array.isArray(PERSO[id][k]))PERSO[id][k]=[]});return PERSO[id]}
+function sauverPerso(){try{localStorage.setItem(LSP,JSON.stringify(PERSO))}catch(e){}}
+const listes={
+  passes:()=>T().passes.concat(C().passes),
+  M:()=>T().M.concat(C().metiers),
+  A:()=>T().A.concat(C().armes),
+  K:()=>T().K.concat(C().kits),
+  D:()=>donsTheme(T(),REG.donsMaison).concat(C().dons),
+  P:()=>T().P.concat(C().sorts)
+};
+const estPerso=(cat,n)=>C()[cat].some(x=>(x.n||x)===n);
+
+/* ---------- État ---------- */
+let S=null;
+function nouveauNom(t,f){const p=pick(f?t.noms.f:t.noms.m), s=pick(t.noms.s);return p+" "+(s[f?1:0]||s[0])}
+function tirerDons(niv){const out=[];for(const d of shuffle(listes.D())){if(out.length>=niv)break;if(!out.includes(d.n)&&donDispo(d,niv,out,true))out.push(d.n)}return out}
+function sortsChoisissables(niv){const L=lisibleMax(niv,REG.lectureLibre)||1;return listes.P().filter(p=>(p.niv||1)<=L)}
+function tirer(themeId){
+  const t=THEMES.find(x=>x.id===themeId)||THEMES[0];
+  const ancien=S;
+  S={theme:t.id};
+  const f=R()<0.45, niv=parseInt($("niveau").value,10);
+  const armure=pick([0,1,1,2,2,3]);
+  const bouclier=!!t.bouclier&&armure>0&&R()<0.35;
+  const A=listes.A(), melee=A.filter(a=>!a.dist), dist=A.filter(a=>a.dist);
+  const lourde=a=>/^d1[02]/.test(a.d), legere=a=>/^d4/.test(a.d);
+  const m1=pick(bouclier?melee.filter(a=>!lourde(a)):melee)||pick(melee);
+  const armes=[m1.n];
+  // livre p. 8 : bouclier ou arme lourde, pas d'arme à distance (seulement des armes de jet)
+  if(bouclier||lourde(m1)){const jets=dist.filter(legere);if(jets.length)armes.push(pick(jets).n)}
+  else{const tirs=dist.filter(a=>!legere(a));if(tirs.length)armes.push(pick(tirs).n);
+    if(R()<0.4){const leg=melee.filter(legere);if(leg.length){const l=pick(leg).n;if(!armes.includes(l))armes.push(l)}}}
+  Object.assign(S,{
+    f, seed:Math.floor(R()*1e9), rolls:Array.from({length:6},()=>R()),
+    nom:nouveauNom(t,f), origine:pick(t.origines),
+    passe:pick(listes.passes()), metier:pick(listes.M()).n,
+    armure, bouclier, armes, kit:pick(listes.K()).n, dons:[],
+    curio:pick(t.curios), bourse:2+Math.floor(R()*6)+Math.floor(R()*6),
+    phys:Math.floor(R()*PHYS.length), car:Math.floor(R()*CAR.length), recit:pick(t.recits),
+    traits:{scar:R()<0.4,beard:!f&&R()<0.65,hair:pick(f?["long","tresses","court","capuche","long"]:["court","rase","long","tresses","capuche"]),paint:R()<0.2,earring:R()<(f?0.6:0.25)},
+    format:ancien?ancien.format:"carte", illu:ancien?ancien.illu:"aucune"
+  });
+  S.dons=tirerDons(niv);S.artefact=pick(ARTEFACTS).id;
+  const autres=listes.M().filter(m=>m.n!==S.metier);S.aspect3=autres.length?pick(autres).n:"";
+  S.traits.helmet=armure===3&&R()<0.6||armure===2&&R()<0.2;
+  S.nbSorts=R()<0.5?1:2;S.sorts=[];
+  S.sorts=shuffle(sortsChoisissables(niv).map(p=>p.n)).slice(0,calculer().maxSorts);
+  S.connus1=shuffle(listes.P().filter(p=>p.niv===1).map(p=>p.n)).slice(0,2);
+  S.connus2=shuffle(listes.P().filter(p=>p.niv===2).map(p=>p.n)).slice(0,1);
+  S.portraitSeed=S.seed;
+  portraitOffset=0;customImg=null;
+  mode=t.grav?"gravure":"dessin";
+}
+const T=()=>THEMES.find(x=>x.id===S.theme);
+
+/* ---------- Calcul (livre p. 5-8) ---------- */
+function calculer(){
+  const niv=parseInt($("niveau").value,10);
+  const met=listes.M().find(m=>m.n===S.metier);
+  const role=met?met.r:"p";
+  const {fx,src}=fxDons(S.dons,listes.D());
+  const base=REG.dvMetier?ROLES[role].de:8, de=tailleDe(base,fx.dv);
+  let des=0;for(let i=0;i<niv;i++)des+=1+Math.floor(S.rolls[i]*de);
+  const pvDons=fx.pvNiv*niv+fx.pv;
+  const arm=ARMV[S.armure]+(S.bouclier?1:0);
+  const esq=fx.esquive&&S.armure<=1?2:0, mai=fx.maitrise&&S.armure>=2?2:0, bast=S.dons.includes("Artefact légendaire")&&S.artefact==="bastion"&&S.bouclier?1:0;
+  return {
+    niv,de,base,role,fx,
+    pv:des+niv+4+pvDons, pvDetail:niv+"d"+de+" ("+des+") + "+(niv+4)+(pvDons?" + "+pvDons:""),
+    dv:niv+"d"+de+"+"+(niv+4),
+    dh:niv+3+fx.dh, dhDe:fx.chance?8:6, std:niv+fx.std, mvt:niv+6-arm+fx.mvt+mai+bast, def:arm+fx.def+esq, arm,
+    maxSorts:(S.nbSorts||1)+fx.parch,
+    src:{pv:(src.pvNiv||[]).concat(src.pv||[]),def:(src.def||[]).concat(esq?["Esquive acrobatique"]:[]),mvt:(src.mvt||[]).concat(mai?["Maîtrise des armures"]:[]).concat(bast?["Bastion"]:[]),std:src.std||[],dh:(src.dh||[]).concat(src.chance||[]),dv:src.dv||[]}
+  };
+}
+function plus(list){return list.length?" + "+list.join(", "):""}
+function deEffectif(a,fx){return deArme(a.d,fx.predi.includes(a.dist?"dist":"contact")?1:0)}
+
+/* ---------- Rendu des choix ---------- */
+function bouton(cls,html,pressed,on,dis){const b=document.createElement("button");b.type="button";b.className=cls;b.innerHTML=html;b.setAttribute("aria-pressed",pressed?"true":"false");if(dis)b.disabled=true;b.addEventListener("click",on);return b}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function avecRetrait(btn,cat,n,carte){
+  if(!estPerso(cat,n))return btn;
+  const w=document.createElement("span");w.className=carte?"cardwrap":"perso";
+  const x=document.createElement("button");x.type="button";x.className=carte?"x":"chip x";x.textContent="✕";x.title="Retirer ce choix personnel";x.setAttribute("aria-label","Retirer « "+n+" »");
+  x.addEventListener("click",()=>{const L=C()[cat];const i=L.findIndex(e=>(e.n||e)===n);if(i>=0)L.splice(i,1);sauverPerso();retirerDuPerso(cat,n);maj(cat==="passes"||cat==="metiers")});
+  w.append(btn,x);return w;
+}
+function retirerDuPerso(cat,n){
+  if(cat==="passes"&&S.passe===n)S.passe=T().passes[0];
+  if(cat==="metiers"&&S.metier===n)S.metier=T().M[0].n;
+  if(cat==="armes")S.armes=S.armes.filter(a=>a!==n);
+  if(cat==="kits"&&S.kit===n)S.kit=T().K[0].n;
+  if(cat==="dons")S.dons=S.dons.filter(d=>d!==n);
+  if(cat==="sorts"){S.sorts=S.sorts.filter(d=>d!==n);S.connus1=S.connus1.filter(d=>d!==n);S.connus2=S.connus2.filter(d=>d!==n)}
+}
+function plusBtn(formId,label){return bouton("chip plus","＋ "+label,false,()=>{const f=$(formId);f.hidden=false;f.querySelector("input").focus()})}
+function rendreThemes(){
+  const box=$("themes");box.innerHTML="";
+  THEMES.forEach(t=>box.append(bouton("theme","<b>"+esc(t.nom)+"</b><span>"+esc(t.acc)+"</span>",S.theme===t.id,()=>{tirer(t.id);toutRendre(true);setStatus(t.nom+" : nouveau coureur tiré.")})));
+}
+function carteSort(p,on,click,dis,raison){
+  return bouton("card","<b>"+esc(p.n)+"</b><span>"+esc(p.e)+"</span><span class=\"fx\">niveau "+(p.niv||1)+(raison?" · "+esc(raison):"")+"</span>",on,click,dis);
+}
+function rendreChoix(){
+  const t=T(), niv=parseInt($("niveau").value,10), D=listes.D();
+  // dons devenus impossibles (niveau baissé, prérequis retiré)
+  let change=true;while(change){change=false;S.dons=S.dons.filter(n=>{const d=D.find(x=>x.n===n);const ok=d&&donDispo(d,niv,S.dons.filter(x=>x!==n),true);if(!ok)change=true;return ok})}
+  if(S.dons.length>niv)S.dons=S.dons.slice(0,niv);
+  const c=calculer(), maison=REG.dvMetier;
+  let box=$("cPasse");box.innerHTML="";
+  listes.passes().forEach(p=>box.append(avecRetrait(bouton("chip",esc(p),S.passe===p,()=>{S.passe=p;maj(true)}),"passes",p)));
+  box.append(plusBtn("fPasse","Autre passé"));
+  box=$("cMetier");box.innerHTML="";
+  listes.M().forEach(m=>box.append(avecRetrait(bouton("chip",esc(m.n)+(maison?'<span class="t">d'+ROLES[m.r].de+"</span>":""),S.metier===m.n,()=>{S.metier=m.n;maj(true)}),"metiers",m.n)));
+  box.append(plusBtn("fMetier","Autre métier"));
+  $("roleNote").textContent=maison?"Règle maison : le métier fixe le dé de vie (d"+c.base+").":"Deux aspects au choix.";
+  $("blocAspect3").hidden=!c.fx.aspect3;$("iAspect3").value=S.aspect3||"";
+  box=$("cArmure");box.innerHTML="";
+  t.armures.forEach((a,i)=>box.append(bouton("chip",esc(a)+'<span class="t">'+ARMC[i]+" · "+ARMV[i]+"</span>",S.armure===i,()=>{S.armure=i;if(i===0)S.bouclier=false;maj(true)})));
+  $("lBouclier").hidden=!t.bouclier;$("bouclierNom").textContent=t.bouclier||"Bouclier";$("bouclier").checked=S.bouclier;
+  box=$("cArmes");box.innerHTML="";
+  const A=listes.A();
+  A.forEach(a=>{const on=S.armes.includes(a.n),d=deEffectif(a,c.fx);box.append(avecRetrait(bouton("chip",esc(a.n)+'<span class="t">'+(d!==a.d?a.d+" → ":"")+d+(a.dist?" · distance":"")+"</span>",on,()=>{if(on)S.armes=S.armes.filter(x=>x!==a.n);else if(S.armes.length<3)S.armes.push(a.n);maj(false)},!on&&S.armes.length>=3),"armes",a.n))});
+  box.append(plusBtn("fArme","Autre arme"));
+  const choisies=S.armes.map(n=>A.find(a=>a.n===n)).filter(Boolean);
+  const encombre=S.bouclier||choisies.some(a=>!a.dist&&/^d1[02]/.test(a.d)), tir=choisies.some(a=>a.dist&&!/^d4/.test(a.d));
+  $("armesNote").textContent=encombre&&tir?"Le livre : avec un bouclier ou une arme lourde, on ne porte pas d'arme à distance, seulement deux ou trois armes de jet.":"";
+  box=$("cKit");box.innerHTML="";
+  listes.K().forEach(k=>box.append(avecRetrait(bouton("card","<b>"+esc(k.n)+"</b><span>"+esc(k.c)+"</span>",S.kit===k.n,()=>{S.kit=k.n;maj(false)}),"kits",k.n,true)));
+  box.append(plusBtn("fKit","Autre paquetage"));
+  // dons
+  box=$("cDons");box.innerHTML="";
+  const plein=S.dons.length>=niv;
+  D.forEach(d=>{const on=S.dons.includes(d.n),autres=S.dons.filter(x=>x!==d.n),dispo=donDispo(d,niv,autres,true),raison=raisonDon(d,niv,autres,true);
+    const tags=[];if(d.min)tags.push("niveau "+d.min+"+");if(d.unique)tags.push("un seul par équipe");if(d.creation)tags.push("création");if(d.maison)tags.push("maison");
+    const fxNum=d.maison&&d.fx?Object.keys(d.fx).filter(k=>FXN[k]).map(k=>(d.fx[k]>0?"+":"")+d.fx[k]+" "+FXN[k]):[];
+    box.append(avecRetrait(bouton("card","<b>"+esc(d.n)+"</b><span>"+esc(d.e)+"</span>"+(tags.length||fxNum.length||raison?'<span class="fx">'+esc(tags.concat(fxNum).join(" · ")+(raison&&!on&&!d.min?" · "+raison:""))+"</span>":""),on,()=>{if(on)S.dons=S.dons.filter(x=>x!==d.n);else if(S.dons.length<niv&&dispo)S.dons.push(d.n);maj(false)},!on&&(plein||!dispo)),"dons",d.n,true))});
+  box.append(plusBtn("fDon","Autre don"));
+  $("donsNote").textContent=S.dons.length+" sur "+niv+" (un par niveau)";
+  const aArt=S.dons.includes("Artefact légendaire");$("blocArtefact").hidden=!aArt;
+  if(aArt){box=$("cArtefact");box.innerHTML="";ARTEFACTS.forEach(a=>box.append(bouton("card","<b>"+esc(a.n)+"</b><span>"+esc(a.e)+"</span>",S.artefact===a.id,()=>{S.artefact=a.id;maj(false)})))}
+  // sorts
+  if(S.sorts.length>c.maxSorts)S.sorts=S.sorts.slice(0,c.maxSorts);
+  const L=lisibleMax(niv,REG.lectureLibre), ok=sortsChoisissables(niv).map(p=>p.n);
+  S.sorts=S.sorts.filter(n=>ok.includes(n));
+  $("sortsTitre").textContent=t.sortsTitre;
+  $("sortsAide").textContent=L?"Usage unique : on le lit, il agit, puis il tombe en cendres. Au niveau "+niv+", on peut lire les sorts de niveau "+(L===1?"1":"1 à "+L)+".":"Le livre : au niveau 1, on ne peut pas encore lire de "+t.sortsUn+". Ceux choisis ici serviront à partir du niveau 2.";
+  box=$("cDepart");box.innerHTML="";
+  [1,2].forEach(n=>box.append(bouton("chip",n+" au départ",S.nbSorts===n,()=>{S.nbSorts=n;const m=calculer().maxSorts;if(S.sorts.length>m)S.sorts=S.sorts.slice(0,m);else{const libres=shuffle(ok.filter(x=>!S.sorts.includes(x)));while(S.sorts.length<m&&libres.length)S.sorts.push(libres.pop())}maj(false)})));
+  const pleinS=S.sorts.length>=c.maxSorts;
+  box=$("cSorts");box.innerHTML="";
+  listes.P().forEach(p=>{const on=S.sorts.includes(p.n),choisissable=ok.includes(p.n);
+    box.append(avecRetrait(carteSort(p,on,()=>{if(on)S.sorts=S.sorts.filter(x=>x!==p.n);else if(S.sorts.length<c.maxSorts)S.sorts.push(p.n);maj(false)},!on&&(pleinS||!choisissable),choisissable?"":"lisible au niveau "+niveauPourLire(p.niv||1)),"sorts",p.n,true))});
+  box.append(plusBtn("fSort","Autre sort"));
+  $("sortsNote").textContent=S.sorts.length+" sur "+c.maxSorts+(c.maxSorts>S.nbSorts?" (dont +"+(c.maxSorts-S.nbSorts)+" par un don)":"");
+  // sorts connus (dons de magie)
+  const mag=c.fx.magie1||c.fx.magie2;$("blocConnus").hidden=!mag;
+  if(mag){box=$("cConnus");box.innerHTML="";
+    [[1,"connus1",c.fx.magie1?2:0],[2,"connus2",c.fx.magie2?1:0]].forEach(([nv,cle,max])=>{if(!max)return;
+      S[cle]=S[cle].filter(n=>listes.P().some(p=>p.n===n)).slice(0,max);
+      const h=document.createElement("p");h.className="sub";h.textContent="Niveau "+nv+" : "+S[cle].length+" sur "+max;box.append(h);
+      const g=document.createElement("div");g.className="cards";box.append(g);
+      listes.P().filter(p=>(p.niv||1)===nv).forEach(p=>{const on=S[cle].includes(p.n);g.append(carteSort(p,on,()=>{if(on)S[cle]=S[cle].filter(x=>x!==p.n);else if(S[cle].length<max)S[cle].push(p.n);maj(false)},!on&&S[cle].length>=max,""))})})}
+  // fiche
+  box=$("cFormat");box.innerHTML="";
+  Object.keys(FORMATS).forEach(f=>box.append(bouton("chip",esc(FORMATS[f].nom)+'<span class="t">'+FORMATS[f].mm+"</span>",S.format===f,()=>{S.format=f;maj(false)})));
+  box=$("cIllu");box.innerHTML="";
+  [["aucune","Aucune"],["cadre","Cadre vide à dessiner"],["portrait","Portrait"]].forEach(([id,n])=>box.append(bouton("chip",n,S.illu===id,()=>{S.illu=id;maj(id==="portrait")})));
+  $("blocPortrait").hidden=S.illu!=="portrait";
+  $("formatHint").textContent="Format "+FORMATS[S.format].nom+" ("+FORMATS[S.format].mm+"), recto-verso. Imprime en taille réelle, sans ajustement à la page.";
+}
+function rendreStats(){
+  const c=calculer();
+  const set=(id,val,up)=>{$(id).value=String(val);$(id).parentElement.classList.toggle("up",!!up)};
+  set("pv",c.pv,c.src.pv.length);$("wPv").textContent=c.pvDetail+(c.src.pv.length?" ("+c.src.pv.join(", ")+")":"");
+  set("dv",c.dv,c.de!==c.base);$("wDv").textContent=(REG.dvMetier?"métier "+ROLES[c.role].nom+" d"+c.base:"livre : d8")+(c.de!==c.base?" → d"+c.de+" ("+c.src.dv.join(", ")+")":"");
+  set("dh",c.dh,c.src.dh.length);$("wDh").textContent="niv + 3"+(c.dhDe===8?" · dés d8 (Chance)":"")+plus((c.src.dh||[]).filter(n=>n!=="Chance"));
+  set("standard",sign(c.std),c.src.std.length);$("wStd").textContent="niveau"+plus(c.src.std);
+  set("mouvement",sign(c.mvt),c.src.mvt.length);$("wMvt").textContent="niv + 6 − "+c.arm+plus(c.src.mvt);
+  set("defense",sign(c.def),c.src.def.length);$("wDef").textContent="armure "+c.arm+plus(c.src.def);
+}
+function lignesDons(c){
+  const D=listes.D(),P=listes.P();
+  const art=ARTEFACTS.find(a=>a.id===S.artefact);
+  const out=S.dons.map(n=>{const d=D.find(x=>x.n===n);if(n==="Artefact légendaire"&&art)return "Artefact légendaire : "+art.n+". "+art.e;return d?d.n+(d.e?" : "+d.e:""):n});
+  if(c.fx.magie1&&S.connus1.length)out.push("Sorts connus, une fois par repos long : "+S.connus1.join(", ")+".");
+  if(c.fx.magie2&&S.connus2.length)out.push("Sort connu (niveau 2), une fois par repos long : "+S.connus2.join(", ")+".");
+  return out;
+}
+function ecrireTexte(){
+  const t=T(), c=calculer(), g=S.f?1:0;
+  $("nom").value=S.nom;
+  $("aspect1").value=S.passe;$("aspect2").value=S.metier;$("aspect3").value=c.fx.aspect3?(S.aspect3||""):"";
+  $("origine").value="Originaire "+S.origine;
+  $("armure").value=t.armures[S.armure]+(S.bouclier?" + "+t.bouclier.toLowerCase():"")+" : armure "+c.arm;
+  const A=listes.A();
+  $("armes").value=S.armes.map(n=>{const a=A.find(x=>x.n===n);return a?a.n+" ("+deEffectif(a,c.fx)+")":n}).join("\n");
+  const k=listes.K().find(x=>x.n===S.kit)||t.K[0];
+  $("equipement").value=k.c+"\nBourse : "+S.bourse+" "+t.monnaie+" ; et "+S.curio;
+  $("dons").value=lignesDons(c).join("\n");
+  const P=listes.P();
+  $("parchemins").value=S.sorts.map(n=>{const p=P.find(x=>x.n===n);return p?FMT_SORT(p):n}).join("\n");
+  $("description").value=(S.f?"Une coureuse ":"Un coureur ")+PHYS[S.phys][g]+", "+CAR[S.car][g]+". "+S.recit;
+}
+function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();if(portrait&&S.illu==="portrait")afficherPortrait();else rendreApercu()}
+function toutRendre(portrait){rendreThemes();maj(portrait)}
+
+/* ---------- Formulaires d'ajout ---------- */
+function formAjout(id,lire){
+  const f=$(id);
+  f.addEventListener("submit",e=>{e.preventDefault();const r=lire();if(!r)return;f.reset();f.hidden=true;maj(r==="portrait");setStatus("Choix ajouté au thème "+T().nom+". Il reste disponible dans ce navigateur.")});
+  f.querySelector("[data-close]").addEventListener("click",()=>{f.reset();f.hidden=true});
+  f.addEventListener("keydown",e=>{if(e.key==="Escape"){f.reset();f.hidden=true}});
+}
+const propre=s=>s.trim().replace(/\s+/g," ").replace(/[|:=]/g,"-").slice(0,80);
+formAjout("fPasse",()=>{const n=propre($("iPasse").value);if(!n)return;if(!listes.passes().includes(n)){C().passes.push(n);sauverPerso()}S.passe=n;return "portrait"});
+formAjout("fMetier",()=>{const n=propre($("iMetier").value);if(!n)return;if(!listes.M().some(m=>m.n===n)){C().metiers.push({n,r:$("rMetier").value});sauverPerso()}S.metier=n;return "portrait"});
+formAjout("fArme",()=>{const n=propre($("iArme").value);if(!n)return;if(!listes.A().some(a=>a.n===n)){C().armes.push({n,d:$("dArme").value,dist:$("xArme").checked});sauverPerso()}if(!S.armes.includes(n)){if(S.armes.length>=3)S.armes.shift();S.armes.push(n)}return "ok"});
+formAjout("fKit",()=>{const n=propre($("iKit").value),c=$("cKitTxt").value.trim().slice(0,300);if(!n||!c)return;if(!listes.K().some(k=>k.n===n)){C().kits.push({n,c});sauverPerso()}S.kit=n;return "ok"});
+formAjout("fDon",()=>{const n=propre($("iDon").value),e=$("eDon").value.trim().slice(0,200);if(!n)return;const fx={};const sel=$("xDon").value;if(sel){const [k,x]=sel.split("=");fx[k]=+x}
+  if(!listes.D().some(d=>d.n===n)){C().dons.push({n,e,fx});sauverPerso()}
+  const max=parseInt($("niveau").value,10);if(!S.dons.includes(n)){if(S.dons.length>=max)S.dons.shift();S.dons.push(n)}return "ok"});
+formAjout("fSort",()=>{const n=propre($("iSort").value),e=$("eSort").value.trim().slice(0,200);if(!n)return;const roll=$("dSort").value;
+  if(!listes.P().some(p=>p.n===n)){C().sorts.push({n,e:e||"Effet à décider avec le meneur.",c:e,niv:+$("nSort").value||1,roll:roll||undefined,type:roll?$("tSort").value:"autre"});sauverPerso()}
+  const max=calculer().maxSorts;if(!S.sorts.includes(n)){if(S.sorts.length>=max)S.sorts.shift();S.sorts.push(n)}return "ok"});
+
+/* ---------- Polices ---------- */
+function policesPretes(){
+  if(!document.fonts||!document.fonts.load)return Promise.resolve();
+  const s=STY[S.theme];
+  return Promise.all([s.font,SMALL,EYE,VALF].map(f=>document.fonts.load("24px "+f.split(",")[0]).catch(()=>{}))).catch(()=>{});
+}
+
+
+/* ---------- Portrait à l'encre ---------- */
+const INK="#1d1f26";
+function line(r,pts,w,passes){
+  ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=INK;
+  for(let p=0;p<(passes||2);p++){
+    ctx.globalAlpha=p===0?0.9:0.45;ctx.lineWidth=w*(0.75+r()*0.5);
+    ctx.beginPath();const j=()=>(r()-0.5)*w*1.2;
+    ctx.moveTo(pts[0][0]+j(),pts[0][1]+j());
+    for(let i=1;i<pts.length-1;i++){const mx=(pts[i][0]+pts[i+1][0])/2,my=(pts[i][1]+pts[i+1][1])/2;ctx.quadraticCurveTo(pts[i][0]+j(),pts[i][1]+j(),mx,my)}
+    const l=pts[pts.length-1];ctx.lineTo(l[0]+j(),l[1]+j());ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+}
+function shape(pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
+function wash(pts,color,alpha){shape(pts);ctx.fillStyle=color;ctx.globalAlpha=alpha||0.85;ctx.fill();ctx.globalAlpha=1}
+function hatch(r,clipPts,x0,x1,y0,y1,step,ang,alpha){
+  ctx.save();shape(clipPts);ctx.clip();ctx.strokeStyle=INK;ctx.globalAlpha=alpha||0.35;ctx.lineWidth=1.2;
+  for(let x=x0-(y1-y0);x<x1;x+=step){ctx.beginPath();ctx.moveTo(x+(r()-.5)*2,y1);ctx.lineTo(x+(y1-y0)*ang+(r()-.5)*2,y0);ctx.stroke()}
+  ctx.restore();ctx.globalAlpha=1;
+}
+function headPts(cx,cy,rx,ry,n){const p=[];for(let i=0;i<n;i++){const t=i/n*Math.PI*2,s=Math.sin(t);const k=s>0?1-0.28*s*s:1;p.push([cx+rx*Math.cos(t)*k,cy+ry*s])}return p}
+
+function dessiner(p){
+  const r=rng(p.portraitSeed+portraitOffset*104729), tr=p.traits;
+  ctx.globalAlpha=1;ctx.fillStyle="#ece6d8";ctx.fillRect(0,0,W,H);
+  for(let i=0;i<5;i++){const x=r()*W,y=r()*H*0.55,rad=120+r()*160;const g=ctx.createRadialGradient(x,y,10,x,y,rad);g.addColorStop(0,"rgba(70,88,110,0.32)");g.addColorStop(1,"rgba(70,88,110,0)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
+  const lx=W*(0.12+r()*0.76);const bolt=[[lx,0]];for(let y=0,x=lx;y<H*0.5;){y+=25+r()*35;x+=(r()-0.5)*70;bolt.push([x,y])}
+  ctx.strokeStyle="rgba(200,150,40,0.55)";ctx.lineWidth=7;ctx.beginPath();bolt.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();
+  line(r,bolt,2,1);
+  ctx.strokeStyle="rgba(30,35,45,0.18)";ctx.lineWidth=1.2;for(let i=0;i<90;i++){const x=r()*W,y=r()*H;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-12,y+34);ctx.stroke()}
+  for(let i=0;i<2500;i++){ctx.fillStyle="rgba(40,30,20,"+(r()*0.07)+")";ctx.fillRect(r()*W,r()*H,1.4,1.4)}
+  const skin=pick(r,["#e7c6a5","#c99a73","#a8744f","#7a5034","#eed7c0","#b88660"]);
+  const hairC=pick(r,["#2a221d","#4a3020","#7a4f27","#c9a46a","#8f8f8f","#6b2b1a","#1b1b1b"]);
+  const cx=W/2+(r()-0.5)*30, cy=H*0.40, rx=W*0.15*(0.9+r()*0.2), ry=W*0.205*(0.92+r()*0.14);
+  const by=cy+ry*1.12, head=headPts(cx,cy,rx,ry,48);
+  if(tr.hair==="capuche"){const h=[[cx-rx*1.7,by+40],[cx-rx*1.55,cy-ry*0.2],[cx-rx*1.1,cy-ry*1.35],[cx,cy-ry*1.55],[cx+rx*1.1,cy-ry*1.35],[cx+rx*1.55,cy-ry*0.2],[cx+rx*1.7,by+40]];wash(h,"#3f4a52",0.9);line(r,h,3)}
+  if(tr.hair==="long"||tr.hair==="tresses"){const h=[[cx-rx*1.2,by+30+r()*40],[cx-rx*1.3,cy+ry*0.2],[cx-rx*1.12,cy-ry*0.85],[cx,cy-ry*1.18],[cx+rx*1.12,cy-ry*0.85],[cx+rx*1.3,cy+ry*0.2],[cx+rx*1.2,by+30+r()*40]];wash(h,hairC,0.9);line(r,h,2.5);for(let i=0;i<9;i++){const x=cx+(i<4.5?-1:1)*rx*(0.95+r()*0.3);line(r,[[x,cy],[x+(r()-.5)*10,cy+ry*0.6],[x+(r()-.5)*14,by+20]],1.2,1)}}
+  const body=[[cx-W*0.47,H+10],[cx-W*0.41,by+H*0.07],[cx-W*0.2,by-4],[cx+W*0.2,by-4],[cx+W*0.41,by+H*0.07],[cx+W*0.47,H+10]];
+  wash(body,{aucune:"#8b7355",legere:"#6e4b30",mixte:"#8d949c",lourde:"#a3aab2"}[p.armure],0.88);
+  if(p.armure==="mixte"){ctx.save();shape(body);ctx.clip();ctx.strokeStyle=INK;ctx.globalAlpha=0.35;ctx.lineWidth=1;for(let y=by-10;y<H;y+=9)for(let x=0;x<W;x+=10){ctx.beginPath();ctx.arc(x+((y/9)%2?5:0),y,4,0,Math.PI);ctx.stroke()}ctx.restore();ctx.globalAlpha=1}
+  if(p.armure==="lourde"){[-1,1].forEach(s=>{const pc=[];for(let i=0;i<=16;i++){const t=Math.PI+i/16*Math.PI;pc.push([cx+s*W*0.3+Math.cos(t)*W*0.15,by+H*0.09+Math.sin(t)*H*0.07])}pc.push([cx+s*W*0.3+W*0.15,by+H*0.12]);pc.push([cx+s*W*0.3-W*0.15,by+H*0.12]);wash(pc,"#b9c0c7",0.95);line(r,pc,2.5);hatch(r,pc,cx+s*W*0.3-W*0.15,cx+s*W*0.3+W*0.15,by,by+H*0.13,9,0.5,0.25)})}
+  if(p.armure==="legere"){line(r,[[cx-W*0.3,by+20],[cx,by+H*0.12],[cx+W*0.32,H]],5,2);for(let i=0;i<8;i++){const x=cx-W*0.35+r()*W*0.7,y=by+30+r()*(H-by-40);ctx.fillStyle=INK;ctx.beginPath();ctx.arc(x,y,2.6,0,7);ctx.fill()}}
+  if(p.armure==="aucune"){line(r,[[cx-W*0.12,by],[cx,by+H*0.1],[cx+W*0.12,by]],2);line(r,[[cx-W*0.38,by+H*0.05],[cx-W*0.33,H]],2,1);line(r,[[cx+W*0.38,by+H*0.05],[cx+W*0.33,H]],2,1)}
+  line(r,body.slice(0,6),3);
+  hatch(r,body,cx-W*0.5,cx-W*0.15,by,H,8,0.6,0.25);
+  const neck=[[cx-rx*0.45,cy+ry*0.6],[cx+rx*0.45,cy+ry*0.6],[cx+rx*0.5,by+8],[cx-rx*0.5,by+8]];
+  wash(neck,skin,1);line(r,[neck[0],neck[3]],2,1);line(r,[neck[1],neck[2]],2,1);
+  if(p.armure==="lourde"){const gg=[[cx-rx*0.75,by-14],[cx+rx*0.75,by-14],[cx+rx*0.8,by+16],[cx-rx*0.8,by+16]];wash(gg,"#aab1b8",1);line(r,[...gg,gg[0]],2)}
+  wash(head,skin,1);
+  const side=r()<0.5?-1:1;
+  hatch(r,head,side<0?cx-rx:cx+rx*0.35,side<0?cx-rx*0.35:cx+rx,cy-ry,cy+ry,6,0.35,0.3);
+  line(r,[...head,head[0],head[1]],2.6);
+  const ey=cy-ry*0.06, ex=rx*0.4, fierce=4+r()*7;
+  [-1,1].forEach(s=>{const x=cx+s*ex;
+    line(r,[[x-15,ey],[x,ey-6],[x+15,ey]],1.8,1);line(r,[[x-14,ey+1],[x,ey+5],[x+14,ey+1]],1.2,1);
+    ctx.fillStyle=INK;ctx.beginPath();ctx.arc(x+(r()-.5)*3,ey,3.6,0,7);ctx.fill();
+    line(r,[[x-s*16,ey-16],[x,ey-22],[x+s*20,ey-25-fierce]],3.4,2)});
+  line(r,[[cx+side*2,ey+6],[cx+side*7,cy+ry*0.3],[cx-side*5,cy+ry*0.36]],1.8,2);
+  if(tr.paint){ctx.fillStyle="rgba(120,30,25,0.55)";[-1,1].forEach(s=>{ctx.fillRect(cx+s*ex-12,ey+14,24,5);ctx.fillRect(cx+s*ex-9,ey+24,18,4)})}
+  if(tr.beard){const bl=ry*(0.25+r()*0.45);const b=[];for(let i=0;i<=14;i++){const t=0.08*Math.PI+i/14*0.84*Math.PI,s=Math.sin(t),k=1-0.28*s*s;b.push([cx+rx*1.02*Math.cos(t)*k,cy+ry*s+(s>0.8?bl*(s-0.8)*5:0)])}
+    b.push([cx-rx*0.4,cy+ry*0.45]);b.push([cx,cy+ry*0.4]);b.push([cx+rx*0.4,cy+ry*0.45]);
+    wash(b,hairC,0.92);line(r,b.slice(0,15),2);for(let i=0;i<10;i++){const x=cx+(r()-.5)*rx*1.4;line(r,[[x,cy+ry*0.6],[x+(r()-.5)*8,cy+ry*0.9+bl*0.5]],1,1)}}
+  line(r,[[cx-rx*0.28,cy+ry*0.55],[cx,cy+ry*0.57+(r()-.3)*4],[cx+rx*0.28,cy+ry*0.56]],2.2,2);
+  if(tr.hair==="court"||tr.hair==="long"||tr.hair==="tresses"){const h=[];for(let i=0;i<=20;i++){const t=Math.PI+i/20*Math.PI;h.push([cx+rx*1.06*Math.cos(t),cy+ry*1.08*Math.sin(t)-6])}
+    for(let i=0;i<=10;i++){const x=cx+rx*1.0-i/10*rx*2.0;h.push([x,cy-ry*(0.42+(i%2?0.08:0)+r()*0.06)])}
+    wash(h,hairC,0.95);line(r,h.slice(0,21),2.4);for(let i=0;i<7;i++){const x=cx+(r()-.5)*rx*1.6;line(r,[[x,cy-ry*1.0],[x+(r()-.5)*20,cy-ry*0.55]],1.1,1)}}
+  if(tr.hair==="tresses"){[-1,1].forEach(s=>{const x=cx+s*rx*1.08;for(let y=cy;y<by+50;y+=16){ctx.fillStyle=hairC;ctx.beginPath();ctx.ellipse(x,y,7,9,0,0,7);ctx.fill();line(r,[[x-7,y],[x,y+6],[x+7,y]],1.2,1)}})}
+  if(tr.hair==="rase"){for(let i=0;i<500;i++){const t=Math.PI+r()*Math.PI,k=r();ctx.fillStyle="rgba(30,25,20,0.45)";ctx.fillRect(cx+rx*0.95*k*Math.cos(t),cy+ry*0.95*k*Math.sin(t)-ry*0.05,1.5,1.5)}}
+  if(tr.hair==="capuche"){const e=[];for(let i=0;i<=22;i++){const t=Math.PI*0.92+i/22*Math.PI*1.16;e.push([cx+rx*1.25*Math.cos(t),cy+ry*1.25*Math.sin(t)])}line(r,e,3.5);hatch(r,[...e,[cx+rx*1.25,cy-ry*1.6],[cx-rx*1.25,cy-ry*1.6]],cx-rx*1.3,cx+rx*1.3,cy-ry*1.6,cy,7,0.4,0.25)}
+  if(tr.helmet){const h=[];for(let i=0;i<=24;i++){const t=Math.PI+i/24*Math.PI;h.push([cx+rx*1.14*Math.cos(t),cy-ry*0.25+ry*1.0*Math.sin(t)])}
+    wash(h,"#9aa2aa",1);hatch(r,h,cx-rx*1.2,cx+rx*1.2,cy-ry*1.3,cy-ry*0.2,7,0.5,0.3);line(r,[...h,h[0]],3);
+    const band=[[cx-rx*1.16,cy-ry*0.25],[cx+rx*1.16,cy-ry*0.25],[cx+rx*1.12,cy-ry*0.12],[cx-rx*1.12,cy-ry*0.12]];wash(band,"#7d858d",1);line(r,[...band,band[0]],2);
+    const nb=[[cx-6,cy-ry*0.15],[cx+6,cy-ry*0.15],[cx+5,cy+ry*0.3],[cx-5,cy+ry*0.3]];wash(nb,"#8a9299",1);line(r,[...nb,nb[0]],2)}
+  if(tr.scar){const s=-side;const a=[cx+s*rx*0.62,ey-ry*0.32],b=[cx+s*rx*0.12,ey+ry*0.38];ctx.strokeStyle="rgba(130,40,35,0.7)";ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();line(r,[a,b],1.4,1);for(let i=1;i<5;i++){const x=a[0]+(b[0]-a[0])*i/5,y=a[1]+(b[1]-a[1])*i/5;line(r,[[x-6,y-3],[x+6,y+3]],1.2,1)}}
+  if(tr.earring&&!tr.helmet&&tr.hair!=="capuche"){ctx.strokeStyle="#b5821f";ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx-side*rx*1.0,cy+ry*0.22,7,0,7);ctx.stroke()}
+}
+
+/* ---------- Gravures du domaine public (The Met, Open Access CC0) ---------- */
+const GRAVURES=[
+ {id:"chevalier",a:"Albrecht Dürer",t:"Le Chevalier, la Mort et le Diable",d:"1513",m:["soldat","officier","garde","déserteu","messag","cavali","mercenaire","homme d'armes","chevalier","écuyer","routier","bâtard","capitaine","royale"]},
+ {id:"cavaliers",a:"Albrecht Dürer",t:"Les Quatre Cavaliers de l'Apocalypse",d:"vers 1497-1498",m:["cavali","archer","pillard","messag","routier","corsaire"]},
+ {id:"chasseur",a:"Albrecht Dürer",t:"Saint Eustache",d:"vers 1501",m:["bois","loups","guide","archer","arbalét","braconnier","boucanier","gabier"]},
+ {id:"hercule",a:"Hendrick Goltzius",t:"Le Grand Hercule",d:"1589",m:["berserker","lutteu","gladiat","forgeron","pillard","coutilier","canonnier","quartier","abordeur","mercenaire"]},
+ {id:"faust",a:"Rembrandt",t:"Faust",d:"vers 1652",m:["novice","rebouteu","sorcières","rune","chirurgien","navigateur"]},
+ {id:"prodigue",a:"Albrecht Dürer",t:"Le Fils prodigue",d:"vers 1496",m:["marchand","déserteu","galérien","pilleu","serf","pèlerin","mousse","plongeu","planteur","forçat","esclave","contreband"]},
+ {id:"violoneux",a:"Jacques Callot",t:"Varie Figure Gobbi",d:"vers 1621-1625",m:["barde","jongleur","courtisan","cambusier"]},
+ {id:"archange",a:"Albrecht Dürer",t:"Saint Michel combattant le dragon",d:"1498",m:["sorcières","chevalier errant","garde du corps"]},
+ {id:"blason",a:"Albrecht Dürer",t:"Armoiries à la tête de mort",d:"1503",m:["courtisan","espion","bâtard","coupe-jarret"]},
+ {id:"cachot",a:"Piranèse",t:"Prisons imaginaires : prisonniers sur une plateforme",d:"vers 1749-1750",m:["espion","voleur","coupe-jarret","galérien","forçat","esclave","serf","contreband"]},
+ {id:"lettre",a:"Albrecht Dürer",t:"Saint Jérôme dans sa cellule",d:"1514",m:["novice","moine","copiste","rebouteu","chirurgien","navigateur","rune"]},
+ {id:"diables",a:"Martin Schongauer",t:"Saint Antoine tourmenté par les démons",d:"vers 1470-1474",m:["sorcières","pilleu","novice","rune"]}
+];
+const imgCache={};
+function chargerGravure(id){
+  if(!imgCache[id])imgCache[id]=new Promise((ok,ko)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=ko;im.src="gravures/"+id+".jpg"});
+  return imgCache[id];
+}
+function gravuresPour(){
+  const asp=[v("aspect2"),v("aspect1")].join(" ").toLowerCase();
+  // le métier compte d'abord, le passé ensuite
+  const m2=GRAVURES.filter(g=>g.m.some(k=>v("aspect2").toLowerCase().includes(k)));
+  const m1=GRAVURES.filter(g=>!m2.includes(g)&&g.m.some(k=>asp.includes(k)));
+  const c=m2.concat(m1);
+  return c.length?c:GRAVURES;
+}
+let gravureCourante=null, tirage=0;
+const cv=$("cv"), ctx=cv.getContext("2d"), W=cv.width, H=cv.height;
+function poserImage(im){
+  const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(W/iw,H/ih);
+  ctx.globalCompositeOperation="source-over";ctx.globalAlpha=1;ctx.fillStyle="#ece6d8";ctx.fillRect(0,0,W,H);
+  ctx.drawImage(im,(W-iw*s)/2,(H-ih*s)/2,iw*s,ih*s);
+}
+function afficherCredit(){
+  const c=$("credit");
+  if(customImg){c.textContent="Image importée.";return}
+  if(mode!=="gravure"||!gravureCourante){c.textContent="Dessin généré à l'encre.";return}
+  const g=gravureCourante;
+  c.innerHTML="";c.append(g.a+", ");const ci=document.createElement("cite");ci.textContent=g.t;c.append(ci,", "+g.d+". The Met, domaine public.");
+}
+function dessinerS(){dessiner({portraitSeed:S.portraitSeed,traits:S.traits,armure:ARMK[S.armure]})}
+async function afficherPortrait(){
+  const t=++tirage, grav=T().grav;
+  if(!grav&&mode==="gravure")mode="dessin";
+  $("btnDessin").hidden=!customImg;
+  $("btnMode").hidden=!grav;
+  $("btnMode").textContent=mode==="gravure"?"Dessin à l'encre":"Gravure ancienne";
+  $("btnPortrait").textContent=mode==="gravure"?"Autre gravure":"Autre dessin";
+  if(customImg){poserImage(customImg)}
+  else if(mode==="gravure"){
+    const liste=gravuresPour();
+    const g=liste[(S.portraitSeed+portraitOffset)%liste.length];
+    gravureCourante=g;
+    try{const im=await chargerGravure(g.id);if(t!==tirage)return;
+      poserImage(im);
+      ctx.globalCompositeOperation="multiply";ctx.fillStyle="#efe7d6";ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation="source-over";
+    }catch(e){if(t!==tirage)return;gravureCourante=null;dessinerS();setStatus("La gravure n'a pas pu se charger ; un dessin la remplace.")}
+  }
+  else{gravureCourante=null;dessinerS()}
+  afficherCredit();
+  rendreApercu();
+}
+
+
+/* ---------- Habillage par thème ---------- */
+const STY={
+ fantasy:{font:'"IM Fell English SC", Georgia, serif',ink:"#1f2a36",acc:"#2f4f6f",acc2:"#a8781e",paper:"#fbf8f1",val:"#1b2a6a",box:"rough"},
+ medieval:{font:'"MedievalSharp", Georgia, serif',ink:"#2a1d16",acc:"#7a1f1f",acc2:"#c9a24a",paper:"#fbf7ef",val:"#3a1610",box:"double"},
+ pirates:{font:'"Pirata One", Georgia, serif',ink:"#1d2a2e",acc:"#1f4e5a",acc2:"#8a5a2b",paper:"#f8f3e8",val:"#123a45",box:"rope"},
+ western:{font:'"Rye", Georgia, serif',ink:"#2b1a10",acc:"#7a3e1b",acc2:"#b3802a",paper:"#f6eedf",val:"#4a2410",box:"western"},
+ contemporain:{font:'"Oswald", "Arial Narrow", sans-serif',ink:"#1b1e24",acc:"#c2410c",acc2:"#1b1e24",paper:"#ffffff",val:"#1b1e24",box:"clean"},
+ postapo:{font:'"Special Elite", "Courier New", monospace',ink:"#26221d",acc:"#9a4a12",acc2:"#d9a400",paper:"#f3efe6",val:"#3b2410",box:"rag"},
+ cyberpunk:{font:'"Orbitron", "Arial Black", sans-serif',ink:"#17141f",acc:"#b0179f",acc2:"#0a8aa8",paper:"#fbfbfd",val:"#3a0f5a",box:"chamfer"},
+ scifi:{font:'"Exo 2", "Trebuchet MS", sans-serif',ink:"#12222a",acc:"#0e6a80",acc2:"#7aa6b3",paper:"#f7fafb",val:"#0b3b4a",box:"hud"},
+ prehistoire:{font:'"Caveat Brush", "Comic Sans MS", cursive',ink:"#2b1d14",acc:"#9c3d1c",acc2:"#c98a2b",paper:"#f5ecdc",val:"#3d1a0c",box:"rag"},
+ antiquite:{font:'"Cinzel", Georgia, serif',ink:"#1f1a14",acc:"#7a2e1c",acc2:"#b08a3e",paper:"#fbf7ee",val:"#3a1a10",box:"double"},
+ annees20:{font:'"Limelight", Georgia, serif',ink:"#141414",acc:"#1d4d4a",acc2:"#b8913a",paper:"#fbf9f4",val:"#1d2f2e",box:"deco"},
+ uchronie:{font:'"Stardos Stencil", "Arial Black", sans-serif',ink:"#1f1f1c",acc:"#4a5a2a",acc2:"#a3402a",paper:"#efe9dc",val:"#24301a",box:"clean"},
+ steampunk:{font:'"Playfair Display SC", Georgia, serif',ink:"#2a1e14",acc:"#8a5a1e",acc2:"#3d6a6a",paper:"#f7f0e2",val:"#3a2410",box:"rivets"},
+ spaceop:{font:'"Audiowide", "Trebuchet MS", sans-serif',ink:"#181633",acc:"#4338ca",acc2:"#b45309",paper:"#f8f8fc",val:"#2a1f7a",box:"pill"}
+};
+const SMALL='"Alegreya Sans", "Trebuchet MS", sans-serif', EYE='"Alegreya Sans SC", "Trebuchet MS", sans-serif', VALF='"Times New Roman", Times, serif';
+const FORMATS={a5:{nom:"A5 paysage",mm:"210 × 148 mm",w:595.28,h:419.53},carte:{nom:"Carte postale",mm:"148 × 105 mm",w:419.53,h:297.64}};
+const M=34;
+
+/* Mise en page logique : 1000 unités de large, hauteur selon le format */
+function mise(fmt,portrait){
+  const F=FORMATS[fmt], LH=1000*F.h/F.w, bas=LH-M;
+  const hx=portrait?M+104+22:M;
+  const r3=(bas-404-20)/3;
+  return {LH,bas,hx,
+    port:[M,M,104,130],
+    nom:[hx,M+38,820-hx,56],
+    niveau:[868,M,98,104],
+    aspects:[M,184,576,104], dons:[M,302,576,bas-302-146], equip:[M,bas-132,576,132],
+    pv:[632,184,160,104], dv:[806,184,160,104], dh:[632,302,334,70],
+    std:[632,404,334,r3], mvt:[632,404+r3+10,334,r3], def:[632,404+2*(r3+10),334,r3],
+    desc:[M,128,932,206], parch:[M,350,360,bas-350], notes:[M+376,350,200,bas-350], regles:[632,350,334,bas-350]};
+}
+/* 4 lignes de sort : case à cocher + texte */
+const NB_LIGNES_SORTS=4;
+function lignesSorts(b){const [x,y,w,h]=b, top=y+40, rh=(h-48)/NB_LIGNES_SORTS, out=[];
+  for(let i=0;i<NB_LIGNES_SORTS;i++){const ry=top+i*rh, cs=Math.min(24,rh-14);const by=ry+(rh-cs)/2;out.push({box:[x+14,by,cs,cs],txt:[x+14+cs+12,by-3,w-28-cs-12,ry+rh-4-(by-3)],sep:ry+rh})}
+  return out}
+/* Zones de saisie (intérieur des cadres) */
+function zones(Lm){
+  const inn=(b,top)=>[b[0]+14,b[1]+(top||36),b[2]-28,b[3]-(top||36)-10];
+  const droite=b=>[b[0]+b[2]-96,b[1]+8,84,b[3]-16];
+  return {
+    nom:[Lm.nom[0],Lm.nom[1]+4,Lm.nom[2],Lm.nom[3]-6],
+    niveau:[Lm.niveau[0]+8,Lm.niveau[1]+34,Lm.niveau[2]-16,Lm.niveau[3]-42],
+    aspects:inn(Lm.aspects), dons:inn(Lm.dons), equip:inn(Lm.equip),
+    pv:[Lm.pv[0]+10,Lm.pv[1]+36,Lm.pv[2]-20,Lm.pv[3]-44], dv:[Lm.dv[0]+10,Lm.dv[1]+36,Lm.dv[2]-20,Lm.dv[3]-44],
+    dh:droite(Lm.dh), std:droite(Lm.std), mvt:droite(Lm.mvt), def:droite(Lm.def),
+    desc:inn(Lm.desc), notes:inn(Lm.notes), sorts:lignesSorts(Lm.parch)};
+}
+
+/* ---------- Outils de dessin (k = pixels par unité) ---------- */
+function P(c,k,pts){c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0]*k,p[1]*k):c.moveTo(p[0]*k,p[1]*k));c.closePath()}
+function st(c,k,w,col,dash){c.lineWidth=w*k;c.strokeStyle=col;c.setLineDash(dash?dash.map(x=>x*k):[]);c.lineJoin="miter";c.stroke();c.setLineDash([])}
+function rectP(x,y,w,h){return [[x,y],[x+w,y],[x+w,y+h],[x,y+h]]}
+function chanf(x,y,w,h,q){return [[x+q,y],[x+w,y],[x+w,y+h-q],[x+w-q,y+h],[x,y+h],[x,y+q]]}
+function rrect(c,k,x,y,w,h,r){c.beginPath();c.moveTo((x+r)*k,y*k);c.arcTo((x+w)*k,y*k,(x+w)*k,(y+h)*k,r*k);c.arcTo((x+w)*k,(y+h)*k,x*k,(y+h)*k,r*k);c.arcTo(x*k,(y+h)*k,x*k,y*k,r*k);c.arcTo(x*k,y*k,(x+w)*k,y*k,r*k);c.closePath()}
+function rugueux(x,y,w,h,r,amp){const pts=[];const seg=(a,b,n)=>{for(let i=0;i<n;i++){const t=i/n;pts.push([a[0]+(b[0]-a[0])*t+(r()-.5)*amp,a[1]+(b[1]-a[1])*t+(r()-.5)*amp])}};
+  const n=v=>Math.max(3,Math.round(v/40));seg([x,y],[x+w,y],n(w));seg([x+w,y],[x+w,y+h],n(h));seg([x+w,y+h],[x,y+h],n(w));seg([x,y+h],[x,y],n(h));return pts}
+function etoile(c,k,cx,cy,R,col){const pts=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?R*0.42:R;pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr])}P(c,k,pts);c.fillStyle=col;c.fill()}
+function texte(c,k,t,x,y,size,font,col,align,base){c.font=(size*k)+"px "+font;c.fillStyle=col;c.textAlign=align||"left";c.textBaseline=base||"alphabetic";c.fillText(t,x*k,y*k)}
+
+/* Cadre de champ, selon le thème */
+function boite(c,k,b,s,label,seed,hint){
+  const [x,y,w,h]=b, r=rng(seed);
+  switch(s.box){
+    case "rough":{const pts=rugueux(x,y,w,h,r,2.2);P(c,k,pts);st(c,k,2.6,s.ink);break}
+    case "double":P(c,k,rectP(x,y,w,h));st(c,k,2.6,s.ink);P(c,k,rectP(x+5,y+5,w-10,h-10));st(c,k,1,s.acc);break;
+    case "rope":P(c,k,rectP(x,y,w,h));st(c,k,3.2,s.acc2);P(c,k,rectP(x+6,y+6,w-12,h-12));st(c,k,1.2,s.acc2,[6,5]);break;
+    case "western":P(c,k,rectP(x,y,w,h));st(c,k,3.6,s.ink);P(c,k,rectP(x+6,y+6,w-12,h-12));st(c,k,1,s.ink);break;
+    case "clean":P(c,k,rectP(x,y,w,h));st(c,k,1.6,s.ink);break;
+    case "rag":{const pts=rugueux(x,y,w,h,r,5);P(c,k,pts);st(c,k,2.4,s.ink);c.save();c.globalAlpha=.35;c.fillStyle=s.acc2;c.translate((x+w-30)*k,(y-4)*k);c.rotate(.5);c.fillRect(0,0,46*k,14*k);c.restore();break}
+    case "chamfer":P(c,k,chanf(x+4,y+4,w,h,16));st(c,k,1.4,s.acc2);P(c,k,chanf(x,y,w,h,16));st(c,k,2.2,s.acc);break;
+    case "hud":{P(c,k,rectP(x,y,w,h));st(c,k,1,s.acc2);const q=14;[[x,y,1,1],[x+w,y,-1,1],[x,y+h,1,-1],[x+w,y+h,-1,-1]].forEach(([a,bb,sx,sy])=>{c.beginPath();c.moveTo(a*k,(bb+sy*q)*k);c.lineTo(a*k,bb*k);c.lineTo((a+sx*q)*k,bb*k);st(c,k,3,s.acc)});break}
+    case "pill":rrect(c,k,x,y,w,h,16);st(c,k,2,s.acc);break;
+    case "rivets":P(c,k,rectP(x,y,w,h));st(c,k,2.4,s.acc);
+      [[x,y],[x+w,y],[x,y+h],[x+w,y+h]].forEach(([a,b])=>{c.beginPath();c.arc(a*k,b*k,4.5*k,0,7);c.fillStyle=s.acc;c.fill();c.beginPath();c.arc(a*k,b*k,1.6*k,0,7);c.fillStyle=s.paper;c.fill()});break;
+    case "deco":P(c,k,rectP(x,y,w,h));st(c,k,1.6,s.acc);P(c,k,rectP(x+4,y+4,w-8,h-8));st(c,k,.8,s.acc2);
+      [[x,y],[x+w-8,y],[x,y+h-8],[x+w-8,y+h-8]].forEach(([a,b])=>{c.fillStyle=s.acc2;c.fillRect(a*k,b*k,8*k,8*k)});break;
+  }
+  if(label){
+    const clean=s.box==="clean", lab=clean?label.toUpperCase():label;
+    let sz=clean?17:s.box==="chamfer"?17:21;
+    const mes=z=>{c.font=(z*k)+"px "+s.font;return c.measureText(lab).width/k};
+    while(sz>11&&mes(sz)>w-(clean?24:28))sz-=0.5;
+    if(clean){const tw=mes(sz);c.fillStyle=s.acc;c.fillRect(x*k,y*k,(tw+20)*k,28*k);texte(c,k,lab,x+10,y+21,sz,s.font,"#fff")}
+    else texte(c,k,lab,x+14,y+28,sz,s.font,s.acc);
+  }
+  if(hint)texte(c,k,hint,x+14,y+b[3]-14,14.5,SMALL,s.ink);
+}
+
+/* Fond et cadre de page */
+function decor(c,k,s,Lm,th){
+  const W=1000,H=Lm.LH, r=rng(th.length*7919);
+  c.fillStyle=s.paper;c.fillRect(0,0,W*k,H*k);
+  switch(th){
+    case "fantasy":P(c,k,rectP(12,12,W-24,H-24));st(c,k,2,s.ink);P(c,k,rectP(18,18,W-36,H-36));st(c,k,.8,s.ink);
+      [[12,12],[W-12,12],[12,H-12],[W-12,H-12]].forEach(([a,b])=>{P(c,k,[[a,b-8],[a+8,b],[a,b+8],[a-8,b]]);c.fillStyle=s.acc2;c.fill()});break;
+    case "medieval":P(c,k,rectP(12,12,W-24,H-24));st(c,k,2.4,s.ink);
+      for(let x=12,i=0;x<W-12;x+=16,i++){c.fillStyle=i%2?s.acc:s.acc2;c.fillRect(x*k,12*k,Math.min(16,W-12-x)*k,8*k);c.fillRect(x*k,(H-20)*k,Math.min(16,W-12-x)*k,8*k)}break;
+    case "pirates":P(c,k,rectP(14,14,W-28,H-28));st(c,k,7,s.acc2);
+      c.strokeStyle=s.paper;c.lineWidth=1.6*k;const rope=(x1,y1,x2,y2)=>{const L=Math.hypot(x2-x1,y2-y1),n=Math.floor(L/11);for(let i=0;i<n;i++){const t=i/n,px=x1+(x2-x1)*t,py=y1+(y2-y1)*t;c.beginPath();c.moveTo((px-3)*k,(py-3)*k);c.lineTo((px+3)*k,(py+3)*k);c.stroke()}};
+      rope(14,14,W-14,14);rope(W-14,14,W-14,H-14);rope(W-14,H-14,14,H-14);rope(14,H-14,14,14);break;
+    case "western":P(c,k,rectP(12,12,W-24,H-24));st(c,k,5,s.ink);P(c,k,rectP(21,21,W-42,H-42));st(c,k,1.2,s.ink);
+      [[12,12],[W-12,12],[12,H-12],[W-12,H-12]].forEach(([a,b])=>{c.beginPath();c.arc(a*k,b*k,13*k,0,7);c.fillStyle=s.paper;c.fill();etoile(c,k,a,b,11,s.acc)});break;
+    case "contemporain":c.fillStyle=s.acc;c.fillRect(0,0,14*k,H*k);c.fillRect(14*k,(H-6)*k,(W-14)*k,6*k);break;
+    case "postapo":P(c,k,rugueux(14,14,W-28,H-28,r,6));st(c,k,2,s.ink);
+      for(let i=0;i<4;i++){const x=100+r()*800,y=80+r()*(H-160),rad=30+r()*60;c.beginPath();c.arc(x*k,y*k,rad*k,0,7);c.fillStyle="rgba(150,110,60,0.06)";c.fill()}
+      c.save();c.beginPath();c.rect(14*k,(H-20)*k,(W-28)*k,12*k);c.clip();for(let x=0;x<W;x+=20){P(c,k,[[x,H-8],[x+10,H-8],[x+22,H-20],[x+12,H-20]]);c.fillStyle=s.acc2;c.fill()}c.restore();break;
+    case "cyberpunk":P(c,k,chanf(16,16,W-32,H-32,30));st(c,k,2.4,s.acc);P(c,k,chanf(22,22,W-38,H-38,30));st(c,k,1,s.acc2);
+      for(let i=0,x=W-150;i<24;i++){const w=1+Math.floor(r()*3);c.fillStyle=s.ink;c.fillRect(x*k,(H-30)*k,w*k,12*k);x+=w+2}break;
+    case "scifi":{const q=36;[[14,14,1,1],[W-14,14,-1,1],[14,H-14,1,-1],[W-14,H-14,-1,-1]].forEach(([a,b,sx,sy])=>{c.beginPath();c.moveTo(a*k,(b+sy*q)*k);c.lineTo(a*k,b*k);c.lineTo((a+sx*q)*k,b*k);st(c,k,3,s.acc)});
+      c.fillStyle=s.acc2;for(let x=40;x<W-40;x+=18)for(let y=30;y<150;y+=18){c.globalAlpha=.25;c.fillRect(x*k,y*k,1.6*k,1.6*k)}c.globalAlpha=1;break}
+    case "spaceop":rrect(c,k,14,14,W-28,H-28,20);st(c,k,1.6,s.acc);
+      for(let i=0;i<70;i++){const x=30+r()*940,y=24+r()*140,rad=r()<.1?1.8:0.9;c.beginPath();c.arc(x*k,y*k,rad*k,0,7);c.fillStyle=s.acc;c.globalAlpha=.35;c.fill()}c.globalAlpha=1;
+      for(let i=0;i<3;i++){c.beginPath();c.moveTo((W-60+i*12)*k,(H-40)*k);c.lineTo((W-50+i*12)*k,(H-30)*k);c.lineTo((W-60+i*12)*k,(H-20)*k);st(c,k,2.4,s.acc2)}break;
+    case "prehistoire":P(c,k,rugueux(14,14,W-28,H-28,r,7));st(c,k,2.6,s.acc);
+      for(let x=40;x<W-40;x+=22){const dy=(r()-.5)*4;c.beginPath();c.arc(x*k,(24+dy)*k,3.2*k,0,7);c.fillStyle=s.acc2;c.globalAlpha=.7;c.fill();c.beginPath();c.arc((x+11)*k,(H-24-dy)*k,3.2*k,0,7);c.fill()}c.globalAlpha=1;
+      for(let i=0;i<5;i++){const x=600+i*12;c.beginPath();c.moveTo(x*k,30*k);c.lineTo((x+3)*k,52*k);st(c,k,3.5,s.acc)}break;
+    case "antiquite":{P(c,k,rectP(12,12,W-24,H-24));st(c,k,2,s.ink);
+      const grecque=(y0,hb)=>{c.beginPath();for(let x=22;x<W-40;x+=28){c.moveTo(x*k,(y0+hb)*k);c.lineTo(x*k,y0*k);c.lineTo((x+20)*k,y0*k);c.lineTo((x+20)*k,(y0+hb*.75)*k);c.lineTo((x+7)*k,(y0+hb*.75)*k);c.lineTo((x+7)*k,(y0+hb*.35)*k);c.lineTo((x+13)*k,(y0+hb*.35)*k);c.moveTo(x*k,(y0+hb)*k);c.lineTo((x+28)*k,(y0+hb)*k)}st(c,k,1.6,s.acc)};
+      grecque(18,14);grecque(H-34,14);break}
+    case "uchronie":{P(c,k,rectP(14,14,W-28,H-28));st(c,k,1.6,s.ink);
+      [H*0.3,H*0.7].forEach(y=>{c.beginPath();c.arc(26*k,y*k,6*k,0,7);c.fillStyle="rgba(0,0,0,.12)";c.fill()});
+      c.save();c.translate(700*k,46*k);c.rotate(-0.12);c.globalAlpha=.55;c.font=(20*k)+"px "+s.font;c.fillStyle=s.acc2;c.textAlign="center";c.fillText("CLANDESTIN",0,0);
+      c.strokeStyle=s.acc2;c.lineWidth=2*k;c.strokeRect(-76*k,-22*k,152*k,30*k);c.restore();c.globalAlpha=1;break}
+    case "steampunk":{P(c,k,rectP(12,12,W-24,H-24));st(c,k,3,s.acc);P(c,k,rectP(20,20,W-40,H-40));st(c,k,1,s.acc2);
+      const rouage=(cx,cy,R,n)=>{c.beginPath();for(let i=0;i<n*2;i++){const a=i*Math.PI/n,rr=i%2?R:R*0.78,a2=a+Math.PI/n;c.lineTo((cx+Math.cos(a)*rr)*k,(cy+Math.sin(a)*rr)*k);c.lineTo((cx+Math.cos(a2)*rr)*k,(cy+Math.sin(a2)*rr)*k)}c.closePath();c.globalAlpha=.25;c.fillStyle=s.acc;c.fill();c.globalAlpha=1;
+        c.beginPath();c.arc(cx*k,cy*k,R*0.3*k,0,7);c.fillStyle=s.paper;c.fill()};
+      rouage(W-30,H-30,34,10);rouage(W-78,H-22,18,8);rouage(32,H-32,22,9);break}
+    case "annees20":{P(c,k,rectP(12,12,W-24,H-24));st(c,k,3,s.acc);P(c,k,rectP(20,20,W-40,H-40));st(c,k,1,s.acc2);
+      [[20,20,1,1],[W-20,20,-1,1],[20,H-20,1,-1],[W-20,H-20,-1,-1]].forEach(([a,b,sx,sy])=>{for(let i=0;i<6;i++){const ang=(i/5)*Math.PI/2;c.beginPath();c.moveTo(a*k,b*k);c.lineTo((a+sx*Math.cos(ang)*40)*k,(b+sy*Math.sin(ang)*40)*k);st(c,k,.9,s.acc2)}});break}
+  }
+}
+
+/* Texte qui rétrécit pour tenir dans sa zone */
+function couper(mes,t,maxW){const out=[];String(t).split("\n").forEach(par=>{let cur="";par.split(" ").forEach(w=>{const tt=cur?cur+" "+w:w;if(mes(tt)>maxW&&cur){out.push(cur);cur=w}else cur=tt});out.push(cur)});return out}
+function ajuster(mes,t,w,h,max,min){for(let sz=max;sz>=min;sz-=0.5){const l=couper(s=>mes(s,sz),t,w);if(l.length*sz*1.2<=h)return {sz,l}}return {sz:min,l:couper(s=>mes(s,min),t,w)}}
+function valeurC(c,k,t,b,max,min,center,col){
+  if(!t)return;const [x,y,w,h]=b;
+  const mes=(s,sz)=>{c.font=(sz*k)+"px "+VALF;return c.measureText(s).width/k};
+  c.fillStyle=col;c.textBaseline="top";
+  if(center){let sz=max;while(sz>min&&mes(t,sz)>w)sz-=0.5;c.font=(sz*k)+"px "+VALF;c.textAlign="center";c.fillText(t,(x+w/2)*k,(y+h/2-sz*0.5)*k);return}
+  const f=ajuster(mes,t,w,h,max,min);c.font=(f.sz*k)+"px "+VALF;c.textAlign="left";
+  f.l.forEach((ln,i)=>{if((i+1)*f.sz*1.2<=h+2)c.fillText(ln,x*k,(y+i*f.sz*1.2)*k)});
+}
+
+/* ---------- Contenu ---------- */
+function aspectsTexte(){return [v("aspect1"),v("aspect2"),v("aspect3")].filter(Boolean).join("\n")}
+function equipTexte(){return [v("armure"),v("armes").split("\n").filter(Boolean).join(", "),v("equipement")].filter(Boolean).join("\n")}
+function valeurs(){return {
+  nom:v("nom"),niveau:$("niveau").value,aspects:aspectsTexte(),dons:v("dons"),equip:equipTexte(),
+  pv:v("pv"),dv:v("dv"),dh:v("dh"),std:v("standard"),mvt:v("mouvement"),def:v("defense"),
+  desc:[v("origine"),v("description")].filter(Boolean).join(". ").replace(/\.\./g,".")}}
+const TAILLES={sort:[18,10],nom:[40,22],niveau:[52,30],aspects:[24,15],dons:[20,12],equip:[18,11],pv:[46,26],dv:[30,18],dh:[38,24],std:[38,24],mvt:[38,24],def:[38,24],desc:[24,14],notes:[20,14]};
+const CENTRES=["niveau","pv","dv","dh","std","mvt","def"];
+const REGLES=["Test standard : 1d20 + niveau contre 16 ; attaque : contre la défense adverse.","Arts du mouvement : 1d20 + niveau + 6 − armure contre 16.","Défense : 1d20 + armure contre l'attaque adverse.","Dé d'héroïsme : après un jet lié à un aspect ; sur une attaque réussie, il s'ajoute aussi aux dégâts.","Coup vicieux (adversaire pris au dépourvu) : avantage et +1d4 dégâts.","Initiative : le groupe lance 1d6 ; sur 4 ou plus, il agit en premier.","Repos long (8 h) : tous les dés d'héroïsme ; on peut relancer ses dés de vie.","Parchemin : lisible selon le niveau (2-3 : sorts de niveau 1, 4-5 : niveau 2, 6 : niveau 3), puis détruit."];
+
+function recto(c,k,withValues){
+  const th=S.theme, s=STY[th], t=T(), illu=S.illu!=="aucune", Lm=mise(S.format,illu), Z=zones(Lm);
+  decor(c,k,s,Lm,th);
+  // en-tête
+  texte(c,k,("Coureurs d'Orages · "+t.nom).toUpperCase(),Lm.hx,M+22,17,EYE,s.acc);
+  c.beginPath();c.moveTo(Lm.nom[0]*k,(Lm.nom[1]+Lm.nom[3])*k);c.lineTo((Lm.nom[0]+Lm.nom[2])*k,(Lm.nom[1]+Lm.nom[3])*k);st(c,k,1.4,s.ink);
+  texte(c,k,"Nom",Lm.nom[0]+Lm.nom[2],Lm.nom[1]+Lm.nom[3]+17,14,SMALL,s.acc2,"right");
+  // portrait
+  if(illu){const [x,y,w,h]=Lm.port;
+    if(S.illu==="portrait"){c.drawImage(cv,x*k,y*k,w*k,h*k)}
+    boite(c,k,Lm.port,s,"",11);
+    if(S.illu==="cadre"&&!withValues)texte(c,k,"portrait",x+w/2,y+h-12,13,SMALL,s.acc2,"center")}
+  boite(c,k,Lm.niveau,s,"",12);texte(c,k,"Niveau",Lm.niveau[0]+Lm.niveau[2]/2,Lm.niveau[1]+26,18,s.font,s.acc,"center");
+  // colonne gauche
+  boite(c,k,Lm.aspects,s,"Aspects",21);
+  boite(c,k,Lm.dons,s,"Dons et talents",22);
+  boite(c,k,Lm.equip,s,"Équipement",23);
+  // colonne droite
+  boite(c,k,Lm.pv,s,"Points de vie",31);
+  boite(c,k,Lm.dv,s,"Dés de vie",32);
+  boite(c,k,Lm.dh,s,"Dés d'héroïsme",33,"niveau + 3");
+  texte(c,k,"Bonus aux jets",Lm.std[0],Lm.std[1]-12,19,s.font,s.ink);
+  boite(c,k,Lm.std,s,"Standard",34,"niveau · contre 16");
+  boite(c,k,Lm.mvt,s,"Arts du mouvement",35,"niv + 6 − armure · contre 16");
+  boite(c,k,Lm.def,s,"Défense",36,"armure · contre l'attaque");
+  if(withValues){const V=valeurs();
+    Object.keys(TAILLES).forEach(key=>{if(Z[key]&&V[key]!==undefined&&key!=="desc")valeurC(c,k,V[key],Z[key],TAILLES[key][0],TAILLES[key][1],CENTRES.includes(key),s.val)})}
+}
+function verso(c,k,withValues){
+  const th=S.theme, s=STY[th], t=T(), Lm=mise(S.format,false), Z=zones(Lm);
+  decor(c,k,s,Lm,th);
+  texte(c,k,("Coureurs d'Orages · "+t.nom).toUpperCase(),M,M+22,17,EYE,s.acc);
+  texte(c,k,"Carnet de route",M,M+70,40,s.font,s.ink);
+  if(v("nom")){c.font=(26*k)+"px "+VALF;texte(c,k,v("nom"),966,M+70,26,VALF,s.val,"right")}
+  boite(c,k,Lm.desc,s,"Origine et passé",41);
+  boite(c,k,Lm.parch,s,t.sortsTitre+" · usage unique",44);
+  const LS2=Z.sorts, sortsTxt=v("parchemins").split("\n").map(x=>x.trim()).filter(Boolean);
+  LS2.forEach((r,i)=>{const [bx,by,bw,bh]=r.box;if(withValues){P(c,k,rectP(bx,by,bw,bh));st(c,k,1.6,s.ink)}
+    if(i<LS2.length-1){c.globalAlpha=.25;c.beginPath();c.moveTo((Lm.parch[0]+14)*k,r.sep*k);c.lineTo((Lm.parch[0]+Lm.parch[2]-14)*k,r.sep*k);st(c,k,1,s.ink);c.globalAlpha=1}
+    if(withValues&&sortsTxt[i])valeurC(c,k,sortsTxt[i],r.txt,TAILLES.sort[0],TAILLES.sort[1],false,s.val)});
+  boite(c,k,Lm.notes,s,"Notes",42);
+  c.globalAlpha=.25;for(let y=Lm.notes[1]+68;y<Lm.notes[1]+Lm.notes[3]-12;y+=32){c.beginPath();c.moveTo((Lm.notes[0]+14)*k,y*k);c.lineTo((Lm.notes[0]+Lm.notes[2]-14)*k,y*k);st(c,k,1,s.ink)}c.globalAlpha=1;
+  boite(c,k,Lm.regles,s,"Rappel des règles",43);
+  const items=REGLES.slice();
+  if(S.illu==="portrait"&&mode==="gravure"&&!customImg&&gravureCourante){const g=gravureCourante;items.push("Portrait : "+g.a+", "+g.t+", "+g.d+". The Met, domaine public.")}
+  const zb=[Lm.regles[0]+14,Lm.regles[1]+38,Lm.regles[2]-28,Lm.regles[3]-46];
+  const mes=(x,sz)=>{c.font=(sz*k)+"px "+SMALL;return c.measureText(x).width/k};
+  let sz=17;const haut=sz=>items.reduce((a,it)=>a+couper(x=>mes(x,sz),it,zb[2]).length*sz*1.18+sz*0.45,0);
+  while(sz>10&&haut(sz)>zb[3])sz-=0.5;
+  c.font=(sz*k)+"px "+SMALL;c.fillStyle=s.ink;c.textAlign="left";c.textBaseline="top";let y=zb[1];
+  items.forEach(it=>{couper(x=>mes(x,sz),it,zb[2]).forEach(l=>{c.fillText(l,zb[0]*k,y*k);y+=sz*1.18});y+=sz*0.45});
+  if(withValues){const V=valeurs();valeurC(c,k,V.desc,Z.desc,TAILLES.desc[0],TAILLES.desc[1],false,s.val)}
+}
+
+/* ---------- PDF ---------- */
+function san(s){return String(s||"").replace(/[’‘]/g,"'").replace(/[“”«»]/g,'"').replace(/[—–−]/g,"-").replace(/…/g,"...").replace(/œ/g,"oe").replace(/Œ/g,"Oe").replace(/[^\n\r\t\x20-\xFF]/g,"?")}
+async function fondPng(fn,F){
+  const px=F.w*3.6, k=px/1000, c=document.createElement("canvas");c.width=Math.round(px);c.height=Math.round(F.h/F.w*px);
+  fn(c.getContext("2d"),k,false);
+  const blob=await new Promise(res=>c.toBlob(res,"image/png"));return blob.arrayBuffer();
+}
+async function construirePdf(){
+  await policesPretes();
+  const {PDFDocument,StandardFonts,rgb,TextAlignment}=PDFLib;
+  const F=FORMATS[S.format], u=F.w/1000, s=STY[S.theme];
+  const doc=await PDFDocument.create();
+  doc.setTitle(san(v("nom"))+" - Coureurs d'Orages");
+  const times=await doc.embedFont(StandardFonts.TimesRoman);
+  const hx=s.val.replace("#",""), col=rgb(parseInt(hx.slice(0,2),16)/255,parseInt(hx.slice(2,4),16)/255,parseInt(hx.slice(4,6),16)/255);
+  const form=doc.getForm();
+  function champ(page,name,b,val,taille,center){
+    const [x,y,w,h]=b.map(n=>n*u), multi=!center&&name!=="nom";
+    const tf=form.createTextField(name);
+    if(multi)tf.enableMultiline();
+    const txt=san(val);tf.setText(txt);
+    tf.addToPage(page,{x,y:F.h-y-h,width:w,height:h,font:times,textColor:col,backgroundColor:undefined,borderColor:undefined,borderWidth:0});
+    if(center)tf.setAlignment(TextAlignment.Center);
+    let sz=taille[0]*u;const min=taille[1]*u;
+    if(multi){const f=ajuster((t,z)=>times.widthOfTextAtSize(t,z),txt,w-4,h-2,sz,min);sz=f.sz}
+    else{while(sz>min&&(times.widthOfTextAtSize(txt,sz)>w-4||sz*1.15>h))sz-=0.25}
+    tf.setFontSize(Math.max(sz,6));
+  }
+  const illu=S.illu!=="aucune", Z=zones(mise(S.format,illu)), V=valeurs();
+  const p1=doc.addPage([F.w,F.h]);
+  p1.drawImage(await doc.embedPng(await fondPng(recto,F)),{x:0,y:0,width:F.w,height:F.h});
+  [["nom","nom"],["niveau","niveau"],["aspects","aspects"],["dons","dons"],["equip","equipement"],["pv","points_de_vie"],["dv","des_de_vie"],["dh","des_heroisme"],["std","standard"],["mvt","arts_du_mouvement"],["def","defense"]]
+    .forEach(([key,name])=>champ(p1,name,Z[key],V[key],TAILLES[key],CENTRES.includes(key)));
+  const p2=doc.addPage([F.w,F.h]);
+  const Z2=zones(mise(S.format,false));
+  p2.drawImage(await doc.embedPng(await fondPng(verso,F)),{x:0,y:0,width:F.w,height:F.h});
+  champ(p2,"passe",Z2.desc,V.desc,TAILLES.desc,false);
+  champ(p2,"notes",Z2.notes,"",TAILLES.notes,false);
+  const sortsTxt=v("parchemins").split("\n").map(x=>x.trim()).filter(Boolean);
+  Z2.sorts.forEach((r,i)=>{champ(p2,"sort_"+(i+1),r.txt,sortsTxt[i]||"",TAILLES.sort,false);
+    const [bx,by,bw,bh]=r.box.map(n=>n*u), cb=form.createCheckBox("sort_"+(i+1)+"_lu");
+    cb.addToPage(p2,{x:bx,y:F.h-by-bh,width:bw,height:bh,textColor:col,borderWidth:0.8,borderColor:rgb(0.15,0.15,0.15),backgroundColor:undefined})});
+  form.updateFieldAppearances(times);
+  return await doc.save();
+}
+
+
+/* ---------- Aperçu ---------- */
+const ap=$("apercu"), ap2=$("apercu2"), policesVues=new Set();
+function dessinerApercu(){const F=FORMATS[S.format],px=1100,k=px/1000;[ap,ap2].forEach(c=>{c.width=px;c.height=Math.round(px*F.h/F.w)});recto(ap.getContext("2d"),k,true);verso(ap2.getContext("2d"),k,true)}
+function rendreApercu(){if(!S)return;dessinerApercu();if(!policesVues.has(S.theme)){const th=S.theme;policesPretes().then(()=>{policesVues.add(th);if(S.theme===th)dessinerApercu()})}}
+let raf=0;document.addEventListener("input",e=>{if(e.target.closest("details")||e.target.id==="nom"){if(e.target.id==="nom"){S.nom=e.target.value;majBarre()}cancelAnimationFrame(raf);raf=requestAnimationFrame(rendreApercu)}});
+["aspect1","aspect2"].forEach(id=>$(id).addEventListener("change",()=>{if(mode==="gravure"&&!customImg)afficherPortrait()}));
+
+/* ---------- Actions ---------- */
+function setStatus(t){$("status").textContent=t}
+$("btnTirer").addEventListener("click",()=>{tirer(S.theme);toutRendre(true);setStatus("Nouveau coureur tiré.")});
+$("btnNom").addEventListener("click",()=>{S.f=R()<0.45;S.nom=nouveauNom(T(),S.f);S.traits.beard=!S.f&&R()<0.65;ecrireTexte();if(mode==="dessin"&&!customImg)afficherPortrait();else rendreApercu()});
+$("btnPv").addEventListener("click",()=>{S.rolls=S.rolls.map(()=>R());rendreStats();rendreApercu();setStatus("PV relancés : "+$("pv").value+".")});
+$("btnCurio").addEventListener("click",()=>{const t=T();let c=S.curio;for(let i=0;i<5&&c===S.curio;i++)c=pick(t.curios);S.curio=c;ecrireTexte();rendreApercu()});
+$("bouclier").addEventListener("change",e=>{S.bouclier=e.target.checked;if(S.bouclier&&S.armure===0)S.armure=1;maj(false)});
+[["regleMaison","dvMetier"],["donsMaison","donsMaison"],["lectureLibre","lectureLibre"]].forEach(([id,k])=>{$(id).checked=!!REG[k];$(id).addEventListener("change",e=>{REG[k]=e.target.checked;sauverReg();maj(false)})});
+$("iAspect3").addEventListener("input",e=>{S.aspect3=e.target.value.slice(0,60);ecrireTexte();rendreApercu()});
+$("niveau").addEventListener("change",()=>{
+  const niv=parseInt($("niveau").value,10), t=T();
+  if(S.dons.length>niv)S.dons=S.dons.slice(0,niv);
+  else{const libres=shuffle(listes.D().map(d=>d.n).filter(n=>!S.dons.includes(n)));while(S.dons.length<niv&&libres.length)S.dons.push(libres.pop())}
+  maj(false);setStatus("Niveau "+niv+" : PV, bonus et dons ajustés.");
+});
+$("btnPortrait").addEventListener("click",()=>{customImg=null;portraitOffset++;afficherPortrait()});
+$("btnMode").addEventListener("click",()=>{customImg=null;mode=mode==="gravure"?"dessin":"gravure";afficherPortrait()});
+$("btnImport").addEventListener("click",()=>$("file").click());
+$("btnDessin").addEventListener("click",()=>{customImg=null;afficherPortrait()});
+$("file").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{customImg=im;afficherPortrait()};im.onerror=()=>setStatus("Cette image n'a pas pu être lue. Essaie un fichier JPG ou PNG.");im.src=rd.result};rd.readAsDataURL(f);e.target.value=""});
+
+
+
+/* ---------- Feuille de jeu (téléphone) ---------- */
+const LSJ="cdo-coureurs-v1";
+let ROSTER={liste:[],actif:null};
+try{const x=JSON.parse(localStorage.getItem(LSJ)||"null");if(x&&Array.isArray(x.liste))ROSTER=x}catch(e){}
+function sauverRoster(){try{localStorage.setItem(LSJ,JSON.stringify(ROSTER));return true}catch(e){return false}}
+const actif=()=>ROSTER.liste.find(p=>p.id===ROSTER.actif)||null;
+function de(n){const a=new Uint32Array(1);try{crypto.getRandomValues(a);return 1+a[0]%n}catch(e){return 1+Math.floor(Math.random()*n)}}
+const D6='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2h14a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3zm2.5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm9 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-4.5 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-4.5 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm9 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>';
+
+function armesAvecArtefact(armes,art,predi){
+  const plus=art==="epine"?{n:"Épine",base:"d8",art:"epine"}:art==="ravages"?{n:"Ravages",base:"d4",art:"ravages"}:null;
+  if(plus&&!armes.some(a=>a.art===plus.art))armes.push(Object.assign(plus,{dist:false,d:deArme(plus.base,(predi||[]).includes("contact")?1:0)}));
+  return armes;
+}
+function instantane(){
+  const c=calculer(), t=T(), A=listes.A(), P=listes.P();
+  const sortObj=x=>({n:x.n,e:x.e,c:x.c,niv:x.niv||1,roll:x.roll,type:x.type});
+  return {theme:S.theme, themeNom:t.nom, nom:v("nom")||"Coureur sans nom", niveau:c.niv,
+    aspects:[v("aspect1"),v("aspect2"),v("aspect3")].filter(Boolean), origine:v("origine"), description:v("description"),
+    pvMax:+v("pv")||c.pv, dv:v("dv"), dhMax:+v("dh")||c.dh, dhDe:c.dhDe, std:c.std, mvt:c.mvt, def:c.def,
+    armureCat:S.armure, bouclier:S.bouclier, init:c.fx.init?8:6, sournois:!!c.fx.sournois, cmd:c.fx.cmd||0,
+    armes:armesAvecArtefact(S.armes.map(n=>A.find(a=>a.n===n)).filter(Boolean).map(a=>({n:a.n,d:deEffectif(a,c.fx),base:a.d,dist:!!a.dist})),S.dons.includes("Artefact légendaire")?S.artefact:null,c.fx.predi),
+    artefact:S.dons.includes("Artefact légendaire")?S.artefact:null,
+    dons:v("dons").split("\n").map(s=>s.trim()).filter(Boolean), donsNoms:S.dons.slice(), equip:equipTexte(),
+    regles:{donsMaison:REG.donsMaison,lectureLibre:REG.lectureLibre,dvMetier:REG.dvMetier},
+    sortsTitre:t.sortsTitre, sortsUn:t.sortsUn,
+    sorts:S.sorts.map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj),
+    connus:(c.fx.magie1?S.connus1:[]).concat(c.fx.magie2?S.connus2:[]).map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj)};
+}
+function jouerCeCoureur(){
+  const snap=instantane();
+  let p=S.playId&&ROSTER.liste.find(x=>x.id===S.playId);
+  if(p){const delta=snap.pvMax-p.fiche.pvMax;p.fiche=snap;p.pv=Math.max(0,Math.min(snap.pvMax,p.pv+Math.max(0,delta)));p.dh=Math.min(p.dh,snap.dhMax);p.equip=snap.equip;
+    if(!Array.isArray(p.sorts))p.sorts=[];snap.sorts.forEach(s=>{if(!p.sorts.some(x=>x.n===s.n))p.sorts.push(Object.assign({},s,{lu:false}))});
+    p.connus=snap.connus.map(s=>Object.assign({},s,{lance:!!(p.connus||[]).find(x=>x.n===s.n&&x.lance)}));p.jetons=Math.min(p.jetons??snap.cmd,snap.cmd)}
+  else{p={id:"c"+Date.now().toString(36)+Math.floor(Math.random()*1e4),fiche:snap,pv:snap.pvMax,dh:snap.dhMax,equip:snap.equip,notes:"",log:[],
+    sorts:snap.sorts.map(s=>Object.assign({},s,{lu:false})),connus:snap.connus.map(s=>Object.assign({},s,{lance:false})),jetons:snap.cmd};ROSTER.liste.unshift(p);S.playId=p.id}
+  ROSTER.actif=p.id;
+  if(!sauverRoster())setStatus("Ce navigateur refuse d'enregistrer : la feuille de jeu marchera, mais sera perdue en fermant la page.");
+  allerA("jouer");
+}
+
+/* Vues */
+function allerA(vue){try{if(location.hash!=="#"+vue)location.hash=vue;else montrer()}catch(e){montrer(vue)}}
+function montrer(force){
+  const vue=force||(location.hash==="#jouer"?"jouer":"forge");
+  const jeu=vue==="jouer";
+  $("vueJouer").hidden=!jeu;document.querySelector(".wrap").hidden=jeu;
+  document.body.classList.toggle("forge",!jeu);
+  $("mbar").hidden=jeu;
+  if(jeu)rendreJeu();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",()=>montrer());
+
+/* Rendu */
+let modeJet="norm", dernier=null, bonusDegats=0;
+function rendreJeu(){
+  const p=actif();
+  $("jListe").innerHTML="";
+  ROSTER.liste.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.fiche.nom+" · "+x.fiche.themeNom+" niv. "+x.fiche.niveau;if(p&&x.id===p.id)o.selected=true;$("jListe").append(o)});
+  $("jListe").hidden=!ROSTER.liste.length;
+  $("jVide").hidden=!!p;$("jCorps").hidden=!p;
+  if(!p)return;
+  const f=p.fiche, s=STY[f.theme]||STY.fantasy;
+  if(!Array.isArray(p.connus))p.connus=[];
+  const vj=$("vueJouer");vj.style.setProperty("--t-acc0",s.acc);vj.style.setProperty("--t-font",s.font);
+  $("jTheme").textContent="Coureurs d'Orages · "+f.themeNom+" · niveau "+f.niveau;
+  $("jNom").textContent=f.nom;
+  $("jAspects").textContent=f.aspects.join(" · ");
+  $("jDv").textContent="dés de vie "+f.dv;
+  rendreJeuStats();
+  $("jInit").textContent="Initiative du groupe (d"+(f.init||6)+")";
+  $("jRelanceDV").hidden=!p.peutRelancer;
+  rendrePv();rendreDh();rendreManadh();rendreTalents();videActions();$("jTalRes").hidden=true;
+  const ar=$("jArmes");ar.innerHTML="";
+  f.armes.forEach(a=>{const b=document.createElement("button");b.type="button";b.innerHTML=esc(a.n)+(a.d?"<span>"+esc(a.d)+"</span>":"");if(a.d)b.addEventListener("click",()=>lancerDegats(a));else b.disabled=true;ar.append(b)});
+  if(!f.armes.length)ar.innerHTML='<p class="jetat">Aucune arme sur la fiche.</p>';
+  if(aDon(f,"Combat à deux armes")){const pr=paireDeuxArmes(f),b=document.createElement("button");b.type="button";b.className="deuxarmes"+(pr?" primary":"");
+    b.innerHTML=pr?"Frapper à deux armes<span>"+esc(pr[0].n)+" + "+esc(pr[1].n)+" · garde le meilleur</span>":"Combat à deux armes<span>il faut une arme intermédiaire et une arme légère</span>";
+    if(pr)b.addEventListener("click",()=>lancerDegats(pr[0],pr[1]));else b.disabled=true;ar.prepend(b)}
+  const dr=$("jDegRes");dr.className="jres vide";dr.textContent="Touche une arme : les dégâts s'affichent ici.";
+  $("jVicieux").checked=false;$("jVicieuxTxt").textContent="Coup vicieux (adversaire pris au dépourvu) : +"+(f.sournois?"1d8, Attaque sournoise":"1d4");
+  bonusDegats=0;$("jBonusDeg").textContent="";
+  const dz=$("jDes");dz.innerHTML="";
+  [4,6,8,10,12,20].forEach(n=>{const b=document.createElement("button");b.type="button";b.textContent="d"+n;b.addEventListener("click",()=>{const r=de(n);afficher({quoi:"Dé libre",tot:r,det:"d"+n+" : "+r},"jDegRes");montrerRes("jDegRes");journal("d"+n,r)});dz.append(b)});
+  $("jDons").innerHTML="";
+  f.dons.forEach(d=>{const li=document.createElement("li");const i=d.indexOf(" : ");if(i>0){const b=document.createElement("b");b.textContent=d.slice(0,i);li.append(b," : "+d.slice(i+3))}else li.textContent=d;$("jDons").append(li)});
+  if(!f.dons.length)$("jDons").innerHTML='<li class="jetat">Aucun don.</li>';
+  sortArme=null;$("jSortRes").hidden=true;$("jSortForm").hidden=true;$("jConnusRes").hidden=true;rendreSorts();rendreConnus();rendreProgression();$("jNivEtat").textContent="";$("jPdfEtat").textContent="";
+  $("jEquip").value=p.equip;$("jNotes").value=p.notes;
+  $("jPasse").textContent=[f.origine,f.description].filter(Boolean).join(". ").replace(/\.\./g,".");
+  $("jRegles").innerHTML="";REGLES.forEach(r=>{const li=document.createElement("li");li.textContent=r;$("jRegles").append(li)});
+  rendreLog();
+  dernier=null;const res=$("jRes");res.className="jres vide";res.textContent="Touche un jet ou un dé : le résultat s'affiche ici.";
+  $("jSupprOk").hidden=true;$("jSuppr").hidden=false;
+}
+function rendrePv(){
+  const p=actif(),f=p.fiche;
+  $("jPv").value=String(p.pv);$("jPvMax").textContent=f.pvMax;
+  const pc=f.pvMax?Math.max(0,Math.min(100,p.pv/f.pvMax*100)):0;
+  $("jBarre").firstElementChild.style.width=pc+"%";$("jBarre").classList.toggle("bas",pc<=25);
+  const e=$("jPvEtat");
+  e.className="jetat"+(p.pv<=0?" alerte":"");
+  e.textContent=p.pv<=0?"Hors de combat : le destin dépend de la scène (tué, mutilé, assommé…).":p.pv<=f.pvMax/4?"Gravement blessé.":p.pv<f.pvMax?"Blessé.":"En pleine forme.";
+}
+function rendreDh(){
+  const p=actif(),f=p.fiche,box=$("jDh");box.innerHTML="";
+  $("jDhDe").textContent="d"+(f.dhDe||6)+" · touche un dé pour le lancer";
+  for(let i=0;i<f.dhMax;i++){const plein=i<p.dh;const b=document.createElement("button");b.type="button";b.className="pip"+(plein?"":" vide");b.innerHTML=D6;
+    b.setAttribute("aria-label",plein?"Dépenser et lancer un dé d'héroïsme":"Dé d'héroïsme déjà dépensé");
+    if(plein)b.addEventListener("click",depenserDh);else b.disabled=true;box.append(b)}
+  $("jDhPlus").disabled=p.dh>=f.dhMax;
+  const cmd=f.cmd||0;$("jCmd").hidden=!cmd;
+  if(cmd){const j=$("jJetons");j.innerHTML="";const n=p.jetons??cmd;
+    for(let i=0;i<cmd;i++){const b=document.createElement("button");b.type="button";b.className="pip"+(i<n?"":" vide");b.textContent="↻";b.setAttribute("aria-label",i<n?"Donner un jeton de relance":"Jeton déjà donné");
+      if(i<n)b.addEventListener("click",()=>{p.jetons=(p.jetons??cmd)-1;sauverRoster();rendreDh();journal("Jeton de relance donné","↻")});else b.disabled=true;j.append(b)}}
+}
+function rendreLog(){
+  const p=actif(),ul=$("jLog");ul.innerHTML="";
+  if(!p.log.length){ul.innerHTML='<li class="vide">Aucun jet pour l\'instant.</li>';return}
+  p.log.slice(0,8).forEach(l=>{const li=document.createElement("li");const s=document.createElement("span");s.textContent=l.q;const b=document.createElement("b");b.textContent=l.r;li.append(s,b);ul.append(li)});
+}
+function journal(q,r){const p=actif();p.log.unshift({q,r:String(r)});p.log=p.log.slice(0,20);sauverRoster();rendreLog()}
+function afficher(o,cible){
+  const res=$(cible||"jRes");res.className="jres anim";res.innerHTML="";
+  const tot=document.createElement("div");tot.className="tot";tot.textContent=o.tot;
+  const q=document.createElement("div");q.className="quoi";q.textContent=o.quoi;
+  const d=document.createElement("div");d.className="det";d.textContent=o.det;
+  res.append(tot,q,d);
+  if(o.ver){const v2=document.createElement("div");v2.className="ver"+(o.neutre?"":o.ok?" ok":" ko");v2.textContent=o.ver;res.append(v2)}
+  void res.offsetWidth;
+}
+
+/* Actions (livre p. 11-19) */
+const NOMS_JET={std:"Standard",mvt:"Arts du mouvement",def:"Défense"};
+function critique(nat,seuilHaut,seuilBas){return nat>=seuilHaut?" · réussite spectaculaire":nat<=seuilBas?" · échec critique":""}
+/* ---------- Dons en jeu : effets appliqués par la feuille ---------- */
+function aDon(f,n){return nomsDons(f).includes(n)}
+function statJeu(p,cle){const f=p.fiche;let x=f[cle];if(f.bouclier&&p.bouclierBrise){if(cle==="def")x-=1;if(cle==="mvt"&&f.artefact!=="bastion")x+=1}return x}
+function paireDeuxArmes(f){
+  const contact=f.armes.filter(a=>!a.dist);
+  const leg=contact.find(a=>/^d4/.test(a.base||a.d)), inter=contact.find(a=>a!==leg&&!/^d1[02]/.test(a.base||a.d)&&!/^d4/.test(a.base||a.d));
+  return leg&&inter?[inter,leg]:null;
+}
+function rollArme(a){
+  const m=/^d(\d+)(?:\+(\d+))?/.exec(a.d||"");if(!m)return null;const faces=+m[1],fixe=m[2]?+m[2]:0;
+  if(a.art==="epine"){const x=de(faces),y=de(faces),g=Math.max(x,y);return {val:g+fixe,txt:a.d+" avec avantage : "+x+" et "+y+" → "+g+(fixe?" + "+fixe:"")}}
+  const r=de(faces);return {val:r+fixe,txt:a.d+" : "+r+(fixe?" + "+fixe:"")};
+}
+function lancerDegats(a,b2){
+  const p=actif(),f=p.fiche;
+  const r1=rollArme(a);if(!r1)return;
+  let tot=r1.val,parts=[r1.txt],quoi="Dégâts · "+a.n,notes=[];
+  if(b2){const r2=rollArme(b2);tot=Math.max(r1.val,r2.val);parts=[a.n+" "+r1.txt,b2.n+" "+r2.txt+" → garde "+tot];quoi="Dégâts à deux armes"}
+  const vic=$("jVicieux").checked, ravages=a.art==="ravages"||(b2&&b2.art==="ravages");
+  if(vic){const dv=f.sournois?8:4,x=de(dv);tot+=x;parts.push("coup vicieux d"+dv+" : "+x);
+    if(ravages){const y=de(dv);tot+=y;p.pv=Math.max(0,p.pv-y);parts.push("foudre de Ravages : "+y);notes.push("La foudre te frappe aussi : −"+y+" PV.");rendrePv()}}
+  if(ravages){tot+=1;parts.push("Ravages : 1")}
+  if(bonusDegats){tot+=bonusDegats;parts.push("dé d'héroïsme : "+bonusDegats)}
+  if(a.art==="epine"||(b2&&b2.art==="epine"))notes.push("Épine tue toute cible réduite à 0 PV.");
+  $("jVicieux").checked=false;bonusDegats=0;$("jBonusDeg").textContent="";
+  dernier=null;videActions();
+  const o={quoi,tot,det:parts.join(" · ")+(parts.length>(b2?2:1)?" = "+tot:"")};if(notes.length){o.ver=notes.join(" ");o.neutre=true}
+  afficher(o,"jDegRes");montrerRes("jDegRes");journal(quoi,tot);sauverRoster();
+}
+function montrerRes(id){const el=$(id);el.hidden=false;try{const r=el.getBoundingClientRect();if(r.top<0||r.bottom>window.innerHeight)el.scrollIntoView({block:"nearest",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}catch(e){}}
+function videActions(){$("jResActions").innerHTML="";$("jResActions").hidden=true}
+function actionRes(label,fn,primary){const b=document.createElement("button");b.type="button";b.textContent=label;if(primary)b.className="primary";b.addEventListener("click",fn);$("jResActions").append(b);$("jResActions").hidden=false}
+function lancerJet(cle,chaine){
+  chaine=chaine||1;
+  const p=actif(),f=p.fiche,bonus=statJeu(p,cle);
+  const a=de(20),b=modeJet==="norm"?null:de(20);
+  const garde=b===null?a:modeJet==="av"?Math.max(a,b):Math.min(a,b);
+  const tot=garde+bonus;
+  const dets=b===null?"d20 : "+a:"d20 : "+a+" et "+b+" → "+garde;
+  const nom=chaine>1?(chaine===2?"2e":"3e")+" attaque (Enchaînement)":NOMS_JET[cle];
+  const o={quoi:nom+(modeJet==="av"?" · avantage":modeJet==="des"?" · désavantage":""),tot,det:dets+" "+(bonus<0?"− "+(-bonus):"+ "+bonus)+" = "+tot};
+  const crit=critique(garde,18,3);
+  if(cle!=="def"){o.ok=tot>=16;o.ver=(o.ok?"Réussi contre 16":"Raté contre 16")+(cle==="std"?" (attaque : contre la défense adverse)":"")+crit;
+    if(cle==="std"&&f.armes.some(x=>x.art==="ravages"))o.ver+=" · Ravages inflige 1 dégât même si l'attaque rate"}
+  else{o.ver="À comparer au seuil d'attaque"+crit;o.neutre=true}
+  dernier={quoi:o.quoi,tot,cle,nat:garde};bonusDegats=0;$("jBonusDeg").textContent="";
+  afficher(o);montrerRes("jRes");journal(o.quoi,tot);videActions();
+  if(cle==="std"){
+    const peut=chaine===1?aDon(f,"Enchaînement"):chaine===2&&aDon(f,"Enchaînement (second)");
+    if(peut)actionRes("Touché ? Enchaîner la "+(chaine===1?"2e":"3e")+" attaque",()=>lancerJet("std",chaine+1),true);
+  }
+  if(cle==="def"&&f.bouclier&&!p.bouclierBrise&&aDon(f,"Maîtrise des boucliers"))actionRes("Touché quand même ? Sacrifier le bouclier",()=>sacrifierBouclier());
+}
+function sacrifierBouclier(){
+  const p=actif(),f=p.fiche;p.bouclierBrise=true;sauverRoster();videActions();
+  const bastion=f.artefact==="bastion";
+  afficher({quoi:"Bouclier sacrifié",tot:"0",det:"Les dégâts de cette attaque sont annulés.",ver:bastion?"Bastion se répare de lui-même en quelques minutes.":"Le bouclier est en miettes : Défense −1 jusqu'à ce que tu en trouves un autre.",neutre:true});
+  journal("Bouclier sacrifié","dégâts annulés");rendreJeuStats();rendreTalents();
+}
+function depenserDh(){
+  const p=actif();if(p.dh<=0)return;
+  const f=p.fiche,dd=f.dhDe||6,mm=f.artefact==="manadh"?(p.manadhMode||"norm"):"norm";
+  p.dh--;let r=de(dd),txtDe="d"+dd+" ("+r+")";
+  if(mm!=="norm"){const r2=de(dd);const g=mm==="av"?Math.max(r,r2):Math.min(r,r2);txtDe="d"+dd+(mm==="av"?" avec avantage":" avec désavantage")+" ("+r+" et "+r2+" → "+g+")";r=g;
+    if(mm==="des")p.fortune=Math.min(3,(p.fortune||0)+1);else p.fortune=Math.max(0,(p.fortune||0)-1);p.manadhMode="norm"}
+  if(dernier){const nt=dernier.tot+r, nat=dernier.nat+r, o={quoi:"Héroïsme sur « "+dernier.quoi+" »",tot:nt,det:dernier.tot+" + "+txtDe+" = "+nt};
+    const crit=critique(nat,21,6);
+    if(dernier.cle==="def"){o.ver="À comparer au seuil d'attaque"+crit;o.neutre=true}
+    else{o.ok=nt>=16;o.ver=(o.ok?"Réussi contre 16":"Raté contre 16")+crit}
+    if(dernier.cle==="std"){bonusDegats=r;$("jBonusDeg").textContent="Si c'était une attaque réussie, les +"+r+" du dé d'héroïsme s'ajoutent aux prochains dégâts."}
+    afficher(o);journal("Héroïsme sur "+dernier.quoi,nt);dernier=null}
+  else{afficher({quoi:"Dé d'héroïsme",tot:r,det:txtDe+", à ajouter au jet concerné"});journal("Dé d'héroïsme",r)}
+  sauverRoster();rendreDh();rendreManadh();
+}
+function rendreJeuStats(){const p=actif();$("jStd").textContent=sign(statJeu(p,"std"));$("jMvt").textContent=sign(statJeu(p,"mvt"));$("jDef").textContent=sign(statJeu(p,"def"))}
+function rendreManadh(){
+  const p=actif(),f=p.fiche,on=f.artefact==="manadh";$("jManadh").hidden=!on;if(!on)return;
+  const fo=p.fortune||0;$("jFortune").textContent="Fortune de Manadh : "+"●".repeat(fo)+"○".repeat(3-fo);
+  const box=$("jManadhSeg");box.innerHTML="";const mode=p.manadhMode||"norm";
+  [["des","Désavantage (+1 fortune)",fo>=3],["norm","Normal",false],["av","Avantage (−1 fortune)",fo<1]].forEach(([m,l,dis])=>{const b=document.createElement("button");b.type="button";b.textContent=l;b.setAttribute("aria-pressed",mode===m?"true":"false");b.disabled=dis;b.addEventListener("click",()=>{p.manadhMode=m;sauverRoster();rendreManadh()});box.append(b)});
+}
+function ligneTalent(titre,texte,boutons){
+  const d=document.createElement("div");d.className="talent";
+  const t=document.createElement("div");const b=document.createElement("b");b.textContent=titre;const s=document.createElement("span");s.textContent=texte;t.append(b,s);d.append(t);
+  const z=document.createElement("div");z.className="talbtns";boutons.forEach(x=>z.append(x));d.append(z);return d;
+}
+function btn(l,fn,cls,dis){const b=document.createElement("button");b.type="button";b.textContent=l;if(cls)b.className=cls;if(dis)b.disabled=true;else b.addEventListener("click",fn);return b}
+let talentArme=null,talentT=0;
+function confirmer(cle,label,fn){
+  return btn(talentArme===cle?"Confirmer":label,()=>{clearTimeout(talentT);if(talentArme!==cle){talentArme=cle;rendreTalents();talentT=setTimeout(()=>{talentArme=null;rendreTalents()},4000);return}talentArme=null;fn()},talentArme===cle?"primary":"");
+}
+function rendreTalents(){
+  const p=actif();if(!p)return;const f=p.fiche,box=$("jTalents");box.innerHTML="";
+  if(aDon(f,"Enchaînement"))box.append(ligneTalent(aDon(f,"Enchaînement (second)")?"Enchaînement ×2":"Enchaînement","Après un jet Standard, un bouton propose d'enchaîner si l'attaque a touché.",[]));
+  if(aDon(f,"Maîtrise des boucliers")&&f.bouclier){
+    box.append(ligneTalent("Maîtrise des boucliers",p.bouclierBrise?(f.artefact==="bastion"?"Bastion se répare…":"Bouclier brisé : Défense −1."):"Sacrifie ton bouclier pour annuler les dégâts d'une attaque.",
+      p.bouclierBrise?[btn(f.artefact==="bastion"?"Bastion est réparé":"J'ai un nouveau bouclier",()=>{p.bouclierBrise=false;sauverRoster();rendreJeuStats();rendreTalents()})]:[confirmer("bouclier","Sacrifier le bouclier",sacrifierBouclier)]))}
+  const art=ARTEFACTS.find(x=>x.id===f.artefact);
+  if(art){
+    if(art.id==="bastion")box.append(ligneTalent(art.n,"Au début de chaque combat : 2d4 PV à donner à un membre de l'équipe.",[btn("Début de combat : 2d4",()=>{const x=de(4),y=de(4),t=x+y;afficher({quoi:"Bastion",tot:t,det:"2d4 : "+x+" + "+y+" = "+t+" PV à offrir quand tu veux pendant ce combat"},"jTalRes");$("jTalRes").hidden=false;journal("Bastion",t);
+      const z=$("jTalRes");const b=btn("Me les donner",()=>{p.pv=Math.min(f.pvMax,p.pv+t);sauverRoster();rendrePv();b.disabled=true;b.textContent="Donnés"});z.append(b)})]));
+    if(art.id==="ilmare")box.append(ligneTalent(art.n,"Sa lumière blesse les morts-vivants à chaque tour.",[btn("Lumière : 1d6",()=>{const x=de(6);afficher({quoi:"Lumière du phénix",tot:x,det:"1d6 : "+x+" dégâts à chaque mort-vivant éclairé ce tour"},"jTalRes");$("jTalRes").hidden=false;journal("Ilmarë",x)})]));
+    if(art.id==="epine")box.append(ligneTalent(art.n,"Ses dégâts se lancent avec avantage (voir Dégâts).",[]));
+    if(art.id==="ravages")box.append(ligneTalent(art.n,"1 dégât à chaque attaque, même ratée ; foudre sur un coup vicieux (voir Dégâts).",[]));
+    if(art.id==="eressea"){const am=p.ames||0;
+      box.append(ligneTalent(art.n,"Âmes stockées : "+am+". Trois âmes gardent un parchemin intact.",[btn("Quelqu'un tombe à 0 PV : 1d6",()=>{const x=de(6),prise=x<=2;if(prise)p.ames=(p.ames||0)+1;sauverRoster();afficher({quoi:"Eressëa",tot:x,det:"1d6 : "+x,ver:prise?"La cible meurt, l'anneau prend son âme ("+p.ames+" en tout).":"L'âme échappe à l'anneau.",neutre:true},"jTalRes");$("jTalRes").hidden=false;journal("Eressëa",x);rendreTalents();rendreSorts()}),btn("−1 âme",()=>{p.ames=Math.max(0,(p.ames||0)-1);sauverRoster();rendreTalents();rendreSorts()},"",!am)]))}
+    if(art.id==="manadh")box.append(ligneTalent(art.n,"Choisis le mode du prochain dé d'héroïsme dans la carte Dés d'héroïsme.",[]));
+  }
+  $("jTalentsCarte").hidden=!box.children.length;
+}
+document.querySelectorAll("[data-pv]").forEach(b=>b.addEventListener("click",()=>{const p=actif();if(!p)return;p.pv=Math.max(0,Math.min(p.fiche.pvMax,p.pv+parseInt(b.dataset.pv,10)));sauverRoster();rendrePv()}));
+document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{modeJet=b.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"))}));
+document.querySelectorAll("[data-jet]").forEach(b=>b.addEventListener("click",()=>{if(actif())lancerJet(b.dataset.jet)}));
+$("jInit").addEventListener("click",()=>{const f=actif().fiche,n=f.init||6,r=de(n);dernier=null;afficher({quoi:"Initiative du groupe",tot:r,det:"d"+n+" : "+r+", ne peut être ni modifié ni relancé",ver:r>=4?"4 ou plus : le groupe agit en premier":"3 ou moins : les adversaires agissent en premier",ok:r>=4});journal("Initiative",r)});
+$("jDhPlus").addEventListener("click",()=>{const p=actif();if(p.dh<p.fiche.dhMax){p.dh++;sauverRoster();rendreDh()}});
+$("jRepos").addEventListener("click",()=>{const p=actif(),f=p.fiche;p.dh=f.dhMax;p.pv=f.pvMax;p.jetons=f.cmd||0;(p.connus||[]).forEach(s=>s.lance=false);p.peutRelancer=true;sauverRoster();
+  rendreDh();rendrePv();rendreConnus();$("jRelanceDV").hidden=false;
+  afficher({quoi:"Repos long (8 h)",tot:"✓",det:"Dés d'héroïsme"+((p.connus||[]).length?", sorts connus":"")+(f.cmd?", jetons de relance":"")+" et PV récupérés. Tu peux aussi relancer tes dés de vie.",ver:"Un seul repos long par tranche de 24 heures",neutre:true});journal("Repos long","récupéré")});
+$("jRelanceDV").addEventListener("click",()=>{const p=actif(),f=p.fiche,m=/^(\d+)d(\d+)\+(\d+)$/.exec(f.dv||"");if(!m)return;
+  const n=+m[1],dd=+m[2],fx=+m[3],jets=[];for(let i=0;i<n;i++)jets.push(de(dd));
+  let bonus=0;(f.donsNoms||[]).forEach(x=>{const d=catDons(f).find(y=>y.n===x);if(d&&d.fx&&d.fx.pvNiv)bonus+=d.fx.pvNiv*n;if(d&&d.fx&&d.fx.pv)bonus+=d.fx.pv});
+  const avant=f.pvMax;f.pvMax=jets.reduce((a,b)=>a+b,0)+fx+bonus;p.pv=f.pvMax;p.peutRelancer=false;sauverRoster();
+  $("jRelanceDV").hidden=true;rendrePv();
+  afficher({quoi:"Dés de vie relancés",tot:f.pvMax,det:n+"d"+dd+" : "+jets.join(" + ")+" + "+fx+(bonus?" + "+bonus:"")+" = "+f.pvMax+" (avant : "+avant+")",ver:"Nouvelle réserve de PV jusqu'au prochain repos long",neutre:true});journal("DV relancés",f.pvMax)});
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#vueJouer button")&&!e.target.closest("#jRelanceDV,#jRepos")){const p=actif();if(p&&p.peutRelancer&&e.target.closest("[data-pv],[data-jet],.pip,#jArmes button")){p.peutRelancer=false;sauverRoster();$("jRelanceDV").hidden=true}}},true);
+let tSave=0;
+$("jEquip").addEventListener("input",e=>{const p=actif();p.equip=e.target.value;clearTimeout(tSave);tSave=setTimeout(sauverRoster,400)});
+$("jNotes").addEventListener("input",e=>{const p=actif();p.notes=e.target.value;clearTimeout(tSave);tSave=setTimeout(sauverRoster,400)});
+$("jListe").addEventListener("change",e=>{ROSTER.actif=e.target.value;sauverRoster();rendreJeu()});
+$("jRetour").addEventListener("click",()=>allerA("forge"));
+$("jVersForge").addEventListener("click",()=>allerA("forge"));
+$("mJouer").addEventListener("click",jouerCeCoureur);
+$("btnJouer").addEventListener("click",jouerCeCoureur);
+// suppression
+$("jSuppr").addEventListener("click",()=>{$("jSuppr").hidden=true;$("jSupprOk").hidden=false});
+$("jSupprNon").addEventListener("click",()=>{$("jSuppr").hidden=false;$("jSupprOk").hidden=true});
+$("jSupprOui").addEventListener("click",()=>{const p=actif();ROSTER.liste=ROSTER.liste.filter(x=>x!==p);if(S&&S.playId===p.id)S.playId=null;ROSTER.actif=ROSTER.liste[0]?ROSTER.liste[0].id:null;sauverRoster();rendreJeu()});
+// sauvegarde par code
+function codeSauvegarde(){return btoa(unescape(encodeURIComponent(JSON.stringify(ROSTER))))}
+$("jCopier").addEventListener("click",()=>{
+  const code=codeSauvegarde(),ta=$("jCode");ta.hidden=false;ta.value=code;$("jImporterOk").hidden=true;
+  const ok=()=>$("jSauvEtat").textContent="Code copié. Colle-le sur l'autre appareil, dans « Importer un code ».";
+  const ko=()=>{ta.focus();ta.select();$("jSauvEtat").textContent="Copie automatique refusée : le code est sélectionné, copie-le à la main."};
+  try{navigator.clipboard.writeText(code).then(ok,ko)}catch(e){ko()}
+});
+$("jImporter").addEventListener("click",()=>{const ta=$("jCode");ta.hidden=false;ta.value="";ta.focus();$("jImporterOk").hidden=false;$("jSauvEtat").textContent="Colle le code puis valide."});
+$("jImporterOk").addEventListener("click",()=>{
+  try{const x=JSON.parse(decodeURIComponent(escape(atob($("jCode").value.trim()))));
+    if(!x||!Array.isArray(x.liste))throw 0;
+    let n=0;x.liste.forEach(p=>{if(p&&p.fiche&&!ROSTER.liste.some(y=>y.id===p.id)){ROSTER.liste.push(p);n++}});
+    if(!ROSTER.actif&&ROSTER.liste[0])ROSTER.actif=ROSTER.liste[0].id;
+    sauverRoster();$("jCode").hidden=true;$("jImporterOk").hidden=true;rendreJeu();
+    $("jSauvEtat").textContent=n?n+" coureur(s) importé(s).":"Ces coureurs sont déjà sur cet appareil.";
+  }catch(e){$("jSauvEtat").textContent="Ce code n'est pas reconnu. Vérifie qu'il a été copié en entier."}
+});
+// écran allumé
+let verrou=null;
+$("jEveil").addEventListener("change",async e=>{
+  const st=$("jEveilEtat");
+  if(e.target.checked){try{verrou=await navigator.wakeLock.request("screen");st.textContent="L'écran restera allumé tant que cette page est ouverte.";verrou.addEventListener("release",()=>{if($("jEveil").checked&&document.visibilityState!=="visible")st.textContent="Verrou relâché ; il revient quand tu reviens sur la page."})}catch(err){e.target.checked=false;st.textContent="Cet appareil ne permet pas de garder l'écran allumé ici."}}
+  else{try{verrou&&verrou.release()}catch(err){}verrou=null;st.textContent=""}
+});
+document.addEventListener("visibilitychange",async()=>{if(document.visibilityState==="visible"&&$("jEveil").checked){try{verrou=await navigator.wakeLock.request("screen")}catch(e){}}});
+
+/* ---------- Sorts sur la feuille de jeu ---------- */
+let sortArme=null, sortTimer=0;
+function peutLire(f,s){return (s.niv||1)<=lisibleMax(f.niveau,f.regles&&f.regles.lectureLibre)}
+function ligneSort(s,etat,onTap){
+  const row=document.createElement("div");row.className="sort";
+  const txt=document.createElement("div");const b=document.createElement("b");b.textContent=s.n+(s.niv?" · niv. "+s.niv:"");const sp=document.createElement("span");sp.textContent=s.e;txt.append(b,sp);
+  const btn=document.createElement("button");btn.type="button";btn.className="lire";btn.textContent=etat.label;
+  if(etat.primary)btn.classList.add("primary");if(etat.dis)btn.disabled=true;
+  btn.setAttribute("aria-label",etat.label+" : "+s.n);
+  if(!etat.dis)btn.addEventListener("click",onTap);
+  row.append(txt,btn);
+  if(etat.note){const n=document.createElement("span");n.className="note";n.textContent=etat.note;txt.append(n)}
+  return row;
+}
+function tapConfirme(s,faire,rendu){
+  clearTimeout(sortTimer);
+  if(sortArme!==s){sortArme=s;rendu();sortTimer=setTimeout(()=>{sortArme=null;rendu()},4000);return}
+  sortArme=null;faire();
+}
+function rendreSorts(){
+  const p=actif(); if(!p)return;
+  if(!Array.isArray(p.sorts))p.sorts=[];
+  const f=p.fiche, titre=f.sortsTitre||"Sorts";
+  $("jSoT").textContent=titre;
+  const dispo=p.sorts.filter(s=>!s.lu), lus=p.sorts.filter(s=>s.lu);
+  const L=lisibleMax(f.niveau,f.regles&&f.regles.lectureLibre);
+  $("jSoNote").textContent=L?"lisibles : niveau "+(L===1?"1":"1 à "+L):"illisibles au niveau 1";
+  const box=$("jSorts");box.innerHTML="";
+  if(!dispo.length)box.innerHTML='<p class="jetat">Aucun '+esc(f.sortsUn||"sort")+' en réserve. Ajoutes-en un quand tu en trouves.</p>';
+  dispo.forEach(s=>{
+    const ok=peutLire(f,s), arme=sortArme===s;
+    box.append(ligneSort(s,ok?{label:arme?"Confirmer":"Lire",primary:arme}:{label:"Lire",dis:true,note:"Lisible au niveau "+niveauPourLire(s.niv||1)},()=>tapConfirme(s,()=>lireSort(s,false),rendreSorts)));
+  });
+  $("jEresseaL").hidden=!(f.artefact==="eressea"&&(p.ames||0)>=3);
+  const Lz=$("jSortsLus");Lz.hidden=!lus.length;
+  $("jLusN").textContent=lus.length;
+  const ul=$("jLusListe");ul.innerHTML="";
+  lus.forEach(s=>{const li=document.createElement("li");li.textContent=s.n;ul.append(li)});
+  const sel=$("jSortSel");sel.innerHTML="";
+  catalogue(f).forEach((s,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=s.n+" · niv. "+(s.niv||1)+" · "+(s.c||s.e);sel.append(o)});
+  const o=document.createElement("option");o.value="autre";o.textContent="Autre, je l'invente…";sel.append(o);
+  $("jSortLibre").hidden=sel.value!=="autre";
+}
+function rendreConnus(){
+  const p=actif();if(!p)return;const c=p.connus||[];
+  $("jConnusCarte").hidden=!c.length;if(!c.length)return;
+  const box=$("jConnus");box.innerHTML="";
+  c.forEach(s=>{const arme=sortArme===s;
+    box.append(ligneSort(s,s.lance?{label:"Lancé",dis:true,note:"Revient après un repos long"}:{label:arme?"Confirmer":"Lancer",primary:arme},()=>tapConfirme(s,()=>lireSort(s,true),rendreConnus)))});
+}
+function catalogue(f){const t=THEMES.find(x=>x.id===f.theme)||THEMES[0];return t.P.concat((PERSO[t.id]&&PERSO[t.id].sorts)||[])}
+function lancerDes(n,faces){const d=[];for(let i=0;i<n;i++)d.push(de(faces));return {tot:d.reduce((a,b)=>a+b,0),d}}
+function lireSort(s,connu){
+  const p=actif(),f=p.fiche,niv=f.niveau;
+  let garde=false;if(!connu&&f.artefact==="eressea"&&(p.ames||0)>=3&&$("jEressea").checked){p.ames-=3;garde=true;$("jEressea").checked=false}
+  if(connu)s.lance=true;else if(!garde)s.lu=true;
+  const o={quoi:(connu?"Lancé : ":"Lu : ")+s.n,tot:"✓",det:s.e};let res="✓";
+  if(s.type==="projectile"){const n=Math.ceil(niv/2),jets=[];let tot=0;for(let i=0;i<n;i++){const r=de(4)+1;jets.push(r);tot+=r}
+    o.tot=tot;o.det=n+" projectile"+(n>1?"s":"")+" (1d4+1) : "+jets.join(" + ")+" = "+tot;o.ver="Une cible par projectile, au choix";o.neutre=true;res=tot}
+  else if(s.type==="soin"&&!s.roll){const dd=deDeVie(f),r=de(dd),gain=r+niv,avant=p.pv;p.pv=Math.min(f.pvMax,p.pv+gain);
+    o.tot="+"+gain;o.det="1 DV (d"+dd+" : "+r+") + niveau "+niv+" = "+gain+" PV";o.ver="Si c'est toi : PV "+avant+" → "+p.pv+". Sinon, donne les "+gain+" PV au blessé.";o.neutre=true;rendrePv();res="+"+gain}
+  else if(s.type==="duree"){const r=de(6);o.tot=r;o.det="Dure "+r+" minute"+(r>1?"s":"")+" (1d6). "+s.e;res=r+" min"}
+  else if(s.roll){const m=/^(\d+)d(\d+)$/.exec(s.roll);if(m){const r=lancerDes(+m[1],+m[2]);o.tot=r.tot;o.det=s.roll+" : "+r.d.join(" + ")+" = "+r.tot;o.ver=s.e;o.neutre=true;res=r.tot;
+    if(s.type==="soin"){const avant=p.pv;p.pv=Math.min(f.pvMax,p.pv+r.tot);o.ver="PV : "+avant+" → "+p.pv;rendrePv()}}}
+  if(garde){o.ver=(o.ver?o.ver+" · ":"")+"Trois âmes d'Eressëa dépensées : le parchemin reste intact.";o.neutre=true;rendreTalents()}
+  const cible=connu?"jConnusRes":"jSortRes";afficher(o,cible);$(cible).hidden=false;
+  journal(o.quoi,res);
+  sauverRoster();rendreSorts();rendreConnus();
+}
+function ajouterSort(s){
+  const p=actif(); if(!p)return;
+  if(!Array.isArray(p.sorts))p.sorts=[];
+  p.sorts.push(Object.assign({},s,{lu:false}));
+  sauverRoster();rendreSorts();
+  afficher({quoi:"Nouveau : "+s.n,tot:"+1",det:s.e,ver:peutLire(p.fiche,s)?"":"Lisible au niveau "+niveauPourLire(s.niv||1),neutre:true},"jSortRes");$("jSortRes").hidden=false;
+  journal("Gagné : "+s.n,"+1");
+}
+$("jSortHasard").addEventListener("click",()=>{const p=actif();if(!p)return;const cat=catalogue(p.fiche);ajouterSort(cat[Math.floor(Math.random()*cat.length)])});
+$("jSortChoisir").addEventListener("click",()=>{const f=$("jSortForm");f.hidden=!f.hidden;if(!f.hidden)$("jSortSel").focus()});
+$("jSortSel").addEventListener("change",()=>{$("jSortLibre").hidden=$("jSortSel").value!=="autre"});
+$("jSortFermer").addEventListener("click",()=>{$("jSortForm").hidden=true});
+$("jSortForm").addEventListener("submit",e=>{
+  e.preventDefault();const p=actif();if(!p)return;
+  const val=$("jSortSel").value;
+  if(val==="autre"){
+    const n=$("jSortNom").value.trim().slice(0,60), ef=$("jSortEff").value.trim().slice(0,200);
+    if(!n){$("jSortNom").focus();return}
+    const roll=$("jSortDe").value, type=$("jSortType").value;
+    ajouterSort({n,e:ef||"Effet à décider avec le meneur.",c:ef,niv:+$("jSortNiv").value||1,roll:roll||undefined,type:roll?type:"autre"});
+    $("jSortNom").value="";$("jSortEff").value="";
+  }else ajouterSort(catalogue(p.fiche)[+val]);
+  $("jSortForm").hidden=true;
+});
+$("jLusVider").addEventListener("click",()=>{const p=actif();p.sorts=p.sorts.filter(s=>!s.lu);sauverRoster();rendreSorts()});
+
+/* ---------- Progression : passage de niveau (le Conteur décide, livre p. 9) ---------- */
+const NIV_MAX=6;
+function catDons(f){const t=THEMES.find(x=>x.id===f.theme)||THEMES[0];return donsTheme(t,f.regles&&f.regles.donsMaison).concat((PERSO[t.id]&&PERSO[t.id].dons)||[])}
+function donDeLigne(f,ligne){return catDons(f).find(d=>ligne===d.n||ligne.startsWith(d.n+" :"))}
+function nomsDons(f){if(Array.isArray(f.donsNoms))return f.donsNoms;return f.dons.map(l=>{const d=donDeLigne(f,l);return d?d.n:null}).filter(Boolean)}
+function deDeVie(f){const m=/d(\d+)/.exec(f.dv||"");return m?+m[1]:8}
+let nivMode="niveau";
+function rendreProgression(){
+  const p=actif();if(!p)return;const f=p.fiche;
+  const fin=f.niveau>=NIV_MAX;
+  $("jNivOuvrir").hidden=fin;$("jNivOuvrir").textContent="Passer au niveau "+(f.niveau+1)+"…";
+  $("jNivApres6").hidden=!fin;
+  $("jNivPanneau").hidden=true;
+  const u=p.avantNiveau;
+  $("jNivUndo").hidden=!u;$("jNivUndoOk").hidden=true;
+  if(u)$("jNivUndo").textContent="Annuler : "+(u.libelle||"passage au niveau "+f.niveau);
+}
+function ouvrirNiveau(mode){
+  nivMode=mode;
+  const p=actif(),f=p.fiche,n=mode==="niveau"?f.niveau+1:f.niveau,de=deDeVie(f),noms=nomsDons(f);
+  const sel=$("jNivDon");sel.innerHTML="";
+  $("jNivBlocDon").hidden=mode==="dh";
+  if(mode!=="dh"){
+    const o0=document.createElement("option");o0.value="";o0.textContent="Choisis un don…";sel.append(o0);
+    catDons(f).forEach((d,i)=>{if(d.fx&&d.fx.parch)return;if(noms.includes(d.n))return;if(!donDispo(d,n,noms,false))return;
+      const o=document.createElement("option");o.value=String(i);o.textContent=d.n+" · "+d.e;sel.append(o)});
+    const oa=document.createElement("option");oa.value="autre";oa.textContent="Autre, je l'écris…";sel.append(oa);
+  }
+  $("jNivLibre").hidden=true;$("jNivNom").value="";$("jNivEff").value="";$("jNivExtra").innerHTML="";
+  const ul=$("jNivListe");ul.innerHTML="";
+  const lignes=mode==="niveau"?["Points de vie : +1d"+de+" + 1 (lancé à la validation)","Standard "+sign(f.std)+" → "+sign(f.std+1)+" · Arts du mouvement "+sign(f.mvt)+" → "+sign(f.mvt+1)+" · Défense inchangée","Dés d'héroïsme : "+f.dhMax+" → "+(f.dhMax+1),"Un nouveau don, à choisir ci-dessous"]
+    :mode==="dh"?["Dés d'héroïsme : "+f.dhMax+" → "+(f.dhMax+1)]:["Un nouveau don, exceptionnel après le niveau 6"];
+  if(mode==="niveau"){const L0=lisibleMax(f.niveau,f.regles&&f.regles.lectureLibre),L1=lisibleMax(n,f.regles&&f.regles.lectureLibre);if(L1>L0)lignes.push("Peut désormais lire les sorts de niveau "+L1)}
+  lignes.forEach(t=>{const li=document.createElement("li");li.textContent=t;ul.append(li)});
+  $("jNivTitre").textContent=mode==="niveau"?"Niveau "+f.niveau+" → "+n:mode==="dh"?"Après le niveau 6 : un dé d'héroïsme":"Après le niveau 6 : un don exceptionnel";
+  $("jNivPanneau").hidden=false;$("jNivOuvrir").hidden=true;$("jNivApres6").hidden=true;
+  majHold();if(mode!=="dh")sel.focus();
+}
+function donChoisi(){
+  const p=actif(),val=$("jNivDon").value;
+  if(!val)return null;
+  if(val==="autre"){const n=$("jNivNom").value.trim().slice(0,60);if(!n)return null;return {n,e:$("jNivEff").value.trim().slice(0,200),fx:{}}}
+  return catDons(p.fiche)[+val];
+}
+function extraDon(){
+  const d=nivMode==="dh"?null:donChoisi(),box=$("jNivExtra");box.innerHTML="";
+  if(!d)return;if(d.n!=="Artefact légendaire"&&!d.fx)return;const f=actif().fiche;
+  if(d.n==="Artefact légendaire"){const l=document.createElement("label");l.htmlFor="jNivArt";l.textContent="Artefact porté";const s=document.createElement("select");s.id="jNivArt";
+    const o0=document.createElement("option");o0.value="";o0.textContent="Choisis un artefact…";s.append(o0);ARTEFACTS.forEach(a=>{const o=document.createElement("option");o.value=a.id;o.textContent=a.n;s.append(o)});s.addEventListener("change",majHold);l.append(s);box.append(l);return}
+  if(d.fx.aspect3){box.innerHTML='<label for="jNivAsp">Troisième aspect<input id="jNivAsp" placeholder="ex. Ancien marin"></label>';$("jNivAsp").addEventListener("input",majHold)}
+  const lst=n=>catalogue(f).filter(s=>(s.niv||1)===n);
+  const mk=(id,lab,n)=>{const l=document.createElement("label");l.htmlFor=id;l.textContent=lab;const s=document.createElement("select");s.id=id;
+    const o0=document.createElement("option");o0.value="";o0.textContent="Choisis un sort…";s.append(o0);
+    lst(n).forEach((x,i)=>{const o=document.createElement("option");o.value=x.n;o.textContent=x.n+" · "+(x.c||x.e);s.append(o)});s.addEventListener("change",majHold);l.append(s);box.append(l)};
+  if(d.fx.magie1){mk("jNivS1","Premier sort connu (niveau 1)",1);mk("jNivS2","Second sort connu (niveau 1)",1)}
+  if(d.fx.magie2)mk("jNivS3","Sort connu (niveau 2)",2);
+}
+function extraOk(){
+  if(nivMode==="dh")return true;const d=donChoisi();if(!d)return false;if(d.n==="Artefact légendaire")return !!($("jNivArt")&&$("jNivArt").value);if(!d.fx)return true;
+  if(d.fx.aspect3&&!($("jNivAsp")&&$("jNivAsp").value.trim()))return false;
+  if(d.fx.magie1){const a=$("jNivS1").value,b=$("jNivS2").value;if(!a||!b||a===b)return false}
+  if(d.fx.magie2&&!$("jNivS3").value)return false;
+  return true;
+}
+function majHold(){const ok=extraOk();$("jNivHold").disabled=!ok;$("jNivAide").textContent=ok?"Maintiens le bouton appuyé pour valider.":nivMode==="dh"?"":!donChoisi()?"Choisis d'abord le nouveau don.":"Complète le choix ci-dessus."}
+function appliquerDon(p,d,n){
+  const f=p.fiche,fx=d.fx||{};
+  const lignes=f.dons.slice();
+  if(d.n==="Artefact légendaire"){const a=ARTEFACTS.find(x=>x.id===$("jNivArt").value);f.artefact=a?a.id:null;lignes.push("Artefact légendaire : "+(a?a.n+". "+a.e:""));
+    f.armes=armesAvecArtefact(f.armes.slice(),f.artefact,f.armes.some(x=>!x.dist&&x.base&&x.d!==x.base)?["contact"]:[])}
+  else lignes.push(d.n+(d.e?" : "+d.e:""));
+  if(!Array.isArray(f.donsNoms))f.donsNoms=nomsDons(f);f.donsNoms.push(d.n);
+  let gainPv=(fx.pvNiv||0)*n+(fx.pv||0);
+  if(fx.dv){const m=/^(\d+)d(\d+)\+(\d+)$/.exec(f.dv);if(m)f.dv=m[1]+"d"+tailleDe(+m[2],fx.dv)+"+"+m[3]}
+  if(fx.chance)f.dhDe=8;
+  if(fx.init)f.init=8;
+  if(fx.sournois)f.sournois=true;
+  if(fx.cmd){f.cmd=fx.cmd;p.jetons=fx.cmd}
+  if(fx.esquive&&f.armureCat<=1)f.def+=2;
+  if(fx.maitrise&&f.armureCat>=2)f.mvt+=2;
+  if(fx.predi)f.armes=f.armes.map(a=>((a.dist?"dist":"contact")===fx.predi)?Object.assign({},a,{d:deArme(a.d,1)}):a);
+  f.std+=fx.std||0;f.mvt+=fx.mvt||0;f.def+=fx.def||0;
+  if(fx.dh){f.dhMax+=fx.dh;p.dh+=fx.dh}
+  if(fx.aspect3){const a=$("jNivAsp").value.trim().slice(0,60);if(a)f.aspects.push(a)}
+  const cat=catalogue(f),nouveaux=[];
+  if(fx.magie1)nouveaux.push($("jNivS1").value,$("jNivS2").value);
+  if(fx.magie2)nouveaux.push($("jNivS3").value);
+  if(nouveaux.length){if(!Array.isArray(p.connus))p.connus=[];nouveaux.forEach(nm=>{const s=cat.find(x=>x.n===nm);if(s)p.connus.push({n:s.n,e:s.e,c:s.c,niv:s.niv||1,type:s.type,roll:s.roll,lance:false})});
+    lignes.push("Sorts connus, une fois par repos long : "+nouveaux.join(", ")+".")}
+  f.dons=lignes;
+  if(gainPv){f.pvMax+=gainPv;p.pv=Math.min(f.pvMax,p.pv+gainPv)}
+  return gainPv;
+}
+function monterNiveau(){
+  const p=actif(),f=p.fiche;if(!extraOk())return;
+  const copie=JSON.parse(JSON.stringify({fiche:f,pv:p.pv,dh:p.dh,connus:p.connus||[],jetons:p.jetons}));
+  let msg="";
+  if(nivMode==="niveau"){
+    if(f.niveau>=NIV_MAX)return;
+    const d=donChoisi();
+    const n=f.niveau+1,de=deDeVie(f),jet=1+Math.floor(Math.random()*de);
+    let pvDons=0;nomsDons(f).forEach(nm=>{const x=catDons(f).find(y=>y.n===nm);if(x&&x.fx&&x.fx.pvNiv)pvDons+=x.fx.pvNiv});
+    const gain=jet+1+pvDons;
+    f.niveau=n;const m=/^(\d+)d(\d+)\+(\d+)$/.exec(f.dv);f.dv=n+"d"+(m?m[2]:de)+"+"+(n+4);
+    f.pvMax+=gain;p.pv=Math.min(f.pvMax,p.pv+gain);
+    f.std+=1;f.mvt+=1;f.dhMax+=1;p.dh=Math.min(f.dhMax,p.dh+1);
+    const g2=appliquerDon(p,d,n);
+    copie.libelle="passage au niveau "+n;
+    msg="Niveau "+n+". Dé de vie d"+de+" : "+jet+", soit +"+(gain+g2)+" PV (maximum "+f.pvMax+"). Nouveau don : "+d.n+".";
+    journal("Niveau "+n,"+"+(gain+g2)+" PV");
+  }else if(nivMode==="dh"){
+    f.dhMax+=1;p.dh+=1;copie.libelle="dé d'héroïsme gagné";msg="Un dé d'héroïsme de plus : "+f.dhMax+" au total.";journal("Progression","+1 DH");
+  }else{
+    const d=donChoisi();appliquerDon(p,d,f.niveau);copie.libelle="don « "+d.n+" »";msg="Nouveau don : "+d.n+".";journal("Don exceptionnel",d.n);
+  }
+  p.avantNiveau=copie;
+  sauverRoster();rendreJeu();$("jProg").open=true;$("jNivEtat").textContent=msg;
+}
+/* Bouton à maintenir */
+let holdT=0;
+function holdStart(e){if($("jNivHold").disabled)return;if(e.type==="keydown"){if(e.repeat||(e.key!==" "&&e.key!=="Enter"))return;e.preventDefault()}
+  $("jNivHold").classList.add("tient");clearTimeout(holdT);holdT=setTimeout(()=>{$("jNivHold").classList.remove("tient");monterNiveau()},1500)}
+function holdStop(){clearTimeout(holdT);$("jNivHold").classList.remove("tient")}
+["pointerdown","keydown"].forEach(ev=>$("jNivHold").addEventListener(ev,holdStart));
+["pointerup","pointerleave","pointercancel","keyup","blur"].forEach(ev=>$("jNivHold").addEventListener(ev,holdStop));
+$("jNivHold").addEventListener("click",e=>e.preventDefault());
+$("jNivHold").addEventListener("contextmenu",e=>e.preventDefault());
+$("jNivOuvrir").addEventListener("click",()=>ouvrirNiveau("niveau"));
+$("jNivDhBtn").addEventListener("click",()=>ouvrirNiveau("dh"));
+$("jNivDonBtn").addEventListener("click",()=>ouvrirNiveau("don"));
+$("jNivFermer").addEventListener("click",()=>{holdStop();rendreProgression()});
+$("jNivDon").addEventListener("change",()=>{$("jNivLibre").hidden=$("jNivDon").value!=="autre";extraDon();majHold()});
+$("jNivNom").addEventListener("input",majHold);
+$("jNivUndo").addEventListener("click",()=>{$("jNivUndo").hidden=true;$("jNivUndoOk").hidden=false});
+$("jNivUndoNon").addEventListener("click",()=>{$("jNivUndo").hidden=false;$("jNivUndoOk").hidden=true});
+$("jNivUndoOui").addEventListener("click",()=>{const p=actif(),u=p.avantNiveau;if(!u)return;
+  p.fiche=u.fiche;p.pv=u.pv;p.dh=u.dh;p.connus=u.connus;p.jetons=u.jetons;delete p.avantNiveau;sauverRoster();journal("Annulé : "+(u.libelle||"niveau"),"niveau "+p.fiche.niveau);rendreJeu();$("jProg").open=true;$("jNivEtat").textContent="Annulé : "+(u.libelle||"dernier changement")+"."});
+
+/* Fiche PDF à jour depuis la feuille de jeu */
+async function pdfDepuisJeu(){
+  const p=actif();if(!p)return;const f=p.fiche,etat=$("jPdfEtat");
+  if(!window.PDFLib){etat.textContent="La bibliothèque PDF n'a pas pu se charger. Recharge la page.";return}
+  const ids=["nom","aspect1","aspect2","aspect3","origine","armure","armes","equipement","dons","description","parchemins","pv","dv","dh","standard","mouvement","defense"];
+  const avant={};ids.forEach(id=>avant[id]=$(id).value);const nivAvant=$("niveau").value,Sav=S;
+  S=Object.assign({},Sav,{theme:f.theme,illu:Sav.illu==="portrait"?"cadre":Sav.illu});
+  const val={nom:f.nom,aspect1:f.aspects[0]||"",aspect2:f.aspects[1]||"",aspect3:f.aspects[2]||"",origine:f.origine,armure:"",armes:"",equipement:p.equip,dons:f.dons.join("\n"),description:f.description,
+    parchemins:(p.sorts||[]).filter(s=>!s.lu).map(FMT_SORT).join("\n"),pv:String(f.pvMax),dv:f.dv,dh:String(f.dhMax),standard:sign(f.std),mouvement:sign(f.mvt),defense:sign(f.def)};
+  ids.forEach(id=>$(id).value=val[id]);$("niveau").value=String(Math.min(6,f.niveau));
+  $("jPdf").disabled=true;etat.textContent="Fabrication de la fiche…";
+  try{
+    const bytes=await construirePdf();
+    const nom=(f.nom||"coureur").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
+    S=Sav;ids.forEach(id=>$(id).value=avant[id]);$("niveau").value=nivAvant;
+    await enregistrer((nom||"coureur")+"-niveau-"+f.niveau+".pdf",bytes);
+    etat.textContent="Fiche enregistrée.";
+  }catch(e){const c=e&&e.code;etat.textContent=c==="declined"?"Téléchargement annulé.":c?"Le téléchargement n'a pas abouti ("+c+").":"Erreur pendant la fabrication du PDF : "+(e&&e.message||e)}
+  finally{S=Sav;ids.forEach(id=>$(id).value=avant[id]);$("niveau").value=nivAvant;$("jPdf").disabled=false}
+}
+$("jPdf").addEventListener("click",pdfDepuisJeu);
+
+/* Barre mobile de la Forge */
+function majBarre(){if(!S)return;const c=calculer();$("mStats").innerHTML="<b>"+esc(v("nom")||"Coureur")+"</b><br>PV "+c.pv+" · Std "+sign(c.std)+" · Mouv "+sign(c.mvt)+" · Déf "+sign(c.def)}
+
+let dl=null;
+/* Dans Claude : capacité de téléchargement. Ailleurs (GitHub Pages…) : lien de téléchargement classique. */
+async function enregistrer(nom,bytes){
+  if(dl)return dl.save({filename:nom,data:bytes});
+  if(window.claude)throw {code:"indisponible"};
+  const url=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+  const a=document.createElement("a");a.href=url;a.download=nom;document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+}
+$("btnPdf").addEventListener("click",async()=>{
+  if(!window.PDFLib){setStatus("La bibliothèque PDF n'a pas pu se charger. Recharge la page.");return}
+  $("btnPdf").disabled=true;setStatus("Fabrication de la fiche…");
+  try{
+    const bytes=await construirePdf();
+    const nom=(v("nom")||"coureur").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"");
+    await enregistrer((nom||"coureur")+".pdf",bytes);
+    setStatus("Fiche enregistrée.");
+  }catch(e){
+    const c=e&&e.code;
+    setStatus(c==="declined"?"Téléchargement annulé.":c==="rate_limited"?"Une demande d'enregistrement est déjà ouverte.":c?"Le téléchargement n'a pas abouti ("+c+").":"Erreur pendant la fabrication du PDF : "+(e&&e.message||e));
+  }finally{$("btnPdf").disabled=false}
+});
+
+let customImg=null, portraitOffset=0, mode="gravure";
+tirer("fantasy");toutRendre(true);
+montrer();
+if(window.claude&&claude.use){claude.use("downloads").then(x=>{dl=x;if(!x)setStatus("Le téléchargement du PDF n'est pas disponible dans cette vue.")}).catch(()=>{})}
+})();
+</script>
+</body>
+</html>

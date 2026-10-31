@@ -1,0 +1,26 @@
+# Forge de Coureurs
+
+Création rapide de personnages pour le jeu de rôle **Coureurs d'Orages** (Islayre d'Argolh), avec :
+
+- quatorze thèmes (fantasy, Moyen Âge, pirates, western, contemporain, post-apocalypse, cyberpunk, science-fiction, space opera, préhistoire, Antiquité, années 1920, uchronie 1960, steampunk) ;
+- aspects, armes, équipement, dons et sorts au choix, ou inventés ;
+- points de vie et bonus calculés selon les règles du livre ;
+- fiche recto-verso en PDF remplissable, au format A5 ou carte postale ;
+- feuille de jeu sur téléphone : PV, dés d'héroïsme, jets, dégâts, sorts, dons en jeu, passage de niveau.
+
+Tout tient dans `index.html`. Les personnages et les choix personnels sont enregistrés dans le navigateur de chaque appareil (rien n'est envoyé sur un serveur).
+
+## Mettre en ligne avec GitHub Pages
+
+1. Crée un dépôt sur GitHub (par exemple `forge-de-coureurs`).
+2. Dépose tout le contenu de ce dossier à la racine du dépôt (`index.html`, `gravures/`, `manifest.webmanifest`, les icônes, `.nojekyll`).
+3. Dans le dépôt : **Settings → Pages → Build and deployment**, source **Deploy from a branch**, branche `main`, dossier `/ (root)`, puis **Save**.
+4. Après une minute, le site est disponible à `https://TON-PSEUDO.github.io/forge-de-coureurs/`.
+
+Sur téléphone, « Ajouter à l'écran d'accueil » donne une icône comme une application.
+
+## Crédits
+
+- Coureurs d'Orages : jeu d'Islayre d'Argolh, illustrations et mise en page de John Grümph. Les textes de règles cités ici sont des résumés ; le jeu complet se trouve dans le livre.
+- Gravures : The Metropolitan Museum of Art, Open Access, domaine public (CC0).
+- Bibliothèque PDF : [pdf-lib](https://pdf-lib.js.org) 1.17.1, incluse dans le dossier (licence MIT, voir `LICENCE-pdf-lib.md`). Polices : Google Fonts.
