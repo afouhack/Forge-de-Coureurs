@@ -86,9 +86,12 @@ textarea{resize:vertical;min-height:64px;line-height:1.35}
 .idrow label{flex:1}
 .dice{padding:7px 10px;font-size:18px;line-height:1}
 .portrait{display:flex;flex-direction:column;gap:8px;align-items:center}
-.portrait canvas{width:100%;max-width:220px;height:auto;aspect-ratio:4/5;border-radius:3px;border:1px solid var(--line);background:#ece6d8;touch-action:none;cursor:grab}
+.identite{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:start}
+.idcol{display:flex;flex-direction:column;gap:8px;min-width:0}
+.idcol .credit{text-align:left}
+.portrait canvas{width:100%;max-width:104px;height:auto;aspect-ratio:4/5;border-radius:3px;border:1px solid var(--line);background:#ece6d8;touch-action:none;cursor:grab}
 .portrait canvas:active{cursor:grabbing}
-.zoom{flex-direction:row;align-items:center;gap:8px;width:100%;max-width:220px}
+.zoom{flex-direction:row;align-items:center;gap:8px;width:100%}
 .zoom input{padding:0}
 .jtete.avecphoto{display:grid;grid-template-columns:76px minmax(0,1fr);column-gap:12px;align-items:center}
 .jtete.avecphoto img{grid-row:1/4;width:76px;height:95px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
@@ -268,6 +271,12 @@ details.jcarte[open] summary{margin-bottom:6px}
 
 .armes .deuxarmes{flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;font-family:var(--f-label);letter-spacing:.04em}
 .armes .deuxarmes span{font-family:var(--f-small);font-size:13px;letter-spacing:0;color:inherit;opacity:.85}
+
+.fin{border-color:var(--accent);border-width:2px}
+.finbtns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.finbtns{grid-template-columns:minmax(0,1fr)}}
+.finbtns button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:64px;font-size:17px}
+.finbtns button span{font-family:var(--f-small);font-size:13px;letter-spacing:0;font-weight:400;opacity:.85}
 </style>
 </head>
 <body>
@@ -337,28 +346,30 @@ details.jcarte[open] summary{margin-bottom:6px}
       </section>
 
       <section class="step" aria-labelledby="t6">
-        <div class="step-h"><h2 id="t6"><span class="n">7</span>Fiche</h2><small>Recto-verso, habillée selon le thème</small></div>
+        <div class="step-h"><h2 id="t6"><span class="n">7</span>Fiche</h2><small>Recto-verso, habillée selon le thème. La photo, si tu en ajoutes une, se place en haut à gauche.</small></div>
         <p class="sub">Format</p>
         <div class="chips" id="cFormat" role="group" aria-label="Format"></div>
-        <p class="sub">Illustration</p>
-        <div class="chips" id="cIllu" role="group" aria-label="Illustration"></div>
       </section>
     </div>
 
     <aside class="fiche" aria-label="Fiche du coureur">
-      <div class="idrow">
-        <label for="nom">Nom<input id="nom"></label>
-        <button class="dice" id="btnNom" type="button" aria-label="Autre nom" title="Autre nom">⚄</button>
-      </div>
-      <div class="portrait" id="blocPortrait" hidden>
-        <canvas id="cv" width="600" height="750" tabindex="0" aria-label="Photo du personnage. Glisse-la ou utilise les flèches pour la recadrer."></canvas>
-        <label class="zoom" for="zoomPhoto" id="zoomL" hidden>Zoom<input type="range" id="zoomPhoto" min="1" max="3" step="0.01" value="1"></label>
-        <div class="pbtns">
-          <button id="btnImport" type="button" class="primary">Choisir une photo</button>
-          <button id="btnRetirer" type="button" hidden>Retirer</button>
+      <div class="identite">
+        <div class="portrait" id="blocPortrait">
+          <canvas id="cv" width="600" height="750" tabindex="0" aria-label="Photo du personnage. Touche pour en choisir une, glisse pour la recadrer."></canvas>
+          <input type="file" id="file" accept="image/*" hidden>
         </div>
-        <input type="file" id="file" accept="image/*" hidden>
-        <p class="credit" id="credit">Une photo de ton choix, sur l'appareil ou prise sur le moment. Glisse-la pour la recadrer.</p>
+        <div class="idcol">
+          <div class="idrow">
+            <label for="nom">Nom<input id="nom"></label>
+            <button class="dice" id="btnNom" type="button" aria-label="Autre nom" title="Autre nom">⚄</button>
+          </div>
+          <div class="pbtns">
+            <button id="btnImport" type="button">Ajouter une photo</button>
+            <button id="btnRetirer" type="button" hidden>Retirer</button>
+          </div>
+          <label class="zoom" for="zoomPhoto" id="zoomL" hidden>Zoom<input type="range" id="zoomPhoto" min="1" max="3" step="0.01" value="1"></label>
+          <p class="credit" id="credit">Facultative. Glisse la photo pour la recadrer.</p>
+        </div>
       </div>
       <div class="lvl">
         <label for="niveau">Niveau
@@ -375,8 +386,6 @@ details.jcarte[open] summary{margin-bottom:6px}
         <div class="stat"><span class="k">Défense</span><output id="defense"></output><span class="w" id="wDef"></span></div>
       </div>
       <button id="btnPv" type="button">Relancer les PV</button>
-      <button id="btnPdf" class="primary" type="button">Télécharger la fiche PDF</button>
-      <button id="btnJouer" type="button">Ouvrir la feuille de jeu</button>
       <p class="status" id="status" role="status"></p>
     </aside>
   </div>
@@ -388,6 +397,15 @@ details.jcarte[open] summary{margin-bottom:6px}
       <div class="face"><span>Verso</span><canvas id="apercu2" aria-label="Aperçu du verso de la fiche"></canvas></div>
     </div>
     <p class="hint" id="formatHint"></p>
+  </section>
+
+  <section class="step fin" aria-labelledby="tFin" id="fin">
+    <div class="step-h"><h2 id="tFin"><span class="n">8</span>C'est prêt</h2><small>Tu peux encore tout changer plus haut.</small></div>
+    <div class="finbtns">
+      <button id="btnPdf" class="primary" type="button">Télécharger la fiche PDF<span>pour l'imprimer</span></button>
+      <button id="btnJouer" type="button">Ouvrir la feuille de jeu<span>pour jouer sur ce téléphone</span></button>
+    </div>
+    <p class="status" id="statusFin" role="status"></p>
   </section>
 
   <details>
@@ -426,7 +444,7 @@ details.jcarte[open] summary{margin-bottom:6px}
 </div>
 
 
-<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span><button class="primary" id="mJouer" type="button">Jouer</button></div>
+<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span><button class="primary" id="mJouer" type="button">Terminer ↓</button></div>
 
 <div class="jeu" id="vueJouer" hidden>
   <div class="jtop">
@@ -1078,9 +1096,6 @@ function rendreChoix(){
   // fiche
   box=$("cFormat");box.innerHTML="";
   Object.keys(FORMATS).forEach(f=>box.append(bouton("chip",esc(FORMATS[f].nom)+'<span class="t">'+FORMATS[f].mm+"</span>",S.format===f,()=>{S.format=f;maj(false)})));
-  box=$("cIllu");box.innerHTML="";
-  [["aucune","Aucune"],["cadre","Cadre vide à dessiner"],["photo","Photo"]].forEach(([id,n])=>box.append(bouton("chip",n,S.illu===id,()=>{S.illu=id;maj(id==="photo")})));
-  $("blocPortrait").hidden=S.illu!=="photo";
   $("formatHint").textContent="Format "+FORMATS[S.format].nom+" ("+FORMATS[S.format].mm+"), recto-verso. Imprime en taille réelle, sans ajustement à la page.";
 }
 function rendreStats(){
@@ -1116,7 +1131,7 @@ function ecrireTexte(){
   $("parchemins").value=S.sorts.map(n=>{const p=P.find(x=>x.n===n);return p?FMT_SORT(p):n}).join("\n");
   $("description").value=(S.f?"Une coureuse ":"Un coureur ")+PHYS[S.phys][g]+", "+CAR[S.car][g]+". "+S.recit;
 }
-function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();if(portrait&&S.illu==="photo")afficherPortrait();else rendreApercu()}
+function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();rendreApercu()}
 function toutRendre(portrait){rendreThemes();maj(portrait)}
 
 /* ---------- Formulaires d'ajout ---------- */
@@ -1152,14 +1167,15 @@ let photo=null, cvPhoto=false;
 function baseEchelle(im){return Math.max(W/im.naturalWidth,H/im.naturalHeight)}
 function dessinerPhoto(){
   ctx.globalCompositeOperation="source-over";ctx.globalAlpha=1;ctx.fillStyle="#ece6d8";ctx.fillRect(0,0,W,H);
-  if(!photo){cvPhoto=false;ctx.fillStyle="#7a808a";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="600 36px "+SMALL;ctx.fillText("Touche ici pour",W/2,H/2-24);ctx.fillText("choisir une photo",W/2,H/2+24);return}
+  if(!photo){cvPhoto=false;ctx.fillStyle="#b9b3a6";ctx.beginPath();ctx.arc(W/2,H*0.36,105,0,7);ctx.fill();ctx.beginPath();ctx.ellipse(W/2,H*0.86,210,170,0,Math.PI,0);ctx.fill();
+    ctx.fillStyle="#6f6a60";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="700 84px "+SMALL;ctx.fillText("+ photo",W/2,H*0.62);return}
   const im=photo.img,s=baseEchelle(im)*photo.zoom,w=im.naturalWidth*s,h=im.naturalHeight*s;
   photo.dx=Math.min(0,Math.max(W-w,photo.dx));photo.dy=Math.min(0,Math.max(H-h,photo.dy));
   ctx.drawImage(im,photo.dx,photo.dy,w,h);cvPhoto=true;
 }
 function afficherPortrait(){
   dessinerPhoto();
-  $("btnImport").textContent=photo?"Changer de photo":"Choisir une photo";$("btnRetirer").hidden=!photo;$("zoomL").hidden=!photo;
+  $("btnImport").textContent=photo?"Changer":"Ajouter une photo";$("btnRetirer").hidden=!photo;$("zoomL").hidden=!photo;
   if(photo)$("zoomPhoto").value=String(photo.zoom);
   rendreApercu();
 }
@@ -1326,7 +1342,7 @@ const CENTRES=["niveau","pv","dv","dh","std","mvt","def"];
 const REGLES=["Test standard : 1d20 + niveau contre 16 ; attaque : contre la défense adverse.","Arts du mouvement : 1d20 + niveau + 6 − armure contre 16.","Défense : 1d20 + armure contre l'attaque adverse.","Dé d'héroïsme : après un jet lié à un aspect ; sur une attaque réussie, il s'ajoute aussi aux dégâts.","Coup vicieux (adversaire pris au dépourvu) : avantage et +1d4 dégâts.","Initiative : le groupe lance 1d6 ; sur 4 ou plus, il agit en premier.","Repos long (8 h) : tous les dés d'héroïsme ; on peut relancer ses dés de vie.","Parchemin : lisible selon le niveau (2-3 : sorts de niveau 1, 4-5 : niveau 2, 6 : niveau 3), puis détruit."];
 
 function recto(c,k,withValues){
-  const th=S.theme, s=STY[th], t=T(), illu=S.illu!=="aucune", Lm=mise(S.format,illu), Z=zones(Lm);
+  const th=S.theme, s=STY[th], t=T(), illu=cvPhoto, Lm=mise(S.format,illu), Z=zones(Lm);
   decor(c,k,s,Lm,th);
   // en-tête
   texte(c,k,("Coureurs d'Orages · "+t.nom).toUpperCase(),Lm.hx,M+22,17,EYE,s.acc);
@@ -1334,9 +1350,9 @@ function recto(c,k,withValues){
   texte(c,k,"Nom",Lm.nom[0]+Lm.nom[2],Lm.nom[1]+Lm.nom[3]+17,14,SMALL,s.acc2,"right");
   // portrait
   if(illu){const [x,y,w,h]=Lm.port;
-    if(S.illu==="photo"&&cvPhoto){c.drawImage(cv,x*k,y*k,w*k,h*k)}
+    c.drawImage(cv,x*k,y*k,w*k,h*k);
     boite(c,k,Lm.port,s,"",11);
-    if((S.illu==="cadre"||(S.illu==="photo"&&!cvPhoto))&&!withValues)texte(c,k,"portrait",x+w/2,y+h-12,13,SMALL,s.acc2,"center")}
+    }
   boite(c,k,Lm.niveau,s,"",12);texte(c,k,"Niveau",Lm.niveau[0]+Lm.niveau[2]/2,Lm.niveau[1]+26,18,s.font,s.acc,"center");
   // colonne gauche
   boite(c,k,Lm.aspects,s,"Aspects",21);
@@ -1406,7 +1422,7 @@ async function construirePdf(){
     else{while(sz>min&&(times.widthOfTextAtSize(txt,sz)>w-4||sz*1.15>h))sz-=0.25}
     tf.setFontSize(Math.max(sz,6));
   }
-  const illu=S.illu!=="aucune", Z=zones(mise(S.format,illu)), V=valeurs();
+  const illu=cvPhoto, Z=zones(mise(S.format,illu)), V=valeurs();
   const p1=doc.addPage([F.w,F.h]);
   p1.drawImage(await doc.embedPng(await fondPng(recto,F)),{x:0,y:0,width:F.w,height:F.h});
   [["nom","nom"],["niveau","niveau"],["aspects","aspects"],["dons","dons"],["equip","equipement"],["pv","points_de_vie"],["dv","des_de_vie"],["dh","des_heroisme"],["std","standard"],["mvt","arts_du_mouvement"],["def","defense"]]
@@ -1432,7 +1448,7 @@ function rendreApercu(){if(!S)return;dessinerApercu();if(!policesVues.has(S.them
 let raf=0;document.addEventListener("input",e=>{if(e.target.closest("details")||e.target.id==="nom"){if(e.target.id==="nom"){S.nom=e.target.value;majBarre()}cancelAnimationFrame(raf);raf=requestAnimationFrame(rendreApercu)}});
 
 /* ---------- Actions ---------- */
-function setStatus(t){$("status").textContent=t}
+function setStatus(t){$("status").textContent=t;$("statusFin").textContent=t}
 $("btnTirer").addEventListener("click",()=>{tirer(S.theme);toutRendre(true);setStatus("Nouveau coureur tiré.")});
 $("btnNom").addEventListener("click",()=>{S.f=R()<0.45;S.nom=nouveauNom(T(),S.f);S.traits.beard=!S.f&&R()<0.65;ecrireTexte();rendreApercu()});
 $("btnPv").addEventListener("click",()=>{S.rolls=S.rolls.map(()=>R());rendreStats();rendreApercu();setStatus("PV relancés : "+$("pv").value+".")});
@@ -1493,7 +1509,7 @@ function instantane(){
     regles:{donsMaison:REG.donsMaison,lectureLibre:REG.lectureLibre,dvMetier:REG.dvMetier},
     sortsTitre:t.sortsTitre, sortsUn:t.sortsUn,
     sorts:S.sorts.map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj),
-    portrait:S.illu==="photo"?vignette():null,
+    portrait:vignette(),
     connus:(c.fx.magie1?S.connus1:[]).concat(c.fx.magie2?S.connus2:[]).map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj)};
 }
 function jouerCeCoureur(){
@@ -1736,7 +1752,7 @@ $("jNotes").addEventListener("input",e=>{const p=actif();p.notes=e.target.value;
 $("jListe").addEventListener("change",e=>{ROSTER.actif=e.target.value;sauverRoster();rendreJeu()});
 $("jRetour").addEventListener("click",()=>allerA("forge"));
 $("jVersForge").addEventListener("click",()=>allerA("forge"));
-$("mJouer").addEventListener("click",jouerCeCoureur);
+$("mJouer").addEventListener("click",()=>{$("fin").scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})});
 $("btnJouer").addEventListener("click",jouerCeCoureur);
 // suppression
 $("jSuppr").addEventListener("click",()=>{$("jSuppr").hidden=true;$("jSupprOk").hidden=false});
@@ -2008,9 +2024,8 @@ async function pdfDepuisJeu(){
   if(!window.PDFLib){etat.textContent="La bibliothèque PDF n'a pas pu se charger. Recharge la page.";return}
   const ids=["nom","aspect1","aspect2","aspect3","origine","armure","armes","equipement","dons","description","parchemins","pv","dv","dh","standard","mouvement","defense"];
   const avant={};ids.forEach(id=>avant[id]=$(id).value);const nivAvant=$("niveau").value,Sav=S;
-  const avecPhoto=!!f.portrait&&Sav.illu!=="aucune";
-  S=Object.assign({},Sav,{theme:f.theme,illu:avecPhoto?"photo":(Sav.illu==="photo"?"cadre":Sav.illu)});
-  if(avecPhoto){try{const im=await chargerImg(f.portrait);ctx.drawImage(im,0,0,W,H);cvPhoto=true}catch(e){}}
+  S=Object.assign({},Sav,{theme:f.theme});
+  cvPhoto=false;if(f.portrait){try{const im=await chargerImg(f.portrait);ctx.drawImage(im,0,0,W,H);cvPhoto=true}catch(e){}}
   const val={nom:f.nom,aspect1:f.aspects[0]||"",aspect2:f.aspects[1]||"",aspect3:f.aspects[2]||"",origine:f.origine,armure:"",armes:"",equipement:p.equip,dons:f.dons.join("\n"),description:f.description,
     parchemins:(p.sorts||[]).filter(s=>!s.lu).map(FMT_SORT).join("\n"),pv:String(f.pvMax),dv:f.dv,dh:String(f.dhMax),standard:sign(f.std),mouvement:sign(f.mvt),defense:sign(f.def)};
   ids.forEach(id=>$(id).value=val[id]);$("niveau").value=String(Math.min(6,f.niveau));
@@ -2052,7 +2067,7 @@ $("btnPdf").addEventListener("click",async()=>{
   }finally{$("btnPdf").disabled=false}
 });
 
-tirer("fantasy");toutRendre(true);
+tirer("fantasy");toutRendre(true);dessinerPhoto();
 montrer();
 if(window.claude&&claude.use){claude.use("downloads").then(x=>{dl=x;if(!x)setStatus("Le téléchargement du PDF n'est pas disponible dans cette vue.")}).catch(()=>{})}
 })();
