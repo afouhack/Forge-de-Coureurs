@@ -86,7 +86,12 @@ textarea{resize:vertical;min-height:64px;line-height:1.35}
 .idrow label{flex:1}
 .dice{padding:7px 10px;font-size:18px;line-height:1}
 .portrait{display:flex;flex-direction:column;gap:8px;align-items:center}
-.portrait canvas{width:100%;max-width:220px;height:auto;aspect-ratio:4/5;border-radius:3px;border:1px solid var(--line);background:#ece6d8}
+.portrait canvas{width:100%;max-width:220px;height:auto;aspect-ratio:4/5;border-radius:3px;border:1px solid var(--line);background:#ece6d8;touch-action:none;cursor:grab}
+.portrait canvas:active{cursor:grabbing}
+.zoom{flex-direction:row;align-items:center;gap:8px;width:100%;max-width:220px}
+.zoom input{padding:0}
+.jtete.avecphoto{display:grid;grid-template-columns:76px minmax(0,1fr);column-gap:12px;align-items:center}
+.jtete.avecphoto img{grid-row:1/4;width:76px;height:95px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
 .pbtns{display:flex;flex-wrap:wrap;gap:6px;width:100%}
 .pbtns button{flex:1 1 auto;font-size:13px;padding:6px 8px}
 .credit{font-family:var(--f-small);font-size:12.5px;line-height:1.3;color:var(--muted);margin:0;text-align:center}
@@ -345,16 +350,15 @@ details.jcarte[open] summary{margin-bottom:6px}
         <label for="nom">Nom<input id="nom"></label>
         <button class="dice" id="btnNom" type="button" aria-label="Autre nom" title="Autre nom">⚄</button>
       </div>
-      <div class="portrait" id="blocPortrait">
-        <canvas id="cv" width="600" height="750" aria-label="Portrait du personnage"></canvas>
+      <div class="portrait" id="blocPortrait" hidden>
+        <canvas id="cv" width="600" height="750" tabindex="0" aria-label="Photo du personnage. Glisse-la ou utilise les flèches pour la recadrer."></canvas>
+        <label class="zoom" for="zoomPhoto" id="zoomL" hidden>Zoom<input type="range" id="zoomPhoto" min="1" max="3" step="0.01" value="1"></label>
         <div class="pbtns">
-          <button id="btnPortrait" type="button">Autre gravure</button>
-          <button id="btnMode" type="button">Dessin à l'encre</button>
-          <button id="btnImport" type="button">Importer une image</button>
-          <button id="btnDessin" type="button" hidden>Retirer l'image importée</button>
+          <button id="btnImport" type="button" class="primary">Choisir une photo</button>
+          <button id="btnRetirer" type="button" hidden>Retirer</button>
         </div>
         <input type="file" id="file" accept="image/*" hidden>
-        <p class="credit" id="credit"></p>
+        <p class="credit" id="credit">Une photo de ton choix, sur l'appareil ou prise sur le moment. Glisse-la pour la recadrer.</p>
       </div>
       <div class="lvl">
         <label for="niveau">Niveau
@@ -434,7 +438,8 @@ details.jcarte[open] summary{margin-bottom:6px}
     <button class="primary" id="jVersForge" type="button">Créer un coureur</button>
   </div>
   <div id="jCorps" class="jcol">
-    <header class="jtete">
+    <header class="jtete" id="jTete">
+      <img id="jPhoto" alt="" hidden>
       <span class="eyebrow" id="jTheme"></span>
       <h1 id="jNom"></h1>
       <p id="jAspects"></p>
@@ -958,8 +963,6 @@ function tirer(themeId){
   S.connus1=shuffle(listes.P().filter(p=>p.niv===1).map(p=>p.n)).slice(0,2);
   S.connus2=shuffle(listes.P().filter(p=>p.niv===2).map(p=>p.n)).slice(0,1);
   S.portraitSeed=S.seed;
-  portraitOffset=0;customImg=null;
-  mode=t.grav?"gravure":"dessin";
 }
 const T=()=>THEMES.find(x=>x.id===S.theme);
 
@@ -1076,8 +1079,8 @@ function rendreChoix(){
   box=$("cFormat");box.innerHTML="";
   Object.keys(FORMATS).forEach(f=>box.append(bouton("chip",esc(FORMATS[f].nom)+'<span class="t">'+FORMATS[f].mm+"</span>",S.format===f,()=>{S.format=f;maj(false)})));
   box=$("cIllu");box.innerHTML="";
-  [["aucune","Aucune"],["cadre","Cadre vide à dessiner"],["portrait","Portrait"]].forEach(([id,n])=>box.append(bouton("chip",n,S.illu===id,()=>{S.illu=id;maj(id==="portrait")})));
-  $("blocPortrait").hidden=S.illu!=="portrait";
+  [["aucune","Aucune"],["cadre","Cadre vide à dessiner"],["photo","Photo"]].forEach(([id,n])=>box.append(bouton("chip",n,S.illu===id,()=>{S.illu=id;maj(id==="photo")})));
+  $("blocPortrait").hidden=S.illu!=="photo";
   $("formatHint").textContent="Format "+FORMATS[S.format].nom+" ("+FORMATS[S.format].mm+"), recto-verso. Imprime en taille réelle, sans ajustement à la page.";
 }
 function rendreStats(){
@@ -1113,7 +1116,7 @@ function ecrireTexte(){
   $("parchemins").value=S.sorts.map(n=>{const p=P.find(x=>x.n===n);return p?FMT_SORT(p):n}).join("\n");
   $("description").value=(S.f?"Une coureuse ":"Un coureur ")+PHYS[S.phys][g]+", "+CAR[S.car][g]+". "+S.recit;
 }
-function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();if(portrait&&S.illu==="portrait")afficherPortrait();else rendreApercu()}
+function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();if(portrait&&S.illu==="photo")afficherPortrait();else rendreApercu()}
 function toutRendre(portrait){rendreThemes();maj(portrait)}
 
 /* ---------- Formulaires d'ajout ---------- */
@@ -1143,149 +1146,25 @@ function policesPretes(){
 }
 
 
-/* ---------- Portrait à l'encre ---------- */
-const INK="#1d1f26";
-function line(r,pts,w,passes){
-  ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=INK;
-  for(let p=0;p<(passes||2);p++){
-    ctx.globalAlpha=p===0?0.9:0.45;ctx.lineWidth=w*(0.75+r()*0.5);
-    ctx.beginPath();const j=()=>(r()-0.5)*w*1.2;
-    ctx.moveTo(pts[0][0]+j(),pts[0][1]+j());
-    for(let i=1;i<pts.length-1;i++){const mx=(pts[i][0]+pts[i+1][0])/2,my=(pts[i][1]+pts[i+1][1])/2;ctx.quadraticCurveTo(pts[i][0]+j(),pts[i][1]+j(),mx,my)}
-    const l=pts[pts.length-1];ctx.lineTo(l[0]+j(),l[1]+j());ctx.stroke();
-  }
-  ctx.globalAlpha=1;
-}
-function shape(pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.closePath()}
-function wash(pts,color,alpha){shape(pts);ctx.fillStyle=color;ctx.globalAlpha=alpha||0.85;ctx.fill();ctx.globalAlpha=1}
-function hatch(r,clipPts,x0,x1,y0,y1,step,ang,alpha){
-  ctx.save();shape(clipPts);ctx.clip();ctx.strokeStyle=INK;ctx.globalAlpha=alpha||0.35;ctx.lineWidth=1.2;
-  for(let x=x0-(y1-y0);x<x1;x+=step){ctx.beginPath();ctx.moveTo(x+(r()-.5)*2,y1);ctx.lineTo(x+(y1-y0)*ang+(r()-.5)*2,y0);ctx.stroke()}
-  ctx.restore();ctx.globalAlpha=1;
-}
-function headPts(cx,cy,rx,ry,n){const p=[];for(let i=0;i<n;i++){const t=i/n*Math.PI*2,s=Math.sin(t);const k=s>0?1-0.28*s*s:1;p.push([cx+rx*Math.cos(t)*k,cy+ry*s])}return p}
-
-function dessiner(p){
-  const r=rng(p.portraitSeed+portraitOffset*104729), tr=p.traits;
-  ctx.globalAlpha=1;ctx.fillStyle="#ece6d8";ctx.fillRect(0,0,W,H);
-  for(let i=0;i<5;i++){const x=r()*W,y=r()*H*0.55,rad=120+r()*160;const g=ctx.createRadialGradient(x,y,10,x,y,rad);g.addColorStop(0,"rgba(70,88,110,0.32)");g.addColorStop(1,"rgba(70,88,110,0)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
-  const lx=W*(0.12+r()*0.76);const bolt=[[lx,0]];for(let y=0,x=lx;y<H*0.5;){y+=25+r()*35;x+=(r()-0.5)*70;bolt.push([x,y])}
-  ctx.strokeStyle="rgba(200,150,40,0.55)";ctx.lineWidth=7;ctx.beginPath();bolt.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();
-  line(r,bolt,2,1);
-  ctx.strokeStyle="rgba(30,35,45,0.18)";ctx.lineWidth=1.2;for(let i=0;i<90;i++){const x=r()*W,y=r()*H;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-12,y+34);ctx.stroke()}
-  for(let i=0;i<2500;i++){ctx.fillStyle="rgba(40,30,20,"+(r()*0.07)+")";ctx.fillRect(r()*W,r()*H,1.4,1.4)}
-  const skin=pick(r,["#e7c6a5","#c99a73","#a8744f","#7a5034","#eed7c0","#b88660"]);
-  const hairC=pick(r,["#2a221d","#4a3020","#7a4f27","#c9a46a","#8f8f8f","#6b2b1a","#1b1b1b"]);
-  const cx=W/2+(r()-0.5)*30, cy=H*0.40, rx=W*0.15*(0.9+r()*0.2), ry=W*0.205*(0.92+r()*0.14);
-  const by=cy+ry*1.12, head=headPts(cx,cy,rx,ry,48);
-  if(tr.hair==="capuche"){const h=[[cx-rx*1.7,by+40],[cx-rx*1.55,cy-ry*0.2],[cx-rx*1.1,cy-ry*1.35],[cx,cy-ry*1.55],[cx+rx*1.1,cy-ry*1.35],[cx+rx*1.55,cy-ry*0.2],[cx+rx*1.7,by+40]];wash(h,"#3f4a52",0.9);line(r,h,3)}
-  if(tr.hair==="long"||tr.hair==="tresses"){const h=[[cx-rx*1.2,by+30+r()*40],[cx-rx*1.3,cy+ry*0.2],[cx-rx*1.12,cy-ry*0.85],[cx,cy-ry*1.18],[cx+rx*1.12,cy-ry*0.85],[cx+rx*1.3,cy+ry*0.2],[cx+rx*1.2,by+30+r()*40]];wash(h,hairC,0.9);line(r,h,2.5);for(let i=0;i<9;i++){const x=cx+(i<4.5?-1:1)*rx*(0.95+r()*0.3);line(r,[[x,cy],[x+(r()-.5)*10,cy+ry*0.6],[x+(r()-.5)*14,by+20]],1.2,1)}}
-  const body=[[cx-W*0.47,H+10],[cx-W*0.41,by+H*0.07],[cx-W*0.2,by-4],[cx+W*0.2,by-4],[cx+W*0.41,by+H*0.07],[cx+W*0.47,H+10]];
-  wash(body,{aucune:"#8b7355",legere:"#6e4b30",mixte:"#8d949c",lourde:"#a3aab2"}[p.armure],0.88);
-  if(p.armure==="mixte"){ctx.save();shape(body);ctx.clip();ctx.strokeStyle=INK;ctx.globalAlpha=0.35;ctx.lineWidth=1;for(let y=by-10;y<H;y+=9)for(let x=0;x<W;x+=10){ctx.beginPath();ctx.arc(x+((y/9)%2?5:0),y,4,0,Math.PI);ctx.stroke()}ctx.restore();ctx.globalAlpha=1}
-  if(p.armure==="lourde"){[-1,1].forEach(s=>{const pc=[];for(let i=0;i<=16;i++){const t=Math.PI+i/16*Math.PI;pc.push([cx+s*W*0.3+Math.cos(t)*W*0.15,by+H*0.09+Math.sin(t)*H*0.07])}pc.push([cx+s*W*0.3+W*0.15,by+H*0.12]);pc.push([cx+s*W*0.3-W*0.15,by+H*0.12]);wash(pc,"#b9c0c7",0.95);line(r,pc,2.5);hatch(r,pc,cx+s*W*0.3-W*0.15,cx+s*W*0.3+W*0.15,by,by+H*0.13,9,0.5,0.25)})}
-  if(p.armure==="legere"){line(r,[[cx-W*0.3,by+20],[cx,by+H*0.12],[cx+W*0.32,H]],5,2);for(let i=0;i<8;i++){const x=cx-W*0.35+r()*W*0.7,y=by+30+r()*(H-by-40);ctx.fillStyle=INK;ctx.beginPath();ctx.arc(x,y,2.6,0,7);ctx.fill()}}
-  if(p.armure==="aucune"){line(r,[[cx-W*0.12,by],[cx,by+H*0.1],[cx+W*0.12,by]],2);line(r,[[cx-W*0.38,by+H*0.05],[cx-W*0.33,H]],2,1);line(r,[[cx+W*0.38,by+H*0.05],[cx+W*0.33,H]],2,1)}
-  line(r,body.slice(0,6),3);
-  hatch(r,body,cx-W*0.5,cx-W*0.15,by,H,8,0.6,0.25);
-  const neck=[[cx-rx*0.45,cy+ry*0.6],[cx+rx*0.45,cy+ry*0.6],[cx+rx*0.5,by+8],[cx-rx*0.5,by+8]];
-  wash(neck,skin,1);line(r,[neck[0],neck[3]],2,1);line(r,[neck[1],neck[2]],2,1);
-  if(p.armure==="lourde"){const gg=[[cx-rx*0.75,by-14],[cx+rx*0.75,by-14],[cx+rx*0.8,by+16],[cx-rx*0.8,by+16]];wash(gg,"#aab1b8",1);line(r,[...gg,gg[0]],2)}
-  wash(head,skin,1);
-  const side=r()<0.5?-1:1;
-  hatch(r,head,side<0?cx-rx:cx+rx*0.35,side<0?cx-rx*0.35:cx+rx,cy-ry,cy+ry,6,0.35,0.3);
-  line(r,[...head,head[0],head[1]],2.6);
-  const ey=cy-ry*0.06, ex=rx*0.4, fierce=4+r()*7;
-  [-1,1].forEach(s=>{const x=cx+s*ex;
-    line(r,[[x-15,ey],[x,ey-6],[x+15,ey]],1.8,1);line(r,[[x-14,ey+1],[x,ey+5],[x+14,ey+1]],1.2,1);
-    ctx.fillStyle=INK;ctx.beginPath();ctx.arc(x+(r()-.5)*3,ey,3.6,0,7);ctx.fill();
-    line(r,[[x-s*16,ey-16],[x,ey-22],[x+s*20,ey-25-fierce]],3.4,2)});
-  line(r,[[cx+side*2,ey+6],[cx+side*7,cy+ry*0.3],[cx-side*5,cy+ry*0.36]],1.8,2);
-  if(tr.paint){ctx.fillStyle="rgba(120,30,25,0.55)";[-1,1].forEach(s=>{ctx.fillRect(cx+s*ex-12,ey+14,24,5);ctx.fillRect(cx+s*ex-9,ey+24,18,4)})}
-  if(tr.beard){const bl=ry*(0.25+r()*0.45);const b=[];for(let i=0;i<=14;i++){const t=0.08*Math.PI+i/14*0.84*Math.PI,s=Math.sin(t),k=1-0.28*s*s;b.push([cx+rx*1.02*Math.cos(t)*k,cy+ry*s+(s>0.8?bl*(s-0.8)*5:0)])}
-    b.push([cx-rx*0.4,cy+ry*0.45]);b.push([cx,cy+ry*0.4]);b.push([cx+rx*0.4,cy+ry*0.45]);
-    wash(b,hairC,0.92);line(r,b.slice(0,15),2);for(let i=0;i<10;i++){const x=cx+(r()-.5)*rx*1.4;line(r,[[x,cy+ry*0.6],[x+(r()-.5)*8,cy+ry*0.9+bl*0.5]],1,1)}}
-  line(r,[[cx-rx*0.28,cy+ry*0.55],[cx,cy+ry*0.57+(r()-.3)*4],[cx+rx*0.28,cy+ry*0.56]],2.2,2);
-  if(tr.hair==="court"||tr.hair==="long"||tr.hair==="tresses"){const h=[];for(let i=0;i<=20;i++){const t=Math.PI+i/20*Math.PI;h.push([cx+rx*1.06*Math.cos(t),cy+ry*1.08*Math.sin(t)-6])}
-    for(let i=0;i<=10;i++){const x=cx+rx*1.0-i/10*rx*2.0;h.push([x,cy-ry*(0.42+(i%2?0.08:0)+r()*0.06)])}
-    wash(h,hairC,0.95);line(r,h.slice(0,21),2.4);for(let i=0;i<7;i++){const x=cx+(r()-.5)*rx*1.6;line(r,[[x,cy-ry*1.0],[x+(r()-.5)*20,cy-ry*0.55]],1.1,1)}}
-  if(tr.hair==="tresses"){[-1,1].forEach(s=>{const x=cx+s*rx*1.08;for(let y=cy;y<by+50;y+=16){ctx.fillStyle=hairC;ctx.beginPath();ctx.ellipse(x,y,7,9,0,0,7);ctx.fill();line(r,[[x-7,y],[x,y+6],[x+7,y]],1.2,1)}})}
-  if(tr.hair==="rase"){for(let i=0;i<500;i++){const t=Math.PI+r()*Math.PI,k=r();ctx.fillStyle="rgba(30,25,20,0.45)";ctx.fillRect(cx+rx*0.95*k*Math.cos(t),cy+ry*0.95*k*Math.sin(t)-ry*0.05,1.5,1.5)}}
-  if(tr.hair==="capuche"){const e=[];for(let i=0;i<=22;i++){const t=Math.PI*0.92+i/22*Math.PI*1.16;e.push([cx+rx*1.25*Math.cos(t),cy+ry*1.25*Math.sin(t)])}line(r,e,3.5);hatch(r,[...e,[cx+rx*1.25,cy-ry*1.6],[cx-rx*1.25,cy-ry*1.6]],cx-rx*1.3,cx+rx*1.3,cy-ry*1.6,cy,7,0.4,0.25)}
-  if(tr.helmet){const h=[];for(let i=0;i<=24;i++){const t=Math.PI+i/24*Math.PI;h.push([cx+rx*1.14*Math.cos(t),cy-ry*0.25+ry*1.0*Math.sin(t)])}
-    wash(h,"#9aa2aa",1);hatch(r,h,cx-rx*1.2,cx+rx*1.2,cy-ry*1.3,cy-ry*0.2,7,0.5,0.3);line(r,[...h,h[0]],3);
-    const band=[[cx-rx*1.16,cy-ry*0.25],[cx+rx*1.16,cy-ry*0.25],[cx+rx*1.12,cy-ry*0.12],[cx-rx*1.12,cy-ry*0.12]];wash(band,"#7d858d",1);line(r,[...band,band[0]],2);
-    const nb=[[cx-6,cy-ry*0.15],[cx+6,cy-ry*0.15],[cx+5,cy+ry*0.3],[cx-5,cy+ry*0.3]];wash(nb,"#8a9299",1);line(r,[...nb,nb[0]],2)}
-  if(tr.scar){const s=-side;const a=[cx+s*rx*0.62,ey-ry*0.32],b=[cx+s*rx*0.12,ey+ry*0.38];ctx.strokeStyle="rgba(130,40,35,0.7)";ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();line(r,[a,b],1.4,1);for(let i=1;i<5;i++){const x=a[0]+(b[0]-a[0])*i/5,y=a[1]+(b[1]-a[1])*i/5;line(r,[[x-6,y-3],[x+6,y+3]],1.2,1)}}
-  if(tr.earring&&!tr.helmet&&tr.hair!=="capuche"){ctx.strokeStyle="#b5821f";ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx-side*rx*1.0,cy+ry*0.22,7,0,7);ctx.stroke()}
-}
-
-/* ---------- Gravures du domaine public (The Met, Open Access CC0) ---------- */
-const GRAVURES=[
- {id:"chevalier",a:"Albrecht Dürer",t:"Le Chevalier, la Mort et le Diable",d:"1513",m:["soldat","officier","garde","déserteu","messag","cavali","mercenaire","homme d'armes","chevalier","écuyer","routier","bâtard","capitaine","royale"]},
- {id:"cavaliers",a:"Albrecht Dürer",t:"Les Quatre Cavaliers de l'Apocalypse",d:"vers 1497-1498",m:["cavali","archer","pillard","messag","routier","corsaire"]},
- {id:"chasseur",a:"Albrecht Dürer",t:"Saint Eustache",d:"vers 1501",m:["bois","loups","guide","archer","arbalét","braconnier","boucanier","gabier"]},
- {id:"hercule",a:"Hendrick Goltzius",t:"Le Grand Hercule",d:"1589",m:["berserker","lutteu","gladiat","forgeron","pillard","coutilier","canonnier","quartier","abordeur","mercenaire"]},
- {id:"faust",a:"Rembrandt",t:"Faust",d:"vers 1652",m:["novice","rebouteu","sorcières","rune","chirurgien","navigateur"]},
- {id:"prodigue",a:"Albrecht Dürer",t:"Le Fils prodigue",d:"vers 1496",m:["marchand","déserteu","galérien","pilleu","serf","pèlerin","mousse","plongeu","planteur","forçat","esclave","contreband"]},
- {id:"violoneux",a:"Jacques Callot",t:"Varie Figure Gobbi",d:"vers 1621-1625",m:["barde","jongleur","courtisan","cambusier"]},
- {id:"archange",a:"Albrecht Dürer",t:"Saint Michel combattant le dragon",d:"1498",m:["sorcières","chevalier errant","garde du corps"]},
- {id:"blason",a:"Albrecht Dürer",t:"Armoiries à la tête de mort",d:"1503",m:["courtisan","espion","bâtard","coupe-jarret"]},
- {id:"cachot",a:"Piranèse",t:"Prisons imaginaires : prisonniers sur une plateforme",d:"vers 1749-1750",m:["espion","voleur","coupe-jarret","galérien","forçat","esclave","serf","contreband"]},
- {id:"lettre",a:"Albrecht Dürer",t:"Saint Jérôme dans sa cellule",d:"1514",m:["novice","moine","copiste","rebouteu","chirurgien","navigateur","rune"]},
- {id:"diables",a:"Martin Schongauer",t:"Saint Antoine tourmenté par les démons",d:"vers 1470-1474",m:["sorcières","pilleu","novice","rune"]}
-];
-const imgCache={};
-function chargerGravure(id){
-  if(!imgCache[id])imgCache[id]=new Promise((ok,ko)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=ko;im.src="gravures/"+id+".jpg"});
-  return imgCache[id];
-}
-function gravuresPour(){
-  const asp=[v("aspect2"),v("aspect1")].join(" ").toLowerCase();
-  // le métier compte d'abord, le passé ensuite
-  const m2=GRAVURES.filter(g=>g.m.some(k=>v("aspect2").toLowerCase().includes(k)));
-  const m1=GRAVURES.filter(g=>!m2.includes(g)&&g.m.some(k=>asp.includes(k)));
-  const c=m2.concat(m1);
-  return c.length?c:GRAVURES;
-}
-let gravureCourante=null, tirage=0;
+/* ---------- Photo du personnage (importée par le joueur) ---------- */
 const cv=$("cv"), ctx=cv.getContext("2d"), W=cv.width, H=cv.height;
-function poserImage(im){
-  const iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(W/iw,H/ih);
+let photo=null, cvPhoto=false;
+function baseEchelle(im){return Math.max(W/im.naturalWidth,H/im.naturalHeight)}
+function dessinerPhoto(){
   ctx.globalCompositeOperation="source-over";ctx.globalAlpha=1;ctx.fillStyle="#ece6d8";ctx.fillRect(0,0,W,H);
-  ctx.drawImage(im,(W-iw*s)/2,(H-ih*s)/2,iw*s,ih*s);
+  if(!photo){cvPhoto=false;ctx.fillStyle="#7a808a";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="600 36px "+SMALL;ctx.fillText("Touche ici pour",W/2,H/2-24);ctx.fillText("choisir une photo",W/2,H/2+24);return}
+  const im=photo.img,s=baseEchelle(im)*photo.zoom,w=im.naturalWidth*s,h=im.naturalHeight*s;
+  photo.dx=Math.min(0,Math.max(W-w,photo.dx));photo.dy=Math.min(0,Math.max(H-h,photo.dy));
+  ctx.drawImage(im,photo.dx,photo.dy,w,h);cvPhoto=true;
 }
-function afficherCredit(){
-  const c=$("credit");
-  if(customImg){c.textContent="Image importée.";return}
-  if(mode!=="gravure"||!gravureCourante){c.textContent="Dessin généré à l'encre.";return}
-  const g=gravureCourante;
-  c.innerHTML="";c.append(g.a+", ");const ci=document.createElement("cite");ci.textContent=g.t;c.append(ci,", "+g.d+". The Met, domaine public.");
-}
-function dessinerS(){dessiner({portraitSeed:S.portraitSeed,traits:S.traits,armure:ARMK[S.armure]})}
-async function afficherPortrait(){
-  const t=++tirage, grav=T().grav;
-  if(!grav&&mode==="gravure")mode="dessin";
-  $("btnDessin").hidden=!customImg;
-  $("btnMode").hidden=!grav;
-  $("btnMode").textContent=mode==="gravure"?"Dessin à l'encre":"Gravure ancienne";
-  $("btnPortrait").textContent=mode==="gravure"?"Autre gravure":"Autre dessin";
-  if(customImg){poserImage(customImg)}
-  else if(mode==="gravure"){
-    const liste=gravuresPour();
-    const g=liste[(S.portraitSeed+portraitOffset)%liste.length];
-    gravureCourante=g;
-    try{const im=await chargerGravure(g.id);if(t!==tirage)return;
-      poserImage(im);
-      ctx.globalCompositeOperation="multiply";ctx.fillStyle="#efe7d6";ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation="source-over";
-    }catch(e){if(t!==tirage)return;gravureCourante=null;dessinerS();setStatus("La gravure n'a pas pu se charger ; un dessin la remplace.")}
-  }
-  else{gravureCourante=null;dessinerS()}
-  afficherCredit();
+function afficherPortrait(){
+  dessinerPhoto();
+  $("btnImport").textContent=photo?"Changer de photo":"Choisir une photo";$("btnRetirer").hidden=!photo;$("zoomL").hidden=!photo;
+  if(photo)$("zoomPhoto").value=String(photo.zoom);
   rendreApercu();
 }
-
-
+function vignette(){if(!cvPhoto)return null;const c=document.createElement("canvas");c.width=240;c.height=300;c.getContext("2d").drawImage(cv,0,0,240,300);try{return c.toDataURL("image/jpeg",0.82)}catch(e){return null}}
+function chargerImg(src){return new Promise((ok,ko)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=ko;im.src=src})}
 /* ---------- Habillage par thème ---------- */
 const STY={
  fantasy:{font:'"IM Fell English SC", Georgia, serif',ink:"#1f2a36",acc:"#2f4f6f",acc2:"#a8781e",paper:"#fbf8f1",val:"#1b2a6a",box:"rough"},
@@ -1455,9 +1334,9 @@ function recto(c,k,withValues){
   texte(c,k,"Nom",Lm.nom[0]+Lm.nom[2],Lm.nom[1]+Lm.nom[3]+17,14,SMALL,s.acc2,"right");
   // portrait
   if(illu){const [x,y,w,h]=Lm.port;
-    if(S.illu==="portrait"){c.drawImage(cv,x*k,y*k,w*k,h*k)}
+    if(S.illu==="photo"&&cvPhoto){c.drawImage(cv,x*k,y*k,w*k,h*k)}
     boite(c,k,Lm.port,s,"",11);
-    if(S.illu==="cadre"&&!withValues)texte(c,k,"portrait",x+w/2,y+h-12,13,SMALL,s.acc2,"center")}
+    if((S.illu==="cadre"||(S.illu==="photo"&&!cvPhoto))&&!withValues)texte(c,k,"portrait",x+w/2,y+h-12,13,SMALL,s.acc2,"center")}
   boite(c,k,Lm.niveau,s,"",12);texte(c,k,"Niveau",Lm.niveau[0]+Lm.niveau[2]/2,Lm.niveau[1]+26,18,s.font,s.acc,"center");
   // colonne gauche
   boite(c,k,Lm.aspects,s,"Aspects",21);
@@ -1490,7 +1369,6 @@ function verso(c,k,withValues){
   c.globalAlpha=.25;for(let y=Lm.notes[1]+68;y<Lm.notes[1]+Lm.notes[3]-12;y+=32){c.beginPath();c.moveTo((Lm.notes[0]+14)*k,y*k);c.lineTo((Lm.notes[0]+Lm.notes[2]-14)*k,y*k);st(c,k,1,s.ink)}c.globalAlpha=1;
   boite(c,k,Lm.regles,s,"Rappel des règles",43);
   const items=REGLES.slice();
-  if(S.illu==="portrait"&&mode==="gravure"&&!customImg&&gravureCourante){const g=gravureCourante;items.push("Portrait : "+g.a+", "+g.t+", "+g.d+". The Met, domaine public.")}
   const zb=[Lm.regles[0]+14,Lm.regles[1]+38,Lm.regles[2]-28,Lm.regles[3]-46];
   const mes=(x,sz)=>{c.font=(sz*k)+"px "+SMALL;return c.measureText(x).width/k};
   let sz=17;const haut=sz=>items.reduce((a,it)=>a+couper(x=>mes(x,sz),it,zb[2]).length*sz*1.18+sz*0.45,0);
@@ -1552,12 +1430,11 @@ const ap=$("apercu"), ap2=$("apercu2"), policesVues=new Set();
 function dessinerApercu(){const F=FORMATS[S.format],px=1100,k=px/1000;[ap,ap2].forEach(c=>{c.width=px;c.height=Math.round(px*F.h/F.w)});recto(ap.getContext("2d"),k,true);verso(ap2.getContext("2d"),k,true)}
 function rendreApercu(){if(!S)return;dessinerApercu();if(!policesVues.has(S.theme)){const th=S.theme;policesPretes().then(()=>{policesVues.add(th);if(S.theme===th)dessinerApercu()})}}
 let raf=0;document.addEventListener("input",e=>{if(e.target.closest("details")||e.target.id==="nom"){if(e.target.id==="nom"){S.nom=e.target.value;majBarre()}cancelAnimationFrame(raf);raf=requestAnimationFrame(rendreApercu)}});
-["aspect1","aspect2"].forEach(id=>$(id).addEventListener("change",()=>{if(mode==="gravure"&&!customImg)afficherPortrait()}));
 
 /* ---------- Actions ---------- */
 function setStatus(t){$("status").textContent=t}
 $("btnTirer").addEventListener("click",()=>{tirer(S.theme);toutRendre(true);setStatus("Nouveau coureur tiré.")});
-$("btnNom").addEventListener("click",()=>{S.f=R()<0.45;S.nom=nouveauNom(T(),S.f);S.traits.beard=!S.f&&R()<0.65;ecrireTexte();if(mode==="dessin"&&!customImg)afficherPortrait();else rendreApercu()});
+$("btnNom").addEventListener("click",()=>{S.f=R()<0.45;S.nom=nouveauNom(T(),S.f);S.traits.beard=!S.f&&R()<0.65;ecrireTexte();rendreApercu()});
 $("btnPv").addEventListener("click",()=>{S.rolls=S.rolls.map(()=>R());rendreStats();rendreApercu();setStatus("PV relancés : "+$("pv").value+".")});
 $("btnCurio").addEventListener("click",()=>{const t=T();let c=S.curio;for(let i=0;i<5&&c===S.curio;i++)c=pick(t.curios);S.curio=c;ecrireTexte();rendreApercu()});
 $("bouclier").addEventListener("change",e=>{S.bouclier=e.target.checked;if(S.bouclier&&S.armure===0)S.armure=1;maj(false)});
@@ -1569,11 +1446,23 @@ $("niveau").addEventListener("change",()=>{
   else{const libres=shuffle(listes.D().map(d=>d.n).filter(n=>!S.dons.includes(n)));while(S.dons.length<niv&&libres.length)S.dons.push(libres.pop())}
   maj(false);setStatus("Niveau "+niv+" : PV, bonus et dons ajustés.");
 });
-$("btnPortrait").addEventListener("click",()=>{customImg=null;portraitOffset++;afficherPortrait()});
-$("btnMode").addEventListener("click",()=>{customImg=null;mode=mode==="gravure"?"dessin":"gravure";afficherPortrait()});
 $("btnImport").addEventListener("click",()=>$("file").click());
-$("btnDessin").addEventListener("click",()=>{customImg=null;afficherPortrait()});
-$("file").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{customImg=im;afficherPortrait()};im.onerror=()=>setStatus("Cette image n'a pas pu être lue. Essaie un fichier JPG ou PNG.");im.src=rd.result};rd.readAsDataURL(f);e.target.value=""});
+$("btnRetirer").addEventListener("click",()=>{photo=null;afficherPortrait();setStatus("Photo retirée.")});
+$("file").addEventListener("change",e=>{const inp=e.target,fi=inp.files[0];if(!fi)return;
+  const rd=new FileReader();rd.onerror=()=>{inp.value="";setStatus("Cette image n'a pas pu être lue. Essaie un fichier JPG ou PNG.")};rd.onload=async()=>{inp.value="";try{const im=await chargerImg(rd.result);
+    // réduit les grandes photos de téléphone pour garder la page légère
+    let src=im;const m=1400/Math.max(im.naturalWidth,im.naturalHeight);
+    if(m<1){const c=document.createElement("canvas");c.width=Math.round(im.naturalWidth*m);c.height=Math.round(im.naturalHeight*m);c.getContext("2d").drawImage(im,0,0,c.width,c.height);src=await chargerImg(c.toDataURL("image/jpeg",0.9))}
+    photo={img:src,zoom:1,dx:0,dy:0};const s=baseEchelle(src);photo.dx=(W-src.naturalWidth*s)/2;photo.dy=(H-src.naturalHeight*s)/2;
+    afficherPortrait();setStatus("Photo ajoutée. Glisse-la pour la recadrer.")}catch(err){setStatus("Cette image n'a pas pu être lue. Essaie un fichier JPG ou PNG.")}};
+  rd.readAsDataURL(fi)});
+$("zoomPhoto").addEventListener("input",e=>{if(!photo)return;const b=baseEchelle(photo.img),s0=b*photo.zoom,z=+e.target.value,s1=b*z;
+  photo.dx=W/2-(W/2-photo.dx)*s1/s0;photo.dy=H/2-(H/2-photo.dy)*s1/s0;photo.zoom=z;dessinerPhoto();rendreApercu()});
+let glisse=null;
+cv.addEventListener("pointerdown",e=>{if(!photo){$("file").click();return}glisse={x:e.clientX,y:e.clientY,dx:photo.dx,dy:photo.dy};try{cv.setPointerCapture(e.pointerId)}catch(err){}});
+cv.addEventListener("pointermove",e=>{if(!glisse)return;const r=W/cv.getBoundingClientRect().width;photo.dx=glisse.dx+(e.clientX-glisse.x)*r;photo.dy=glisse.dy+(e.clientY-glisse.y)*r;dessinerPhoto()});
+["pointerup","pointercancel"].forEach(t=>cv.addEventListener(t,()=>{if(glisse){glisse=null;rendreApercu()}}));
+cv.addEventListener("keydown",e=>{if(!photo){if(e.key==="Enter"||e.key===" "){e.preventDefault();$("file").click()}return}const m={ArrowLeft:[20,0],ArrowRight:[-20,0],ArrowUp:[0,20],ArrowDown:[0,-20]}[e.key];if(m){e.preventDefault();photo.dx+=m[0];photo.dy+=m[1];dessinerPhoto();rendreApercu()}});
 
 
 
@@ -1604,6 +1493,7 @@ function instantane(){
     regles:{donsMaison:REG.donsMaison,lectureLibre:REG.lectureLibre,dvMetier:REG.dvMetier},
     sortsTitre:t.sortsTitre, sortsUn:t.sortsUn,
     sorts:S.sorts.map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj),
+    portrait:S.illu==="photo"?vignette():null,
     connus:(c.fx.magie1?S.connus1:[]).concat(c.fx.magie2?S.connus2:[]).map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj)};
 }
 function jouerCeCoureur(){
@@ -1646,6 +1536,7 @@ function rendreJeu(){
   const vj=$("vueJouer");vj.style.setProperty("--t-acc0",s.acc);vj.style.setProperty("--t-font",s.font);
   $("jTheme").textContent="Coureurs d'Orages · "+f.themeNom+" · niveau "+f.niveau;
   $("jNom").textContent=f.nom;
+  $("jPhoto").hidden=!f.portrait;if(f.portrait){$("jPhoto").src=f.portrait;$("jPhoto").alt="Photo de "+f.nom}$("jTete").classList.toggle("avecphoto",!!f.portrait);
   $("jAspects").textContent=f.aspects.join(" · ");
   $("jDv").textContent="dés de vie "+f.dv;
   rendreJeuStats();
@@ -2117,7 +2008,9 @@ async function pdfDepuisJeu(){
   if(!window.PDFLib){etat.textContent="La bibliothèque PDF n'a pas pu se charger. Recharge la page.";return}
   const ids=["nom","aspect1","aspect2","aspect3","origine","armure","armes","equipement","dons","description","parchemins","pv","dv","dh","standard","mouvement","defense"];
   const avant={};ids.forEach(id=>avant[id]=$(id).value);const nivAvant=$("niveau").value,Sav=S;
-  S=Object.assign({},Sav,{theme:f.theme,illu:Sav.illu==="portrait"?"cadre":Sav.illu});
+  const avecPhoto=!!f.portrait&&Sav.illu!=="aucune";
+  S=Object.assign({},Sav,{theme:f.theme,illu:avecPhoto?"photo":(Sav.illu==="photo"?"cadre":Sav.illu)});
+  if(avecPhoto){try{const im=await chargerImg(f.portrait);ctx.drawImage(im,0,0,W,H);cvPhoto=true}catch(e){}}
   const val={nom:f.nom,aspect1:f.aspects[0]||"",aspect2:f.aspects[1]||"",aspect3:f.aspects[2]||"",origine:f.origine,armure:"",armes:"",equipement:p.equip,dons:f.dons.join("\n"),description:f.description,
     parchemins:(p.sorts||[]).filter(s=>!s.lu).map(FMT_SORT).join("\n"),pv:String(f.pvMax),dv:f.dv,dh:String(f.dhMax),standard:sign(f.std),mouvement:sign(f.mvt),defense:sign(f.def)};
   ids.forEach(id=>$(id).value=val[id]);$("niveau").value=String(Math.min(6,f.niveau));
@@ -2129,7 +2022,7 @@ async function pdfDepuisJeu(){
     await enregistrer((nom||"coureur")+"-niveau-"+f.niveau+".pdf",bytes);
     etat.textContent="Fiche enregistrée.";
   }catch(e){const c=e&&e.code;etat.textContent=c==="declined"?"Téléchargement annulé.":c?"Le téléchargement n'a pas abouti ("+c+").":"Erreur pendant la fabrication du PDF : "+(e&&e.message||e)}
-  finally{S=Sav;ids.forEach(id=>$(id).value=avant[id]);$("niveau").value=nivAvant;$("jPdf").disabled=false}
+  finally{S=Sav;ids.forEach(id=>$(id).value=avant[id]);$("niveau").value=nivAvant;$("jPdf").disabled=false;dessinerPhoto()}
 }
 $("jPdf").addEventListener("click",pdfDepuisJeu);
 
@@ -2159,7 +2052,6 @@ $("btnPdf").addEventListener("click",async()=>{
   }finally{$("btnPdf").disabled=false}
 });
 
-let customImg=null, portraitOffset=0, mode="gravure";
 tirer("fantasy");toutRendre(true);
 montrer();
 if(window.claude&&claude.use){claude.use("downloads").then(x=>{dl=x;if(!x)setStatus("Le téléchargement du PDF n'est pas disponible dans cette vue.")}).catch(()=>{})}
