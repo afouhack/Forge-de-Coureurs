@@ -5,8 +5,10 @@ Création rapide de personnages pour le jeu de rôle **Coureurs d'Orages** (Isla
 - quatorze thèmes (fantasy, Moyen Âge, pirates, western, contemporain, post-apocalypse, cyberpunk, science-fiction, space opera, préhistoire, Antiquité, années 1920, uchronie 1960, steampunk) ;
 - aspects, armes, équipement, dons et sorts au choix, ou inventés ;
 - points de vie et bonus calculés selon les règles du livre ;
-- fiche recto-verso en PDF remplissable, au format A5 ou carte postale, avec la photo de ton choix ;
-- feuille de jeu sur téléphone : PV, dés d'héroïsme, jets, dégâts, sorts, dons en jeu, passage de niveau.
+- fiche en PDF remplissable : A4 sur une seule page, A4 ou A5 recto-verso, ou carte postale, avec la photo de ton choix ;
+- feuille de jeu sur téléphone : PV, dés d'héroïsme, jets, dégâts, sorts, dons en jeu, passage de niveau ;
+- coureurs enregistrés sur l'appareil, à rejouer ou à modifier depuis l'accueil, y compris en cours de partie (armes, armure, nom) ;
+- export et import d'un coureur (fichier ou code) pour passer du téléphone à l'ordinateur et inversement.
 
 Tout tient dans `index.html`. Les personnages, les photos et les choix personnels sont enregistrés dans le navigateur de chaque appareil (rien n'est envoyé sur un serveur).
 

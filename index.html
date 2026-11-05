@@ -277,6 +277,42 @@ details.jcarte[open] summary{margin-bottom:6px}
 @media (max-width:560px){.finbtns{grid-template-columns:minmax(0,1fr)}}
 .finbtns button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:64px;font-size:17px}
 .finbtns button span{font-family:var(--f-small);font-size:13px;letter-spacing:0;font-weight:400;opacity:.85}
+
+.roster{display:flex;flex-direction:column;gap:8px}
+.rc{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--bg)}
+.rc.actuel{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.rcvis{width:48px;height:60px;border-radius:4px;object-fit:cover;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--f-display);font-size:26px}
+.rctxt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.rctxt b{font-weight:600;font-size:17px;overflow-wrap:anywhere}
+.rctxt span{font-family:var(--f-small);font-size:13.5px;color:var(--muted)}
+.rcbtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.rcbtns button{padding:7px 12px;font-size:14px}
+@media (max-width:520px){.rc{grid-template-columns:48px minmax(0,1fr)}.rcbtns{grid-column:1/-1;justify-content:stretch}.rcbtns button{flex:1}}
+.encours{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;background:var(--accent-soft);border-radius:4px;padding:8px 10px;font-family:var(--f-small);font-size:14px}
+.encours button{padding:5px 10px;font-size:13px}
+.marmes{display:flex;flex-direction:column;gap:6px}
+.marme{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:6px;padding:6px 6px 6px 12px;background:var(--bg);font-size:15px}
+.marme button{padding:6px 10px;font-size:13px}
+#jModif[open]{display:flex;flex-direction:column;gap:10px}
+
+.dd{border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.dd.ouvert{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.ddh{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"l c" "v c";align-items:center;gap:1px 10px;text-align:left;border:0;background:transparent;padding:10px 12px;font-family:var(--f-body);letter-spacing:0;border-radius:6px}
+.ddh:hover{background:var(--surface)}
+.ddl{grid-area:l;font-family:var(--f-label);font-size:12.5px;letter-spacing:.06em;color:var(--muted)}
+.ddv{grid-area:v;font-size:16px;font-weight:600;color:var(--ink);overflow-wrap:anywhere;line-height:1.3}
+.ddc{grid-area:c;width:14px;height:14px;color:var(--muted);transition:transform .2s}
+.dd.ouvert .ddc{transform:rotate(180deg)}
+.ddb{display:flex;flex-direction:column;gap:10px;padding:2px 12px 12px}
+.ddb[hidden]{display:none}
+.ddok{align-self:flex-end;padding:7px 16px}
+.dd .themes{display:grid}
+@media (prefers-reduced-motion:reduce){.ddc{transition:none}}
+
+.transfert{display:flex;flex-wrap:wrap;gap:8px}
+.transfert button{flex:1 1 auto}
+.collecode{display:flex;flex-direction:column;gap:8px}
+#statusTransfert:empty{display:none}
 </style>
 </head>
 <body>
@@ -288,71 +324,84 @@ details.jcarte[open] summary{margin-bottom:6px}
     <p class="lede">Choisis un thème : un coureur complet est tiré tout de suite. Change ensuite ce que tu veux, étape par étape ; les points de vie et les bonus suivent tes choix.</p>
   </header>
 
+  <section class="step" id="mesCoureurs" aria-labelledby="tMes">
+    <div class="step-h"><h2 id="tMes">Mes coureurs</h2><small>enregistrés sur cet appareil</small></div>
+    <div class="dd" data-dd="coureurs"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_coureurs"><span class="ddl">Coureurs enregistrés · importer · exporter</span><span class="ddv" id="v_coureurs"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_coureurs" hidden><div class="roster" id="rosterListe"></div>
+    <p class="hint" id="rosterVide" hidden>Aucun coureur sur cet appareil pour l'instant. Crée-le juste en dessous, ou importe-le depuis un autre appareil.</p>
+    <div class="transfert">
+      <button type="button" id="btnImportFichier">Importer un coureur (fichier)</button>
+      <button type="button" id="btnImportCode">Coller un code</button>
+      <input type="file" id="fichierCoureur" accept=".json,application/json,text/plain" hidden>
+    </div>
+    <div class="collecode" id="blocCode" hidden>
+      <textarea id="codeImport" class="jcode" rows="4" aria-label="Code d'un coureur" placeholder="Colle ici le code copié sur l'autre appareil"></textarea>
+      <div class="jbtns deux"><button type="button" class="primary" id="btnCodeOk">Importer ce code</button><button type="button" id="btnCodeAnnuler">Annuler</button></div>
+    </div>
+    <p class="status" id="statusTransfert" role="status"></p>
+    <p class="hint">Pour passer d'un appareil à l'autre : « Exporter » enregistre un fichier du coureur. Envoie-le-toi (mail, messagerie, cloud), puis « Importer » sur l'autre appareil. Pour en créer un nouveau, continue juste en dessous.</p></div></div>
+  </section>
+
   <section aria-labelledby="tT" class="step">
     <div class="step-h"><h2 id="tT"><span class="n">1</span>Thème</h2><small>Changer de thème tire un nouveau coureur.</small></div>
-    <div class="themes" id="themes" role="group" aria-label="Thème"></div>
+    <div class="dd" data-dd="theme"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_theme"><span class="ddl">Thème</span><span class="ddv" id="v_theme"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_theme" hidden><div class="themes" id="themes" role="group" aria-label="Thème"></div></div></div>
   </section>
 
   <div class="atelier">
     <div class="etapes">
       <section class="step" aria-labelledby="t2">
         <div class="step-h"><h2 id="t2"><span class="n">2</span>Aspects</h2><small id="roleNote"></small></div>
-        <p class="sub">Aspect 1 · passé</p>
-        <div class="chips" id="cPasse" role="group" aria-label="Passé"></div>
-        <form class="ajout" id="fPasse" hidden><input id="iPasse" placeholder="Ton propre passé, ex. Ancien chef de gang" aria-label="Nouveau passé"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
-        <p class="sub">Aspect 2 · métier</p>
-        <div class="chips" id="cMetier" role="group" aria-label="Métier"></div>
-        <form class="ajout" id="fMetier" hidden><input id="iMetier" placeholder="Ton propre métier, ex. Dompteur de griffons" aria-label="Nouveau métier"><select id="rMetier" aria-label="Profil"><option value="c">Combattant (d10)</option><option value="p" selected>Polyvalent (d8)</option><option value="f">Fin (d6)</option></select><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <div class="dd" data-dd="passe"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_passe"><span class="ddl">Aspect 1 · passé</span><span class="ddv" id="v_passe"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_passe" hidden><div class="chips" id="cPasse" role="group" aria-label="Passé"></div>
+        <form class="ajout" id="fPasse" hidden><input id="iPasse" placeholder="Ton propre passé, ex. Ancien chef de gang" aria-label="Nouveau passé"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form></div></div>
+        <div class="dd" data-dd="metier"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_metier"><span class="ddl">Aspect 2 · métier</span><span class="ddv" id="v_metier"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_metier" hidden><div class="chips" id="cMetier" role="group" aria-label="Métier"></div>
+        <form class="ajout" id="fMetier" hidden><input id="iMetier" placeholder="Ton propre métier, ex. Dompteur de griffons" aria-label="Nouveau métier"><select id="rMetier" aria-label="Profil"><option value="c">Combattant (d10)</option><option value="p" selected>Polyvalent (d8)</option><option value="f">Fin (d6)</option></select><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form></div></div>
         <div id="blocAspect3" hidden><p class="sub">Aspect 3 · Talents variés</p><input id="iAspect3" aria-label="Troisième aspect" placeholder="ex. Ancien marin"></div>
       </section>
 
       <section class="step" aria-labelledby="t3">
         <div class="step-h"><h2 id="t3"><span class="n">3</span>Armure et armes</h2><small>3 armes au plus</small></div>
-        <p class="sub">Armure (plus elle protège, moins on est agile)</p>
-        <div class="chips" id="cArmure" role="group" aria-label="Armure"></div>
+        <div class="dd" data-dd="armure"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_armure"><span class="ddl">Armure</span><span class="ddv" id="v_armure"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_armure" hidden><div class="chips" id="cArmure" role="group" aria-label="Armure"></div></div></div>
         <label class="toggle" id="lBouclier"><input type="checkbox" id="bouclier"> <span id="bouclierNom">Bouclier</span> : +1 en Défense, −1 aux Arts du mouvement</label>
-        <p class="sub">Armes</p>
-        <div class="chips" id="cArmes" role="group" aria-label="Armes"></div>
+        <div class="dd" data-dd="armes"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_armes"><span class="ddl">Armes (3 au plus)</span><span class="ddv" id="v_armes"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_armes" hidden><div class="chips" id="cArmes" role="group" aria-label="Armes"></div>
         <p class="hint" id="armesNote" aria-live="polite"></p>
-        <form class="ajout" id="fArme" hidden><input id="iArme" placeholder="Ton arme, ex. Trident" aria-label="Nouvelle arme"><select id="dArme" aria-label="Dé de dégâts"><option>d4</option><option>d6</option><option value="d6+1">d6+1 (pistolet)</option><option value="d6+2">d6+2 (fusil)</option><option selected>d8</option><option>d10</option><option>d12</option></select><label class="toggle"><input type="checkbox" id="xArme"> à distance</label><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <form class="ajout" id="fArme" hidden><input id="iArme" placeholder="Ton arme, ex. Trident" aria-label="Nouvelle arme"><select id="dArme" aria-label="Dé de dégâts"><option>d4</option><option>d6</option><option value="d6+1">d6+1 (pistolet)</option><option value="d6+2">d6+2 (fusil)</option><option selected>d8</option><option>d10</option><option>d12</option></select><label class="toggle"><input type="checkbox" id="xArme"> à distance</label><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form><button type="button" class="ddok">Valider</button></div></div>
       </section>
 
       <section class="step" aria-labelledby="t4">
         <div class="step-h"><h2 id="t4"><span class="n">4</span>Équipement</h2><button class="chip" id="btnCurio" type="button">Autre objet curieux</button></div>
-        <div class="cards" id="cKit" role="group" aria-label="Paquetage"></div>
-        <form class="ajout" id="fKit" hidden><input id="iKit" placeholder="Nom du paquetage" aria-label="Nom du paquetage" style="flex-basis:140px"><input id="cKitTxt" placeholder="Contenu, séparé par des virgules" aria-label="Contenu du paquetage" style="flex-basis:240px"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
+        <div class="dd" data-dd="kit"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_kit"><span class="ddl">Paquetage</span><span class="ddv" id="v_kit"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_kit" hidden><div class="cards" id="cKit" role="group" aria-label="Paquetage"></div>
+        <form class="ajout" id="fKit" hidden><input id="iKit" placeholder="Nom du paquetage" aria-label="Nom du paquetage" style="flex-basis:140px"><input id="cKitTxt" placeholder="Contenu, séparé par des virgules" aria-label="Contenu du paquetage" style="flex-basis:240px"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form></div></div>
       </section>
 
       <section class="step" aria-labelledby="t5">
         <div class="step-h"><h2 id="t5"><span class="n">5</span>Dons</h2><small id="donsNote"></small></div>
-        <div class="cards" id="cDons" role="group" aria-label="Dons"></div>
+        <div class="dd" data-dd="dons"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_dons"><span class="ddl">Dons</span><span class="ddv" id="v_dons"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_dons" hidden><div class="cards" id="cDons" role="group" aria-label="Dons"></div>
         <form class="ajout" id="fDon" hidden><input id="iDon" placeholder="Nom du don" aria-label="Nom du don" style="flex-basis:140px"><input id="eDon" placeholder="Effet en jeu" aria-label="Effet du don" style="flex-basis:220px">
           <select id="xDon" aria-label="Effet chiffré"><option value="">Sans effet chiffré</option><option value="pvNiv=2">+2 PV par niveau</option><option value="pv=3">+3 PV</option><option value="def=1">+1 Défense</option><option value="mvt=1">+1 Arts du mouvement</option><option value="std=1">+1 Standard</option><option value="dh=1">+1 dé d'héroïsme</option></select>
-          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
-        <div id="blocArtefact" hidden><p class="sub">Artefact porté (livre p. 23-24)</p><div class="cards" id="cArtefact" role="group" aria-label="Artefact"></div></div>
+          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form><button type="button" class="ddok">Valider</button></div></div>
+        <div id="blocArtefact" hidden><div class="dd" data-dd="artefact"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_artefact"><span class="ddl">Artefact porté</span><span class="ddv" id="v_artefact"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_artefact" hidden><div class="cards" id="cArtefact" role="group" aria-label="Artefact"></div></div></div></div>
       </section>
 
       <section class="step" aria-labelledby="t5s">
         <div class="step-h"><h2 id="t5s"><span class="n">6</span><span id="sortsTitre">Sorts</span></h2><small id="sortsNote"></small></div>
         <p class="hint" id="sortsAide"></p>
-        <div class="chips" id="cDepart" role="group" aria-label="Nombre de sorts au départ"></div>
-        <div class="cards" id="cSorts" role="group" aria-label="Sorts"></div>
+        <div class="dd" data-dd="depart"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_depart"><span class="ddl">Au départ</span><span class="ddv" id="v_depart"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_depart" hidden><div class="chips" id="cDepart" role="group" aria-label="Nombre de sorts au départ"></div></div></div>
+        <div class="dd" data-dd="sorts"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_sorts"><span class="ddl">Sorts choisis</span><span class="ddv" id="v_sorts"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_sorts" hidden><div class="cards" id="cSorts" role="group" aria-label="Sorts"></div>
         <form class="ajout" id="fSort" hidden><input id="iSort" placeholder="Nom du sort" aria-label="Nom du sort" style="flex-basis:140px"><input id="eSort" placeholder="Effet en jeu" aria-label="Effet du sort" style="flex-basis:220px">
           <select id="nSort" aria-label="Niveau du sort"><option value="1">Niveau 1</option><option value="2">Niveau 2</option><option value="3">Niveau 3</option></select>
           <select id="dSort" aria-label="Dés lancés"><option value="">Sans dé</option><option>1d6</option><option>2d4</option><option>2d6</option><option>3d6</option><option>1d8</option><option>2d8</option></select>
           <select id="tSort" aria-label="Type d'effet"><option value="degats">Dégâts</option><option value="soin">Soin</option><option value="autre">Autre</option></select>
-          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form>
-        <div id="blocConnus" hidden><p class="sub">Sorts connus · dons de magie : une fois chacun entre deux repos longs, sans parchemin</p><div id="cConnus"></div></div>
+          <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form><button type="button" class="ddok">Valider</button></div></div>
+        <div id="blocConnus" hidden><div class="dd" data-dd="connus"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_connus"><span class="ddl">Sorts connus (dons de magie)</span><span class="ddv" id="v_connus"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_connus" hidden><div id="cConnus"></div><button type="button" class="ddok">Valider</button></div></div></div>
       </section>
 
       <section class="step" aria-labelledby="t6">
         <div class="step-h"><h2 id="t6"><span class="n">7</span>Fiche</h2><small>Recto-verso, habillée selon le thème. La photo, si tu en ajoutes une, se place en haut à gauche.</small></div>
-        <p class="sub">Format</p>
-        <div class="chips" id="cFormat" role="group" aria-label="Format"></div>
+        <div class="dd" data-dd="format"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_format"><span class="ddl">Format</span><span class="ddv" id="v_format"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_format" hidden><div class="chips" id="cFormat" role="group" aria-label="Format"></div></div></div>
       </section>
     </div>
 
     <aside class="fiche" aria-label="Fiche du coureur">
+      <div class="encours" id="enCours" hidden><span>Modification de <b id="enCoursNom"></b></span><button type="button" id="btnNouveau">Nouveau coureur</button></div>
       <div class="identite">
         <div class="portrait" id="blocPortrait">
           <canvas id="cv" width="600" height="750" tabindex="0" aria-label="Photo du personnage. Touche pour en choisir une, glisse pour la recadrer."></canvas>
@@ -444,7 +493,7 @@ details.jcarte[open] summary{margin-bottom:6px}
 </div>
 
 
-<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span><button class="primary" id="mJouer" type="button">Terminer ↓</button></div>
+<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span></div>
 
 <div class="jeu" id="vueJouer" hidden>
   <div class="jtop">
@@ -580,6 +629,30 @@ details.jcarte[open] summary{margin-bottom:6px}
       <ul class="jdons" id="jRegles"></ul>
     </details>
 
+    <details class="jcarte" id="jModif">
+      <summary>Modifier le coureur</summary>
+      <p class="hint">Pour un changement en cours de partie : nouvelle arme, armure perdue, nouveau nom…</p>
+      <label for="mNom">Nom<input id="mNom"></label>
+      <div class="row2"><label for="mAsp1">Aspect 1<input id="mAsp1"></label><label for="mAsp2">Aspect 2<input id="mAsp2"></label></div>
+      <label for="mAsp3" id="mAsp3L" hidden>Aspect 3<input id="mAsp3"></label>
+      <p class="sub">Armure</p>
+      <div class="chips" id="mArmure" role="group" aria-label="Armure"></div>
+      <label class="toggle" id="mBouclierL"><input type="checkbox" id="mBouclier"> <span id="mBouclierNom">Bouclier</span></label>
+      <p class="sub">Armes</p>
+      <div class="marmes" id="mArmes"></div>
+      <form class="sortform" id="mArmeForm">
+        <label for="mArmeSel">Ajouter une arme<select id="mArmeSel"></select></label>
+        <div class="sortlibre" id="mArmeLibre" hidden>
+          <input id="mArmeNom" placeholder="Nom de l'arme" aria-label="Nom de l'arme">
+          <div class="jbtns deux"><select id="mArmeDe" aria-label="Dé de dégâts"><option>d4</option><option>d6</option><option value="d6+1">d6+1 (pistolet)</option><option value="d6+2">d6+2 (fusil)</option><option selected>d8</option><option>d10</option><option>d12</option></select>
+          <label class="toggle"><input type="checkbox" id="mArmeDist"> à distance</label></div>
+        </div>
+        <button class="primary">Ajouter l'arme</button>
+      </form>
+      <p class="jetat" id="mEtat" aria-live="polite"></p>
+      <button type="button" id="mForge">Tout modifier dans la Forge</button>
+    </details>
+
     <details class="jcarte" id="jProg">
       <summary>Progression</summary>
       <p class="hint">Le Conteur décide quand le coureur monte de niveau : après un moment clé, une session ou un scénario.</p>
@@ -617,7 +690,12 @@ details.jcarte[open] summary{margin-bottom:6px}
       <summary>Appareil et sauvegarde</summary>
       <label class="toggle"><input type="checkbox" id="jEveil"> Garder l'écran allumé pendant la partie</label>
       <p class="jetat" id="jEveilEtat"></p>
-      <p class="hint">Les coureurs sont enregistrés dans le navigateur de cet appareil. Pour les garder ailleurs ou les changer de téléphone, copie le code de sauvegarde et colle-le sur l'autre appareil.</p>
+      <p class="hint">Les coureurs sont enregistrés dans le navigateur de cet appareil. Pour jouer ce coureur ailleurs, exporte-le en fichier puis importe-le depuis « Mes coureurs » sur l'autre appareil.</p>
+      <div class="jbtns deux">
+        <button type="button" id="jExporter" class="primary">Exporter ce coureur</button>
+        <button type="button" id="jCopierUn">Copier son code</button>
+      </div>
+      <p class="sub" style="margin:0">Sauvegarde de tous les coureurs</p>
       <div class="jbtns deux">
         <button type="button" id="jCopier">Copier le code</button>
         <button type="button" id="jImporter">Importer un code</button>
@@ -1096,7 +1174,7 @@ function rendreChoix(){
   // fiche
   box=$("cFormat");box.innerHTML="";
   Object.keys(FORMATS).forEach(f=>box.append(bouton("chip",esc(FORMATS[f].nom)+'<span class="t">'+FORMATS[f].mm+"</span>",S.format===f,()=>{S.format=f;maj(false)})));
-  $("formatHint").textContent="Format "+FORMATS[S.format].nom+" ("+FORMATS[S.format].mm+"), recto-verso. Imprime en taille réelle, sans ajustement à la page.";
+  $("formatHint").textContent=FORMATS[S.format].page?"Une seule page A4 en portrait : le recto en haut, le verso en bas, avec un pointillé pour plier ou découper. Imprime en taille réelle.":"Format "+FORMATS[S.format].nom+" ("+FORMATS[S.format].mm+"). Imprime en taille réelle, sans ajustement à la page.";
 }
 function rendreStats(){
   const c=calculer();
@@ -1131,7 +1209,7 @@ function ecrireTexte(){
   $("parchemins").value=S.sorts.map(n=>{const p=P.find(x=>x.n===n);return p?FMT_SORT(p):n}).join("\n");
   $("description").value=(S.f?"Une coureuse ":"Un coureur ")+PHYS[S.phys][g]+", "+CAR[S.car][g]+". "+S.recit;
 }
-function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();rendreApercu()}
+function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();rendreApercu();rendreMesCoureurs();finDD()}
 function toutRendre(portrait){rendreThemes();maj(portrait)}
 
 /* ---------- Formulaires d'ajout ---------- */
@@ -1199,7 +1277,7 @@ const STY={
  spaceop:{font:'"Audiowide", "Trebuchet MS", sans-serif',ink:"#181633",acc:"#4338ca",acc2:"#b45309",paper:"#f8f8fc",val:"#2a1f7a",box:"pill"}
 };
 const SMALL='"Alegreya Sans", "Trebuchet MS", sans-serif', EYE='"Alegreya Sans SC", "Trebuchet MS", sans-serif', VALF='"Times New Roman", Times, serif';
-const FORMATS={a5:{nom:"A5 paysage",mm:"210 × 148 mm",w:595.28,h:419.53},carte:{nom:"Carte postale",mm:"148 × 105 mm",w:419.53,h:297.64}};
+const FORMATS={a4une:{nom:"A4 · une seule page",mm:"recto et verso sur 210 × 297 mm",w:595.28,h:420.94,page:{w:595.28,h:841.89}},a4:{nom:"A4 paysage",mm:"297 × 210 mm, recto-verso",w:841.89,h:595.28},a5:{nom:"A5 paysage",mm:"210 × 148 mm, recto-verso",w:595.28,h:419.53},carte:{nom:"Carte postale",mm:"148 × 105 mm, recto-verso",w:419.53,h:297.64}};
 const M=34;
 
 /* Mise en page logique : 1000 unités de large, hauteur selon le format */
@@ -1410,12 +1488,13 @@ async function construirePdf(){
   const times=await doc.embedFont(StandardFonts.TimesRoman);
   const hx=s.val.replace("#",""), col=rgb(parseInt(hx.slice(0,2),16)/255,parseInt(hx.slice(2,4),16)/255,parseInt(hx.slice(4,6),16)/255);
   const form=doc.getForm();
-  function champ(page,name,b,val,taille,center){
+  const PG=F.page||{w:F.w,h:F.h}, une=!!F.page, oyR=une?PG.h-F.h:0;
+  function champ(page,name,b,val,taille,center,oy){oy=oy||0;
     const [x,y,w,h]=b.map(n=>n*u), multi=!center&&name!=="nom";
     const tf=form.createTextField(name);
     if(multi)tf.enableMultiline();
     const txt=san(val);tf.setText(txt);
-    tf.addToPage(page,{x,y:F.h-y-h,width:w,height:h,font:times,textColor:col,backgroundColor:undefined,borderColor:undefined,borderWidth:0});
+    tf.addToPage(page,{x,y:oy+F.h-y-h,width:w,height:h,font:times,textColor:col,backgroundColor:undefined,borderColor:undefined,borderWidth:0});
     if(center)tf.setAlignment(TextAlignment.Center);
     let sz=taille[0]*u;const min=taille[1]*u;
     if(multi){const f=ajuster((t,z)=>times.widthOfTextAtSize(t,z),txt,w-4,h-2,sz,min);sz=f.sz}
@@ -1423,11 +1502,13 @@ async function construirePdf(){
     tf.setFontSize(Math.max(sz,6));
   }
   const illu=cvPhoto, Z=zones(mise(S.format,illu)), V=valeurs();
-  const p1=doc.addPage([F.w,F.h]);
-  p1.drawImage(await doc.embedPng(await fondPng(recto,F)),{x:0,y:0,width:F.w,height:F.h});
+  const p1=doc.addPage([PG.w,PG.h]);
+  p1.drawImage(await doc.embedPng(await fondPng(recto,F)),{x:0,y:oyR,width:F.w,height:F.h});
   [["nom","nom"],["niveau","niveau"],["aspects","aspects"],["dons","dons"],["equip","equipement"],["pv","points_de_vie"],["dv","des_de_vie"],["dh","des_heroisme"],["std","standard"],["mvt","arts_du_mouvement"],["def","defense"]]
-    .forEach(([key,name])=>champ(p1,name,Z[key],V[key],TAILLES[key],CENTRES.includes(key)));
-  const p2=doc.addPage([F.w,F.h]);
+    .forEach(([key,name])=>champ(p1,name,Z[key],V[key],TAILLES[key],CENTRES.includes(key),oyR));
+  const p2=une?p1:doc.addPage([F.w,F.h]);
+  if(une){p1.drawLine({start:{x:14,y:F.h},end:{x:PG.w-14,y:F.h},thickness:0.6,color:rgb(0.55,0.55,0.55),dashArray:[4,3]});
+    p1.drawText("plier ou découper ici".replace(/é/g,"e"),{x:PG.w-110,y:F.h+3,size:6,font:times,color:rgb(0.55,0.55,0.55)})}
   const Z2=zones(mise(S.format,false));
   p2.drawImage(await doc.embedPng(await fondPng(verso,F)),{x:0,y:0,width:F.w,height:F.h});
   champ(p2,"passe",Z2.desc,V.desc,TAILLES.desc,false);
@@ -1510,6 +1591,7 @@ function instantane(){
     sortsTitre:t.sortsTitre, sortsUn:t.sortsUn,
     sorts:S.sorts.map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj),
     portrait:vignette(),
+    forge:Object.assign(JSON.parse(JSON.stringify(S)),{niveau:c.niv}),
     connus:(c.fx.magie1?S.connus1:[]).concat(c.fx.magie2?S.connus2:[]).map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj)};
 }
 function jouerCeCoureur(){
@@ -1520,6 +1602,7 @@ function jouerCeCoureur(){
     p.connus=snap.connus.map(s=>Object.assign({},s,{lance:!!(p.connus||[]).find(x=>x.n===s.n&&x.lance)}));p.jetons=Math.min(p.jetons??snap.cmd,snap.cmd)}
   else{p={id:"c"+Date.now().toString(36)+Math.floor(Math.random()*1e4),fiche:snap,pv:snap.pvMax,dh:snap.dhMax,equip:snap.equip,notes:"",log:[],
     sorts:snap.sorts.map(s=>Object.assign({},s,{lu:false})),connus:snap.connus.map(s=>Object.assign({},s,{lance:false})),jetons:snap.cmd};ROSTER.liste.unshift(p);S.playId=p.id}
+  p.forge=snap.forge;delete p.fiche.forge;
   ROSTER.actif=p.id;
   if(!sauverRoster())setStatus("Ce navigateur refuse d'enregistrer : la feuille de jeu marchera, mais sera perdue en fermant la page.");
   allerA("jouer");
@@ -1533,7 +1616,7 @@ function montrer(force){
   $("vueJouer").hidden=!jeu;document.querySelector(".wrap").hidden=jeu;
   document.body.classList.toggle("forge",!jeu);
   $("mbar").hidden=jeu;
-  if(jeu)rendreJeu();
+  if(jeu)rendreJeu();else{const p=S&&S.playId&&ROSTER.liste.find(x=>x.id===S.playId);if(p&&p.forge)chargerDansForge(p,true);else rendreMesCoureurs()}
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",()=>montrer());
@@ -1580,6 +1663,7 @@ function rendreJeu(){
   rendreLog();
   dernier=null;const res=$("jRes");res.className="jres vide";res.textContent="Touche un jet ou un dé : le résultat s'affiche ici.";
   $("jSupprOk").hidden=true;$("jSuppr").hidden=false;
+  rendreModif();$("mEtat").textContent="";
 }
 function rendrePv(){
   const p=actif(),f=p.fiche;
@@ -1752,7 +1836,6 @@ $("jNotes").addEventListener("input",e=>{const p=actif();p.notes=e.target.value;
 $("jListe").addEventListener("change",e=>{ROSTER.actif=e.target.value;sauverRoster();rendreJeu()});
 $("jRetour").addEventListener("click",()=>allerA("forge"));
 $("jVersForge").addEventListener("click",()=>allerA("forge"));
-$("mJouer").addEventListener("click",()=>{$("fin").scrollIntoView({block:"start",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})});
 $("btnJouer").addEventListener("click",jouerCeCoureur);
 // suppression
 $("jSuppr").addEventListener("click",()=>{$("jSuppr").hidden=true;$("jSupprOk").hidden=false});
@@ -1971,16 +2054,18 @@ function appliquerDon(p,d,n){
     lignes.push("Sorts connus, une fois par repos long : "+nouveaux.join(", ")+".")}
   f.dons=lignes;
   if(gainPv){f.pvMax+=gainPv;p.pv=Math.min(f.pvMax,p.pv+gainPv)}
+  syncForge(p);
   return gainPv;
 }
 function monterNiveau(){
   const p=actif(),f=p.fiche;if(!extraOk())return;
-  const copie=JSON.parse(JSON.stringify({fiche:f,pv:p.pv,dh:p.dh,connus:p.connus||[],jetons:p.jetons}));
+  const copie=JSON.parse(JSON.stringify({fiche:f,pv:p.pv,dh:p.dh,connus:p.connus||[],jetons:p.jetons,forge:p.forge||null}));
   let msg="";
   if(nivMode==="niveau"){
     if(f.niveau>=NIV_MAX)return;
     const d=donChoisi();
     const n=f.niveau+1,de=deDeVie(f),jet=1+Math.floor(Math.random()*de);
+    if(p.forge&&Array.isArray(p.forge.rolls))p.forge.rolls[n-1]=(jet-0.5)/de;
     let pvDons=0;nomsDons(f).forEach(nm=>{const x=catDons(f).find(y=>y.n===nm);if(x&&x.fx&&x.fx.pvNiv)pvDons+=x.fx.pvNiv});
     const gain=jet+1+pvDons;
     f.niveau=n;const m=/^(\d+)d(\d+)\+(\d+)$/.exec(f.dv);f.dv=n+"d"+(m?m[2]:de)+"+"+(n+4);
@@ -2016,7 +2101,7 @@ $("jNivNom").addEventListener("input",majHold);
 $("jNivUndo").addEventListener("click",()=>{$("jNivUndo").hidden=true;$("jNivUndoOk").hidden=false});
 $("jNivUndoNon").addEventListener("click",()=>{$("jNivUndo").hidden=false;$("jNivUndoOk").hidden=true});
 $("jNivUndoOui").addEventListener("click",()=>{const p=actif(),u=p.avantNiveau;if(!u)return;
-  p.fiche=u.fiche;p.pv=u.pv;p.dh=u.dh;p.connus=u.connus;p.jetons=u.jetons;delete p.avantNiveau;sauverRoster();journal("Annulé : "+(u.libelle||"niveau"),"niveau "+p.fiche.niveau);rendreJeu();$("jProg").open=true;$("jNivEtat").textContent="Annulé : "+(u.libelle||"dernier changement")+"."});
+  p.fiche=u.fiche;p.pv=u.pv;p.dh=u.dh;p.connus=u.connus;p.jetons=u.jetons;if(u.forge)p.forge=u.forge;delete p.avantNiveau;sauverRoster();journal("Annulé : "+(u.libelle||"niveau"),"niveau "+p.fiche.niveau);rendreJeu();$("jProg").open=true;$("jNivEtat").textContent="Annulé : "+(u.libelle||"dernier changement")+"."});
 
 /* Fiche PDF à jour depuis la feuille de jeu */
 async function pdfDepuisJeu(){
@@ -2041,15 +2126,213 @@ async function pdfDepuisJeu(){
 }
 $("jPdf").addEventListener("click",pdfDepuisJeu);
 
+/* ---------- Mes coureurs : reprendre un coureur enregistré ---------- */
+function persoTheme(id){if(!PERSO[id])PERSO[id]={};["passes","metiers","armes","kits","dons","sorts"].forEach(k=>{if(!Array.isArray(PERSO[id][k]))PERSO[id][k]=[]});return PERSO[id]}
+function assurePerso(theme,cat,item){
+  const t=THEMES.find(x=>x.id===theme);if(!t||!item)return;const P=persoTheme(theme),n=item.n||item;
+  const existe={passes:()=>t.passes.includes(n),metiers:()=>t.M.some(m=>m.n===n),armes:()=>t.A.some(a=>a.n===n),dons:()=>donsTheme(t,true).some(d=>d.n===n)}[cat];
+  if(existe&&existe())return;if(P[cat].some(x=>(x.n||x)===n))return;P[cat].push(item);sauverPerso();
+}
+/* Recopie dans l'état de la Forge ce qui a changé en jeu */
+function syncForge(p){
+  const F=p.forge,f=p.fiche;if(!F)return;
+  F.nom=f.nom;F.niveau=f.niveau;
+  if(f.aspects[0]){F.passe=f.aspects[0];assurePerso(f.theme,"passes",f.aspects[0])}
+  if(f.aspects[1]){F.metier=f.aspects[1];assurePerso(f.theme,"metiers",{n:f.aspects[1],r:"p"})}
+  if(f.aspects[2])F.aspect3=f.aspects[2];
+  F.armure=f.armureCat??F.armure;F.bouclier=!!f.bouclier;
+  F.armes=f.armes.filter(a=>!a.art).map(a=>{assurePerso(f.theme,"armes",{n:a.n,d:a.base||a.d,dist:!!a.dist});return a.n});
+  const noms=nomsDons(f),cat=catDons(f);
+  noms.forEach(n=>{if(!cat.some(d=>d.n===n)){const l=f.dons.find(x=>x.startsWith(n+" :"));assurePerso(f.theme,"dons",{n,e:l?l.slice(n.length+3):"",fx:{}})}});
+  F.dons=noms.slice();if(f.artefact)F.artefact=f.artefact;
+  const co=p.connus||[];F.connus1=co.filter(s=>(s.niv||1)===1).map(s=>s.n);F.connus2=co.filter(s=>s.niv===2).map(s=>s.n);
+}
+async function chargerDansForge(p,silencieux){
+  if(!p||!p.forge)return;
+  syncForge(p);sauverRoster();
+  const memePerso=S&&S.playId===p.id;
+  S=JSON.parse(JSON.stringify(p.forge));S.playId=p.id;
+  ["connus1","connus2","sorts","armes","dons"].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
+  $("niveau").value=String(Math.min(6,p.fiche.niveau||1));
+  if(silencieux){if(!memePerso||!photo)photo=null;if(!photo&&p.fiche.portrait){try{const im=await chargerImg(p.fiche.portrait),s=baseEchelle(im);photo={img:im,zoom:1,dx:(W-im.naturalWidth*s)/2,dy:(H-im.naturalHeight*s)/2}}catch(e){}}
+    toutRendre(false);afficherPortrait();return}
+  photo=null;
+  if(p.fiche.portrait){try{const im=await chargerImg(p.fiche.portrait),s=baseEchelle(im);photo={img:im,zoom:1,dx:(W-im.naturalWidth*s)/2,dy:(H-im.naturalHeight*s)/2}}catch(e){}}
+  allerA("forge");toutRendre(false);afficherPortrait();
+  setStatus("« "+p.fiche.nom+" » est chargé. Tes changements mettront à jour sa feuille de jeu.");
+  setTimeout(()=>{try{document.querySelector(".atelier").scrollIntoView({block:"start"})}catch(e){}},50);
+}
+function rendreMesCoureurs(){
+  const sec=$("mesCoureurs"),box=$("rosterListe");if(!sec)return;
+  $("rosterVide").hidden=!!ROSTER.liste.length;box.innerHTML="";
+  const nb=ROSTER.liste.length;$("v_coureurs").textContent=nb?nb+" coureur"+(nb>1?"s":"")+" : "+ROSTER.liste.slice(0,3).map(x=>x.fiche.nom).join(", ")+(nb>3?"…":""):"aucun pour l'instant";
+  ROSTER.liste.forEach(x=>{
+    const f=x.fiche,row=document.createElement("div");row.className="rc"+(S&&S.playId===x.id?" actuel":"");
+    const vis=document.createElement(f.portrait?"img":"div");vis.className="rcvis";
+    if(f.portrait){vis.src=f.portrait;vis.alt=""}else vis.textContent=(f.nom||"?").trim().charAt(0).toUpperCase();
+    const t=document.createElement("div");t.className="rctxt";const b=document.createElement("b");b.textContent=f.nom;const s=document.createElement("span");
+    s.textContent=f.themeNom+" · niveau "+f.niveau+" · PV "+x.pv+"/"+f.pvMax;t.append(b,s);
+    const z=document.createElement("div");z.className="rcbtns";
+    const j=document.createElement("button");j.type="button";j.className="primary";j.textContent="Jouer";j.addEventListener("click",()=>{ROSTER.actif=x.id;sauverRoster();allerA("jouer")});
+    const m=document.createElement("button");m.type="button";m.textContent=S&&S.playId===x.id?"En cours":"Modifier";
+    if(!x.forge){m.disabled=true;m.title="Créé avec une ancienne version de la Forge : seule la feuille de jeu est disponible."}
+    else if(!(S&&S.playId===x.id))m.addEventListener("click",()=>chargerDansForge(x));else m.disabled=true;
+    const ex=document.createElement("button");ex.type="button";ex.textContent="Exporter";ex.addEventListener("click",()=>exporterCoureur(x,ex));
+    z.append(j,m,ex);row.append(vis,t,z);box.append(row);
+  });
+  const enCours=S&&S.playId&&ROSTER.liste.find(x=>x.id===S.playId);
+  $("enCours").hidden=!enCours;if(enCours)$("enCoursNom").textContent=enCours.fiche.nom;
+  $("btnJouer").firstChild.textContent=enCours?"Enregistrer et ouvrir la feuille de jeu":"Ouvrir la feuille de jeu";
+}
+
+/* ---------- Modifier le coureur en cours de partie ---------- */
+function majEntete(){
+  const p=actif(),f=p.fiche;
+  $("jNom").textContent=f.nom;$("jAspects").textContent=f.aspects.join(" · ");
+  if(f.portrait)$("jPhoto").alt="Photo de "+f.nom;
+  [...$("jListe").options].forEach(o=>{const x=ROSTER.liste.find(y=>y.id===o.value);if(x)o.textContent=x.fiche.nom+" · "+x.fiche.themeNom+" niv. "+x.fiche.niveau});
+}
+function prediDe(f,dist){const n=nomsDons(f);return n.includes(dist?"Armes de prédilection (distance)":"Armes de prédilection (contact)")?1:0}
+function ligneArmes(f){return f.armes.map(a=>a.n+" ("+a.d+")").join(", ")}
+function ligneArmure(f){const t=THEMES.find(x=>x.id===f.theme)||THEMES[0],c=f.armureCat??0,arm=ARMV[c]+(f.bouclier?1:0);return t.armures[c]+(f.bouclier&&t.bouclier?" + "+t.bouclier.toLowerCase():"")+" : armure "+arm}
+function remplacerLigne(p,ancienne,nouvelle){if(ancienne&&p.equip.includes(ancienne))p.equip=p.equip.replace(ancienne,nouvelle);else if(!p.equip.includes(nouvelle))p.equip=nouvelle+"\n"+p.equip;$("jEquip").value=p.equip}
+function changerArmure(cat,bouclier){
+  const p=actif(),f=p.fiche,noms=nomsDons(f),old=f.armureCat??0,oldB=!!f.bouclier,avant=ligneArmure(f);
+  const arm=(c,b)=>ARMV[c]+(b?1:0), esq=c=>noms.includes("Esquive acrobatique")&&c<=1?2:0, mai=c=>noms.includes("Maîtrise des armures")&&c>=2?2:0, bast=b=>f.artefact==="bastion"&&b?1:0;
+  f.def+=(arm(cat,bouclier)+esq(cat))-(arm(old,oldB)+esq(old));
+  f.mvt+=-(arm(cat,bouclier)-arm(old,oldB))+(mai(cat)-mai(old))+(bast(bouclier)-bast(oldB));
+  f.armureCat=cat;f.bouclier=bouclier;if(!bouclier)p.bouclierBrise=false;
+  remplacerLigne(p,avant,ligneArmure(f));
+  syncForge(p);sauverRoster();rendreJeuStats();rendreTalents();rendreModif();
+  $("mEtat").textContent="Armure : "+ligneArmure(f)+". Défense "+sign(statJeu(p,"def"))+", Arts du mouvement "+sign(statJeu(p,"mvt"))+".";journal("Armure changée",sign(f.def));
+}
+function changerArmes(maj,message){
+  const p=actif(),f=p.fiche,avant=ligneArmes(f);maj(f);
+  remplacerLigne(p,avant,ligneArmes(f));syncForge(p);sauverRoster();rendreJeu();$("jModif").open=true;$("mEtat").textContent=message;
+}
+function rendreModif(){
+  const p=actif();if(!p)return;const f=p.fiche,t=THEMES.find(x=>x.id===f.theme)||THEMES[0];
+  $("mNom").value=f.nom;$("mAsp1").value=f.aspects[0]||"";$("mAsp2").value=f.aspects[1]||"";
+  $("mAsp3L").hidden=!(f.aspects.length>2||nomsDons(f).includes("Talents variés"));$("mAsp3").value=f.aspects[2]||"";
+  let box=$("mArmure");box.innerHTML="";
+  t.armures.forEach((a,i)=>{const b=document.createElement("button");b.type="button";b.className="chip";b.innerHTML=esc(a)+'<span class="t">'+ARMC[i]+" · "+ARMV[i]+"</span>";
+    b.setAttribute("aria-pressed",(f.armureCat??0)===i?"true":"false");b.addEventListener("click",()=>{if((f.armureCat??0)!==i)changerArmure(i,!!f.bouclier)});box.append(b)});
+  $("mBouclierL").hidden=!t.bouclier;$("mBouclierNom").textContent=(t.bouclier||"Bouclier")+" (+1 Défense, −1 Arts du mouvement)";$("mBouclier").checked=!!f.bouclier;$("mBouclier").disabled=(f.armureCat??0)===0&&!f.bouclier?false:false;
+  box=$("mArmes");box.innerHTML="";
+  if(!f.armes.length)box.innerHTML='<p class="jetat">Aucune arme.</p>';
+  f.armes.forEach((a,i)=>{const r=document.createElement("div");r.className="marme";const s=document.createElement("span");s.textContent=a.n+" · "+a.d+(a.dist?" · distance":"");
+    const x=document.createElement("button");x.type="button";x.textContent="Retirer";x.setAttribute("aria-label","Retirer "+a.n);
+    x.addEventListener("click",()=>changerArmes(ff=>ff.armes.splice(i,1),a.n+" retirée."));r.append(s,x);box.append(r)});
+  const sel=$("mArmeSel");sel.innerHTML="";
+  const liste=t.A.concat(persoTheme(t.id).armes).filter(a=>!f.armes.some(b=>b.n===a.n));
+  liste.forEach((a,i)=>{const o=document.createElement("option");o.value=String(i);o.textContent=a.n+" · "+a.d+(a.dist?" · distance":"");sel.append(o)});
+  const o=document.createElement("option");o.value="autre";o.textContent="Autre, je l'écris…";sel.append(o);
+  sel._liste=liste;$("mArmeLibre").hidden=sel.value!=="autre";
+  $("mForge").hidden=!p.forge;
+}
+$("mNom").addEventListener("change",e=>{const p=actif(),v=e.target.value.trim().slice(0,60);if(!v){e.target.value=p.fiche.nom;return}p.fiche.nom=v;syncForge(p);sauverRoster();majEntete();$("mEtat").textContent="Nom mis à jour."});
+["mAsp1","mAsp2","mAsp3"].forEach(id=>$(id).addEventListener("change",()=>{const p=actif();p.fiche.aspects=[$("mAsp1").value,$("mAsp2").value,$("mAsp3L").hidden?"":$("mAsp3").value].map(s=>s.trim().slice(0,60)).filter(Boolean);syncForge(p);sauverRoster();majEntete();$("mEtat").textContent="Aspects mis à jour."}));
+$("mBouclier").addEventListener("change",e=>{const p=actif(),f=p.fiche;let cat=f.armureCat??0;if(e.target.checked&&cat===0)cat=0;changerArmure(cat,e.target.checked)});
+$("mArmeSel").addEventListener("change",e=>{$("mArmeLibre").hidden=e.target.value!=="autre"});
+$("mArmeForm").addEventListener("submit",e=>{e.preventDefault();const p=actif(),f=p.fiche,sel=$("mArmeSel");let a;
+  if(sel.value==="autre"){const n=$("mArmeNom").value.trim().slice(0,60);if(!n){$("mArmeNom").focus();return}a={n,d:$("mArmeDe").value,dist:$("mArmeDist").checked};assurePerso(f.theme,"armes",a);$("mArmeNom").value="";$("mArmeDist").checked=false}
+  else a=sel._liste[+sel.value];if(!a)return;
+  const w={n:a.n,base:a.d,dist:!!a.dist,d:deArme(a.d,prediDe(f,!!a.dist))};
+  changerArmes(ff=>ff.armes.push(w),a.n+" ajoutée ("+w.d+").");journal("Nouvelle arme",a.n)});
+$("mForge").addEventListener("click",()=>chargerDansForge(actif()));
+$("btnNouveau").addEventListener("click",()=>{tirer(S.theme);photo=null;toutRendre(true);afficherPortrait();window.scrollTo(0,0);setStatus("Nouveau coureur : l'ancien reste enregistré dans « Mes coureurs ».")});
+
+
+/* ---------- Menus déroulants des étapes ---------- */
+const DD_SIMPLE=new Set(["theme","passe","metier","armure","kit","artefact","depart","format"]);
+let ddDernier=null;
+function ouvrirDD(nom,ouvrir){document.querySelectorAll(".dd").forEach(d=>{const on=d.dataset.dd===nom&&ouvrir;d.querySelector(".ddb").hidden=!on;d.querySelector(".ddh").setAttribute("aria-expanded",on?"true":"false");d.classList.toggle("ouvert",on)})}
+document.querySelectorAll(".dd").forEach(d=>{
+  const h=d.querySelector(".ddh"),b=d.querySelector(".ddb");
+  h.addEventListener("click",()=>{const ouvert=!b.hidden;ouvrirDD(d.dataset.dd,!ouvert);if(!ouvert)setTimeout(()=>{try{const r=d.getBoundingClientRect();if(r.top<0)d.scrollIntoView({block:"start"})}catch(e){}},0)});
+  b.addEventListener("click",e=>{const x=e.target.closest("button");if(!x||x.disabled)return;
+    if(x.classList.contains("ddok")){ouvrirDD(d.dataset.dd,false);return}
+    if(x.classList.contains("plus")||x.classList.contains("x")||x.hasAttribute("data-close")||x.closest("form"))return;
+    ddDernier=d.dataset.dd},true);
+  b.addEventListener("submit",()=>{ddDernier=d.dataset.dd},true);
+});
+function resumeDD(){
+  const t=T(),c=calculer(),niv=c.niv,set=(n,v)=>{const el=$("v_"+n);if(el)el.textContent=v};
+  set("theme",t.nom);set("passe",S.passe||"à choisir");set("metier",(S.metier||"à choisir")+(REG.dvMetier?" · d"+c.base:""));
+  set("armure",t.armures[S.armure]+" · "+ARMV[S.armure]);
+  const A=listes.A();set("armes",S.armes.map(n=>{const a=A.find(x=>x.n===n);return a?n+" "+deEffectif(a,c.fx):n}).join(", ")||"aucune");
+  set("kit",S.kit);
+  const reste=niv-S.dons.length;set("dons",(S.dons.join(", ")||"aucun")+(reste>0?" · encore "+reste+" à choisir":""));
+  const art=ARTEFACTS.find(a=>a.id===S.artefact);set("artefact",art?art.n:"à choisir");
+  set("depart",S.nbSorts+" au départ");
+  const rs=c.maxSorts-S.sorts.length;set("sorts",(S.sorts.join(", ")||"aucun")+(rs>0?" · encore "+rs:""));
+  set("connus",S.connus1.concat(S.connus2).join(", ")||"à choisir");
+  set("format",FORMATS[S.format].nom+" · "+FORMATS[S.format].mm);
+}
+function finDD(){
+  resumeDD();
+  if(!ddDernier)return;const n=ddDernier;ddDernier=null;
+  if(DD_SIMPLE.has(n)){ouvrirDD(n,false);return}
+  const c=calculer();
+  const plein={armes:S.armes.length>=3,dons:S.dons.length>=c.niv,sorts:S.sorts.length>=c.maxSorts,connus:(!c.fx.magie1||S.connus1.length>=2)&&(!c.fx.magie2||S.connus2.length>=1)}[n];
+  if(plein)ouvrirDD(n,false);
+}
+
+/* ---------- Transfert entre appareils (fichier ou code) ---------- */
+function paquetCoureur(x){
+  const perso={};if(PERSO[x.fiche.theme])perso[x.fiche.theme]=PERSO[x.fiche.theme];
+  return {format:"forge-de-coureurs",version:1,exporte:new Date().toISOString(),coureur:x,perso};
+}
+function nomFichier(x){return ((x.fiche.nom||"coureur").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"")||"coureur")+".coureur.json"}
+async function exporterCoureur(x,btn){
+  const st=$("statusTransfert")&&btn&&btn.closest("#mesCoureurs")?$("statusTransfert"):$("jSauvEtat");
+  try{await enregistrer(nomFichier(x),new TextEncoder().encode(JSON.stringify(paquetCoureur(x))),"application/json");st.textContent="Fichier « "+nomFichier(x)+" » enregistré. Envoie-le sur l'autre appareil, puis « Importer un coureur »."}
+  catch(e){const c=e&&e.code;st.textContent=c==="declined"?"Export annulé.":"L'export n'a pas abouti. Essaie « Copier son code » depuis la feuille de jeu."}
+}
+function codeCoureur(x){return btoa(unescape(encodeURIComponent(JSON.stringify(paquetCoureur(x)))))}
+function lireTransfert(texte){
+  texte=String(texte||"").trim();let o=null;
+  try{o=JSON.parse(texte)}catch(e){try{o=JSON.parse(decodeURIComponent(escape(atob(texte.replace(/\s+/g,"")))))}catch(e2){o=null}}
+  if(!o)return null;
+  if(o.format==="forge-de-coureurs"&&o.coureur)return {liste:[o.coureur],perso:o.perso||{}};
+  if(Array.isArray(o.liste))return {liste:o.liste,perso:{}};
+  if(o.fiche&&o.id)return {liste:[o],perso:{}};
+  return null;
+}
+function importerTransfert(texte,st){
+  const r=lireTransfert(texte);
+  if(!r||!r.liste.length||!r.liste.every(x=>x&&x.fiche&&x.id)){st.textContent="Ce fichier ou ce code n'est pas reconnu. Vérifie qu'il vient bien de la Forge et qu'il est complet.";return false}
+  Object.keys(r.perso).forEach(th=>{const P=persoTheme(th),src=r.perso[th]||{};Object.keys(P).forEach(k=>{(src[k]||[]).forEach(it=>{const n=it.n||it;if(!P[k].some(y=>(y.n||y)===n))P[k].push(it)})})});sauverPerso();
+  let nv=0,maj=0;
+  r.liste.forEach(x=>{const i=ROSTER.liste.findIndex(y=>y.id===x.id);if(i>=0){ROSTER.liste[i]=x;maj++}else{ROSTER.liste.unshift(x);nv++}});
+  if(!ROSTER.actif&&ROSTER.liste[0])ROSTER.actif=ROSTER.liste[0].id;
+  if(!sauverRoster()){st.textContent="Ce navigateur refuse d'enregistrer : l'import n'a pas pu être gardé.";return false}
+  const noms=r.liste.map(x=>x.fiche.nom).join(", ");
+  st.textContent=(nv?nv+" coureur"+(nv>1?"s":"")+" importé"+(nv>1?"s":""):"")+(nv&&maj?", ":"")+(maj?maj+" mis à jour":"")+" : "+noms+".";
+  rendreMesCoureurs();if(!$("vueJouer").hidden)rendreJeu();
+  return true;
+}
+$("btnImportFichier").addEventListener("click",()=>$("fichierCoureur").click());
+$("fichierCoureur").addEventListener("change",e=>{const inp=e.target,fi=inp.files[0];if(!fi)return;const rd=new FileReader();
+  rd.onload=()=>{inp.value="";importerTransfert(rd.result,$("statusTransfert"))};rd.onerror=()=>{inp.value="";$("statusTransfert").textContent="Ce fichier n'a pas pu être lu."};rd.readAsText(fi)});
+$("btnImportCode").addEventListener("click",()=>{$("blocCode").hidden=false;$("codeImport").focus()});
+$("btnCodeAnnuler").addEventListener("click",()=>{$("blocCode").hidden=true;$("codeImport").value=""});
+$("btnCodeOk").addEventListener("click",()=>{if(importerTransfert($("codeImport").value,$("statusTransfert"))){$("blocCode").hidden=true;$("codeImport").value=""}});
+$("jExporter").addEventListener("click",()=>{const p=actif();if(p)exporterCoureur(p,null)});
+$("jCopierUn").addEventListener("click",()=>{const p=actif();if(!p)return;const code=codeCoureur(p),ta=$("jCode");ta.hidden=false;ta.value=code;$("jImporterOk").hidden=true;
+  const ok=()=>$("jSauvEtat").textContent="Code copié. Sur l'autre appareil : « Mes coureurs » → « Coller un code ».";
+  const ko=()=>{ta.focus();ta.select();$("jSauvEtat").textContent="Copie automatique refusée : le code est sélectionné, copie-le à la main."};
+  try{navigator.clipboard.writeText(code).then(ok,ko)}catch(e){ko()}});
+
 /* Barre mobile de la Forge */
 function majBarre(){if(!S)return;const c=calculer();$("mStats").innerHTML="<b>"+esc(v("nom")||"Coureur")+"</b><br>PV "+c.pv+" · Std "+sign(c.std)+" · Mouv "+sign(c.mvt)+" · Déf "+sign(c.def)}
 
 let dl=null;
 /* Dans Claude : capacité de téléchargement. Ailleurs (GitHub Pages…) : lien de téléchargement classique. */
-async function enregistrer(nom,bytes){
+async function enregistrer(nom,bytes,type){
   if(dl)return dl.save({filename:nom,data:bytes});
   if(window.claude)throw {code:"indisponible"};
-  const url=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+  const url=URL.createObjectURL(new Blob([bytes],{type:type||"application/pdf"}));
   const a=document.createElement("a");a.href=url;a.download=nom;document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),10000);
 }
@@ -2067,7 +2350,7 @@ $("btnPdf").addEventListener("click",async()=>{
   }finally{$("btnPdf").disabled=false}
 });
 
-tirer("fantasy");toutRendre(true);dessinerPhoto();
+tirer("fantasy");toutRendre(true);dessinerPhoto();rendreMesCoureurs();
 montrer();
 if(window.claude&&claude.use){claude.use("downloads").then(x=>{dl=x;if(!x)setStatus("Le téléchargement du PDF n'est pas disponible dans cette vue.")}).catch(()=>{})}
 })();
