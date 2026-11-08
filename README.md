@@ -3,7 +3,7 @@
 Création rapide de personnages pour le jeu de rôle **Coureurs d'Orages** (Islayre d'Argolh), avec :
 
 - quatorze thèmes (fantasy, Moyen Âge, pirates, western, contemporain, post-apocalypse, cyberpunk, science-fiction, space opera, préhistoire, Antiquité, années 1920, uchronie 1960, steampunk) ;
-- aspects, armes, équipement, dons et sorts au choix, ou inventés ;
+- aspects, origine, physique, caractère, histoire, armes, paquetages, dons et sorts au choix, ou inventés (ou aucun) ;
 - points de vie et bonus calculés selon les règles du livre ;
 - fiche en PDF remplissable : A4 sur une seule page, A4 ou A5 recto-verso, ou carte postale, avec la photo de ton choix ;
 - feuille de jeu sur téléphone : PV, dés d'héroïsme, jets, dégâts, sorts, dons en jeu, passage de niveau ;

@@ -349,11 +349,15 @@ details.jcarte[open] summary{margin-bottom:6px}
   <div class="atelier">
     <div class="etapes">
       <section class="step" aria-labelledby="t2">
-        <div class="step-h"><h2 id="t2"><span class="n">2</span>Aspects</h2><small id="roleNote"></small></div>
+        <div class="step-h"><h2 id="t2"><span class="n">2</span>Aspects, origine et portrait</h2><small id="roleNote"></small></div>
         <div class="dd" data-dd="passe"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_passe"><span class="ddl">Aspect 1 · passé</span><span class="ddv" id="v_passe"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_passe" hidden><div class="chips" id="cPasse" role="group" aria-label="Passé"></div>
         <form class="ajout" id="fPasse" hidden><input id="iPasse" placeholder="Ton propre passé, ex. Ancien chef de gang" aria-label="Nouveau passé"><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form></div></div>
         <div class="dd" data-dd="metier"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_metier"><span class="ddl">Aspect 2 · métier</span><span class="ddv" id="v_metier"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_metier" hidden><div class="chips" id="cMetier" role="group" aria-label="Métier"></div>
         <form class="ajout" id="fMetier" hidden><input id="iMetier" placeholder="Ton propre métier, ex. Dompteur de griffons" aria-label="Nouveau métier"><select id="rMetier" aria-label="Profil"><option value="c">Combattant (d10)</option><option value="p" selected>Polyvalent (d8)</option><option value="f">Fin (d6)</option></select><button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form></div></div>
+        <div class="dd" data-dd="origine"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_origine"><span class="ddl">Origine</span><span class="ddv" id="v_origine"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_origine" hidden><div class="chips" id="cOrigine" role="group" aria-label="Origine"></div><form class="ajout" id="fOrigine" hidden><input id="iOrigine" placeholder="ex. de Bruges, ou Né sur un bateau pirate" aria-label="Origine libre"><button class="primary">Valider</button><button type="button" data-close>Annuler</button></form></div></div>
+<div class="dd" data-dd="physique"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_physique"><span class="ddl">Physique</span><span class="ddv" id="v_physique"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_physique" hidden><div class="chips" id="cPhys" role="group" aria-label="Physique"></div><form class="ajout" id="fPhys" hidden><input id="iPhys" placeholder="ex. couvert de tatouages tribaux" aria-label="Physique libre"><button class="primary">Valider</button><button type="button" data-close>Annuler</button></form></div></div>
+        <div class="dd" data-dd="caractere"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_caractere"><span class="ddl">Caractère</span><span class="ddv" id="v_caractere"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_caractere" hidden><div class="chips" id="cCar" role="group" aria-label="Caractère"></div><form class="ajout" id="fCar" hidden><input id="iCar" placeholder="ex. incapable de garder un secret" aria-label="Caractère libre"><button class="primary">Valider</button><button type="button" data-close>Annuler</button></form></div></div>
+        <div class="dd" data-dd="recit"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_recit"><span class="ddl">Histoire du personnage</span><span class="ddv" id="v_recit"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_recit" hidden><div class="cards" id="cRecit" role="group" aria-label="Histoire"></div><form class="ajout" id="fRecit" hidden><textarea id="iRecit" rows="3" placeholder="ex. A volé la couronne d'un roi et la cache encore." aria-label="Ton histoire"></textarea><button class="primary">Valider</button><button type="button" data-close>Annuler</button></form></div></div>
         <div id="blocAspect3" hidden><p class="sub">Aspect 3 · Talents variés</p><input id="iAspect3" aria-label="Troisième aspect" placeholder="ex. Ancien marin"></div>
       </section>
 
@@ -635,6 +639,8 @@ details.jcarte[open] summary{margin-bottom:6px}
       <label for="mNom">Nom<input id="mNom"></label>
       <div class="row2"><label for="mAsp1">Aspect 1<input id="mAsp1"></label><label for="mAsp2">Aspect 2<input id="mAsp2"></label></div>
       <label for="mAsp3" id="mAsp3L" hidden>Aspect 3<input id="mAsp3"></label>
+      <label for="mOrigine">Origine<input id="mOrigine"></label>
+      <label for="mDesc">Description et histoire<textarea id="mDesc" rows="3"></textarea></label>
       <p class="sub">Armure</p>
       <div class="chips" id="mArmure" role="group" aria-label="Armure"></div>
       <label class="toggle" id="mBouclierL"><input type="checkbox" id="mBouclier"> <span id="mBouclierNom">Bouclier</span></label>
@@ -995,6 +1001,76 @@ const v=k=>$(k).value;
 const ROLES={c:{nom:"combattant",de:10},p:{nom:"polyvalent",de:8},f:{nom:"fin",de:6}};
 const FXN={parch:"sort au départ",pvNiv:"PV par niveau",pv:"PV",def:"Défense",mvt:"Arts du mouvement",std:"Standard",dh:"dé d'héroïsme"};
 function parseDon(s){const [n,e,f]=s.split("|");const fx={};(f||"").split(",").filter(Boolean).forEach(kv=>{const [k,x]=kv.split("=");fx[k]=+x});return {n,e,fx}}
+/* ---------- Aspects supplémentaires par thème ---------- */
+const ASPECTS_PLUS={
+ fantasy:{passes:["Ancien soldat","Chasseur de sorcières déchu","Esclave des mines","Apprenti sorcier renvoyé","Enfant trouvé des temples","Héritier d'un clan exterminé","Ancien bourreau","Marin naufragé"],
+  metiers:["Gladiateur:c","Chevalier errant:c","Garde des caravanes:c","Chasseur de primes:p","Monte-en-l'air:p","Éclaireur:p","Contrebandier:p","Alchimiste:f","Prêtre itinérant:f","Montreur d'ours:f"]},
+ medieval:{passes:["Croisé revenu de Terre sainte","Fils de meunier","Ancien templier","Écolier de la Sorbonne","Orphelin de la peste","Ancien bourreau","Page d'une reine","Lépreux guéri"],
+  metiers:["Sergent d'armes:c","Lansquenet:c","Garde de ville:c","Fauconnier:p","Marchand ambulant:p","Bandit des grands chemins:p","Passeur de rivière:p","Apothicaire:f","Ménestrel:f","Inquisiteur:f"]},
+ pirates:{passes:["Fils d'armateur ruiné","Ancien flibustier repenti","Prisonnier des galères","Déserteur de la Compagnie des Indes","Naufragé recueilli par des indigènes","Ancien négrier repenti","Fille de gouverneur en fuite","Pêcheur de Terre-Neuve"],
+  metiers:["Maître d'équipage:c","Bretteur:c","Charpentier de marine:p","Pêcheur de perles:p","Faussaire de cartes:p","Contrebandier de rhum:p","Cartographe:f","Prêtre vaudou:f","Musicien de bord:f","Courtisane de Tortuga:f"]},
+ western:{passes:["Fils de colons massacrés","Ancien pony express","Croupier de Saint-Louis","Bûcheron du Nord","Ancien Texas Ranger","Mineur de Californie","Enfant de pasteur mormon","Évadé de Yuma"],
+  metiers:["Garde de diligence:c","Mercenaire mexicain:c","Marshal fédéral:c","Trappeur:p","Vendeur d'élixirs:p","Conducteur de bétail:p","Pisteur indien:p","Croque-mort:f","Télégraphiste:f","Institutrice:f"]},
+ contemporain:{passes:["Ancien légionnaire","Influenceur déchu","Chauffeur de taxi de nuit","Infirmière de garde","Ancien braqueur","Enfant de la DDASS","Étudiant en criminologie","Ex-agent de renseignement"],
+  metiers:["Videur de boîte:c","Militaire en permission:c","Agent de la BAC:c","Hacker:p","Chauffeur VTC:p","Plombier:p","Photographe de presse:p","Prêtre exorciste:f","Psychologue:f","Professeur d'histoire:f"]},
+ postapo:{passes:["Ancien soldat de la dernière guerre","Rescapé d'un hôpital","Chef de gang déchu","Gamin des égouts","Ancienne star de télé","Cobaye d'un laboratoire","Enfant d'une secte","Agriculteur hydroponique"],
+  metiers:["Chasseur de mutants:c","Pilleur de convois:c","Garde du corps:c","Chauffeur de bolide:p","Plongeur des ruines inondées:p","Armurier:p","Chasseur de primes:p","Archiviste:f","Sage-femme:f","Conteur des clans:f"]},
+ cyberpunk:{passes:["Ancien policier corrompu","Enfant d'un laboratoire clandestin","Star de la pop déchue","Ancien soldat cyborg","Fils d'un cadre assassiné","Joueur d'esport","Livreur de drones","Ancien moine numérique"],
+  metiers:["Exterminateur:c","Combattant d'arène:c","Garde de l'arcologie:c","Pilote de course:p","Receleur:p","Chasseur de primes:p","Paparazzi:p","Chirurgien de l'ombre:f","Négociateur:f","Prêcheur de rue:f"]},
+ scifi:{passes:["Survivant d'une mutinerie","Enfant né en apesanteur","Ancien bagnard des mines lunaires","Diplomate en disgrâce","Clone défectueux","Pilote d'essai","Rescapé d'un premier contact","Colon d'une planète perdue"],
+  metiers:["Commando orbital:c","Garde pénitentiaire:c","Chasseur de xénomorphes:c","Contrebandier:p","Navigateur hyperspatial:p","Mineur d'astéroïdes:p","Officier des communications:p","Psychologue de bord:f","Archéologue spatial:f","Négociateur xénologue:f"]},
+ spaceop:{passes:["Pilote de la flotte rebelle","Héritier d'une planète détruite","Ancien gladiateur","Padawan renvoyé","Esclave des mines d'épices","Fils d'un seigneur de guerre","Espion de l'Empire retourné","Marchand ruiné"],
+  metiers:["Soldat de choc:c","Duelliste:c","Gardien du temple:c","Pirate de l'espace:p","Pisteur:p","Mécanicien droïde:p","Joueur professionnel:p","Ambassadeur:f","Guérisseur:f","Archiviste du Flux:f"]},
+ prehistoire:{passes:["Survivant d'une glaciation","Enfant élevé par les loups","Dernier de sa tribu","Ancien esclave d'un clan voisin","Fils du sorcier","Voyageur venu de l'Est","Rescapé d'une crue","Protégé d'un mammouth"],
+  metiers:["Dompteur de loups:c","Brise-crânes:c","Gardien du camp:c","Chasseur d'aurochs:p","Grimpeur de falaises:p","Marchand d'ambre:p","Faiseur de pièges:p","Guérisseur:f","Gardien du feu sacré:f","Sculpteur d'os:f"]},
+ antiquite:{passes:["Fils d'un vétéran de Marathon","Ancienne vestale","Pirate de Cilicie repenti","Captif barbare","Enfant de l'Agora","Ancien rameur de trirème","Héritier d'un roi détrôné","Initié aux mystères d'Éleusis"],
+  metiers:["Mercenaire perse:c","Garde prétorien:c","Lutteur de pancrace:c","Cavalier numide:p","Navigateur phénicien:p","Faussaire de sceaux:p","Espion du Sénat:p","Sophiste:f","Prêtresse d'Isis:f","Architecte:f"]},
+ annees20:{passes:["Ancienne danseuse des Folies Bergère","Fils d'un magnat du pétrole","Rescapé du Titanic","Gangster repenti","Aviatrice de l'Aéropostale","Orphelin de Little Italy","Diplômé d'Harvard","Ancien boxeur"],
+  metiers:["Garde du corps:c","Soldat de la pègre:c","Agent de la Prohibition:c","Contrebandier d'alcool:p","Photographe:p","Pilote d'avion:p","Pickpocket:p","Occultiste:f","Psychanalyste:f","Antiquaire:f"]},
+ uchronie:{passes:["Ancien policier passé à la Résistance","Enfant caché","Artiste interdit","Ancien soldat des colonies","Évadé d'un train de déportation","Aristocrate déchu","Ancien collabo repenti","Mineur du Nord"],
+  metiers:["Franc-tireur:c","Commando parachuté:c","Garde du maquis:c","Passeur des montagnes:p","Chauffeur clandestin:p","Cheminot:p","Pickpocket:p","Chimiste:f","Décodeur:f","Prêtre résistant:f"]},
+ steampunk:{passes:["Ancien chauffeur de locomotive","Héritière d'une dynastie d'horlogers","Rescapé d'une explosion d'usine","Ancien forçat d'Australie","Enfant élevé par un automate","Officier de la Royal Navy","Médium de salon démasqué","Apprenti d'un savant disparu"],
+  metiers:["Chasseur de monstres:c","Pugiliste:c","Soldat de la Reine:c","Chauffeur de locomotive:p","Détective consultant:p","Contrebandier aérien:p","Horloger:p","Alchimiste:f","Médium:f","Naturaliste:f"]}
+};
+THEMES.forEach(t=>{const x=ASPECTS_PLUS[t.id];if(!x)return;
+  x.passes.forEach(p=>{if(!t.passes.includes(p))t.passes.push(p)});
+  x.metiers.forEach(m=>{const n=m.split(":")[0];if(!t.metiers.some(y=>y.split(":")[0]===n))t.metiers.push(m)})});
+/* ---------- Histoires supplémentaires par thème ---------- */
+const RECITS_PLUS={
+ fantasy:["A survécu seul à la fin de sa compagnie.","A déserté la veille d'une bataille perdue.","Fuit un culte qui l'a marqué au fer.","Veut racheter un frère vendu aux galères.","Est recherché sous un autre nom dans trois royaumes.","A promis à une mourante de livrer une lettre scellée.","Entend la nuit une voix qui l'appelle depuis les montagnes."],
+ medieval:["A juré de venger un père pendu pour braconnage.","Porte une relique volée qu'il croit miraculeuse.","A trahi son seigneur et ne s'en remet pas.","Doit payer la rançon d'un ami captif avant l'hiver.","A vu un loup parler dans la forêt de Brocéliande.","Cherche l'enfant qu'on lui a pris à la naissance.","A échappé de justesse au bûcher pour sorcellerie."],
+ pirates:["A survécu à une mutinerie en changeant de camp.","Porte la marque au fer d'un ancien maître.","Cherche le trésor d'un capitaine pendu à Port-Royal.","A promis sa part de butin à une sorcière des marais.","A vu un vaisseau fantôme et personne ne le croit.","Est fiancé à une femme qu'il n'a jamais revue.","Doit retrouver le navire qui a coulé son frère."],
+ western:["A perdu sa terre au profit du chemin de fer.","Cherche la mine d'or dont parlait son grand-père.","A promis de ramener un enfant enlevé chez lui.","Fuit un mariage arrangé à Boston.","Porte une étoile de shérif qui n'est pas la sienne.","A tué un homme en duel pour une raison qu'il regrette.","Garde une dette envers un chef apache."],
+ contemporain:["Est témoin protégé sous une fausse identité.","A gagné au loto et tout perdu en un an.","Reçoit des messages anonymes qui disent la vérité sur lui.","Cherche qui a incendié l'appartement de ses parents.","Doit rembourser une dette de jeu avant la fin du mois.","A été viré d'un laboratoire qui fait des choses étranges.","Ne se souvient plus de trois jours de sa vie."],
+ postapo:["A vu tomber les bombes depuis le toit d'un hôpital.","Cherche une ville dont on dit que l'eau y est pure.","Porte la clé d'un abri que personne n'a ouvert.","A trahi sa caravane pour survivre.","Est poursuivi par un chef de gang qui veut sa tête.","A promis d'enterrer sa mère dans le jardin de son enfance.","Entend parfois des voix à la radio, venues d'avant."],
+ cyberpunk:["A vendu sa mémoire d'enfance pour payer un implant.","Est le clone d'un cadre mort il y a dix ans.","Cherche une IA qui se fait passer pour sa sœur.","Doit livrer un colis dont il ignore le contenu.","A été effacé de tous les fichiers du jour au lendemain.","Porte un implant qui transmet ses pensées à quelqu'un.","Veut faire tomber la corpo qui a racheté son quartier."],
+ scifi:["S'est réveillé de cryosommeil cent ans trop tard.","Est le dernier témoin d'une expérience interdite.","Entend un signal que les machines ne détectent pas.","Doit ramener la boîte noire d'un vaisseau perdu.","Porte un parasite extraterrestre qui lui parle.","A abandonné son équipage lors d'une brèche de coque.","Cherche la Terre, dont tout le monde dit qu'elle n'existe plus."],
+ spaceop:["A vu sa planète détruite par une arme impériale.","Garde un cristal qui chante quand le danger approche.","Est promis en mariage à un seigneur de guerre.","Doit livrer des plans secrets à la Rébellion.","Croit être l'élu d'une prophétie oubliée.","A volé le vaisseau d'un chasseur de primes.","Cherche le maître qui l'a abandonné en plein entraînement."],
+ prehistoire:["A tué un lion des cavernes seul, mais personne ne l'a vu.","Cherche la terre chaude dont parlent les oiseaux migrateurs.","A perdu la pierre sacrée de son clan.","Rêve chaque nuit d'un grand feu tombé du ciel.","A juré de protéger un enfant d'un clan ennemi.","Doit trouver une compagne dans le clan du Fleuve.","A vu des hommes d'une autre espèce au-delà des montagnes."],
+ antiquite:["A survécu au naufrage d'une flotte entière.","Porte la malédiction d'un dieu offensé.","Doit retrouver le testament caché d'un empereur.","A été vendu comme esclave par son propre frère.","A combattu aux Thermopyles et refuse d'en parler.","Cherche l'île où les sirènes auraient emmené son père.","A volé un rouleau de la bibliothèque d'Alexandrie."],
+ annees20:["A été témoin d'un meurtre lors d'une séance spirite.","Doit livrer une cargaison de whisky avant l'aube.","A hérité d'une maison où il se passe des choses étranges.","Cherche une danseuse disparue de Montmartre.","Possède une statuette que des hommes en noir réclament.","A gagné une fortune au poker contre un parrain.","Fait des cauchemars d'une cité sous la mer."],
+ uchronie:["Cache chez lui un pilote allié abattu.","A vu les plans d'une arme qui pourrait tout changer.","Doit faire sortir des enfants d'une ville occupée.","A été torturé et n'a jamais parlé.","Cherche le traître qui a vendu son réseau.","Garde une radio cachée dans le grenier familial.","Porte un faux nom depuis si longtemps qu'il a oublié le vrai."],
+ steampunk:["A survécu à l'explosion d'un dirigeable au-dessus de Londres.","Possède le cœur mécanique d'un inventeur mort.","Est recherché par Scotland Yard pour un crime qu'il n'a pas commis.","Cherche l'automate qui l'a élevé et qui a disparu.","A vu une machine pensante et personne ne le croit.","Doit rembourser un lord pour un brevet volé.","Rêve de traverser l'Atlantique à bord de sa propre machine volante."]
+};
+THEMES.forEach(t=>{const x=RECITS_PLUS[t.id];if(!x)return;x.forEach(r=>{if(!t.recits.includes(r))t.recits.push(r)})});
+/* ---------- Paquetages supplémentaires (6 par thème) ---------- */
+const KITS_PLUS={
+ fantasy:["Mercenaire=Pierre à aiguiser, huile d'arme, couverture, gamelle, dés en os","Voleur=Crochets, corde à nœuds, grappin, lanterne sourde, sac noir","Érudit=Grimoire de notes, encre, plumes, loupe, bougies"],
+ medieval:["Pèlerin=Bourdon, besace, coquille, gourde, lettres de recommandation","Chevalier errant=Couverture de selle, étrille, oriflamme, huile, pain","Brigand=Masque de toile, corde, coutelas de rechange, sac de jute, flasque"],
+ pirates:["Abordeur=Grappin, corde, ceinture à pistolets, poire à poudre, rhum","Chirurgien de bord=Scies et pinces, bandages, rhum fort, laudanum, aiguilles","Contrebandier=Double fond, fausses lettres de marque, lanterne sourde, cordage"],
+ western:["Chasseur de primes=Menottes, avis de recherche, longue-vue, cartouches, couverture","Joueur=Jeux de cartes marqués, derringer de manche, cigares, costume","Colon=Pelle, hache, graines, couverture, bible familiale"],
+ contemporain:["Sportif=Sac de sport, bandages, bouteille d'eau, barres protéinées, survêtement","Bricoleur=Caisse à outils, ruban adhésif, lampe frontale, multimètre, colliers","Infiltré=Faux badge, oreillette, costume, téléphone jetable, petite caméra"],
+ postapo:["Chasseur=Pièges, couteau, viande séchée, peau de bête, collet","Marchand=Balance, capsules, carnet de troc, bâche, cadenas","Bricoleur=Fer à souder à piles, fils, piles usées, ruban, clé à molette"],
+ cyberpunk:["Solo=Munitions, kit de nettoyage, lunettes tactiques, médikit, gilet","Nomade=Bidon de carburant, outils de mécanique, tente, radio CB","Corpo=Costume de marque, carte de crédit platine, mallette, agenda holographique"],
+ scifi:["Soldat=Munitions, rations militaires, médikit, grenades fumigènes, balise","Explorateur=Tente pressurisée, scanner géologique, foreuse, échantillonneurs","Diplomate=Traducteur portable, tenue d'apparat, cadeaux protocolaires, comm sécurisé"],
+ spaceop:["Contrebandier=Compartiment caché, faux transpondeur, comlink crypté, crédits","Chasseur de primes=Menottes magnétiques, traqueur, jumelles thermiques, contrats","Noble=Tenue d'apparat, sceau familial, bijoux, droïde de protocole"],
+ prehistoire:["Pêcheur=Harpon d'os, filet, panier, hameçons en os, poisson séché","Guerrier=Peintures de guerre, lanières, pierres de jet, peau d'ours","Nomade=Traîneau, peaux, outre, braises dans une corne, fourrures"],
+ antiquite:["Gladiateur=Bandes de cuir, huile, strigile, amulette porte-bonheur, pain","Marchand=Balance, amphores, sceaux, bourse de drachmes, tablettes","Pèlerin=Offrandes, encens, manteau, gourde, statuette votive"],
+ annees20:["Gangster=Étui à violon, chapeau feutre, cigares, flasque, liasse de billets","Aventurier=Fouet, chapeau, carte ancienne, lampe, revolver de poche","Mondain=Smoking, porte-cigarette, carnet d'adresses, flasque d'argent"],
+ uchronie:["Médecin=Trousse chirurgicale, morphine, bandages, faux certificats","Évadé=Vêtements volés, faux papiers usés, pain sec, boussole","Agent infiltré=Uniforme volé, documents officiels, appareil photo miniature, pilule"],
+ steampunk:["Explorateur=Casque colonial, carte, boussole, machette, quinine","Détective=Loupe, pipe, carnet, poudre à empreintes, revolver","Savant=Lunettes grossissantes, fioles, carnet de formules, batterie galvanique"]
+};
+THEMES.forEach(t=>{const x=KITS_PLUS[t.id];if(!x)return;x.forEach(k=>{const n=k.split("=")[0];if(!t.kits.some(y=>y.split("=")[0]===n))t.kits.push(k)})});
 THEMES.forEach(t=>{
   t.M=t.metiers.map(s=>{const [n,r]=s.split(":");return {n,r}});
   t.A=t.armes.map(s=>{const [n,d,x]=s.split(":");return {n,d,dist:x==="dist"}});
@@ -1002,8 +1078,8 @@ THEMES.forEach(t=>{
   t.Dm=t.dons.map(parseDon).concat(DONS_COMMUNS.map(parseDon)).map(d=>Object.assign(d,{maison:true}));
 });
 const ARMV=[0,2,4,6], ARMK=["aucune","legere","mixte","lourde"], ARMC=["aucune","légère","mixte","lourde"];
-const PHYS=[["grand et sec","grande et sèche"],["massif","massive"],["noueux et nerveux","noueuse et nerveuse"],["trapu","trapue"],["élancé","élancée"],["voûté mais vif","voûtée mais vive"],["large d'épaules","large d'épaules"]];
-const CAR=[["taciturne","taciturne"],["rieur et cruel","rieuse et cruelle"],["superstitieux","superstitieuse"],["joueur invétéré","joueuse invétérée"],["loyal jusqu'à l'absurde","loyale jusqu'à l'absurde"],["cupide","cupide"],["fier","fière"],["prudent","prudente"],["colérique","colérique"],["rêveur","rêveuse"]];
+const PHYS=[["grand et sec","grande et sèche"],["massif","massive"],["noueux et nerveux","noueuse et nerveuse"],["trapu","trapue"],["élancé","élancée"],["voûté mais vif","voûtée mais vive"],["large d'épaules","large d'épaules"],["petit et vif","petite et vive"],["maigre comme un clou","maigre comme un clou"],["couturé de cicatrices","couturée de cicatrices"],["aux yeux vairons","aux yeux vairons"],["tatoué jusqu'au cou","tatouée jusqu'au cou"],["boiteux mais rapide","boiteuse mais rapide"],["d'une beauté troublante","d'une beauté troublante"],["au regard perçant","au regard perçant"],["rond mais costaud","ronde mais costaude"],["aux cheveux blancs avant l'âge","aux cheveux blancs avant l'âge"],["à la voix rauque","à la voix rauque"]];
+const CAR=[["taciturne","taciturne"],["rieur et cruel","rieuse et cruelle"],["superstitieux","superstitieuse"],["joueur invétéré","joueuse invétérée"],["loyal jusqu'à l'absurde","loyale jusqu'à l'absurde"],["cupide","cupide"],["fier","fière"],["prudent","prudente"],["colérique","colérique"],["rêveur","rêveuse"],["généreux","généreuse"],["méfiant","méfiante"],["bavard","bavarde"],["mélancolique","mélancolique"],["vantard","vantarde"],["pieux","pieuse"],["impulsif","impulsive"],["calculateur","calculatrice"],["moqueur","moqueuse"],["courageux jusqu'à l'inconscience","courageuse jusqu'à l'inconscience"]];
 
 /* ---------- Choix personnels (gardés dans ce navigateur, par thème) ---------- */
 const LSP="cdo-perso-v1";
@@ -1103,7 +1179,7 @@ function retirerDuPerso(cat,n){
   if(cat==="dons")S.dons=S.dons.filter(d=>d!==n);
   if(cat==="sorts"){S.sorts=S.sorts.filter(d=>d!==n);S.connus1=S.connus1.filter(d=>d!==n);S.connus2=S.connus2.filter(d=>d!==n)}
 }
-function plusBtn(formId,label){return bouton("chip plus","＋ "+label,false,()=>{const f=$(formId);f.hidden=false;f.querySelector("input").focus()})}
+function plusBtn(formId,label){return bouton("chip plus","＋ "+label,false,()=>{const f=$(formId);f.hidden=false;const c=f.querySelector("input,textarea");if(c)c.focus()})}
 function rendreThemes(){
   const box=$("themes");box.innerHTML="";
   THEMES.forEach(t=>box.append(bouton("theme","<b>"+esc(t.nom)+"</b><span>"+esc(t.acc)+"</span>",S.theme===t.id,()=>{tirer(t.id);toutRendre(true);setStatus(t.nom+" : nouveau coureur tiré.")})));
@@ -1123,6 +1199,27 @@ function rendreChoix(){
   box=$("cMetier");box.innerHTML="";
   listes.M().forEach(m=>box.append(avecRetrait(bouton("chip",esc(m.n)+(maison?'<span class="t">d'+ROLES[m.r].de+"</span>":""),S.metier===m.n,()=>{S.metier=m.n;maj(true)}),"metiers",m.n)));
   box.append(plusBtn("fMetier","Autre métier"));
+  box=$("cOrigine");box.innerHTML="";
+  box.append(bouton("chip","Aucune",!S.origine&&!S.origineLibre,()=>{S.origine="";S.origineLibre=null;maj(false)}));
+  const ors=t.origines.slice();if(S.origine&&!ors.includes(S.origine))ors.push(S.origine);
+  ors.forEach(o=>box.append(bouton("chip",esc(texteOrigine(o)),!S.origineLibre&&S.origine===o,()=>{S.origine=o;S.origineLibre=null;maj(false)})));
+  box.append(plusBtn("fOrigine","Autre origine"));
+  const g=S.f?1:0;
+  box=$("cPhys");box.innerHTML="";
+  box.append(bouton("chip","Aucun",!S.physTxt&&!(S.phys>=0),()=>{S.phys=-1;S.physTxt="";S.descLibre=null;maj(false)}));
+  PHYS.forEach((p,i)=>box.append(bouton("chip",esc(p[g]),!S.physTxt&&S.phys===i,()=>{S.phys=i;S.physTxt="";S.descLibre=null;maj(false)})));
+  if(S.physTxt)box.append(bouton("chip",esc(S.physTxt),true,()=>{}));
+  box.append(plusBtn("fPhys","Écrire le mien"));
+  box=$("cCar");box.innerHTML="";
+  box.append(bouton("chip","Aucun",!S.carTxt&&!(S.car>=0),()=>{S.car=-1;S.carTxt="";S.descLibre=null;maj(false)}));
+  CAR.forEach((p,i)=>box.append(bouton("chip",esc(p[g]),!S.carTxt&&S.car===i,()=>{S.car=i;S.carTxt="";S.descLibre=null;maj(false)})));
+  if(S.carTxt)box.append(bouton("chip",esc(S.carTxt),true,()=>{}));
+  box.append(plusBtn("fCar","Écrire le mien"));
+  box=$("cRecit");box.innerHTML="";
+  box.append(bouton("card","<b>Aucune</b><span>Pas d'histoire imposée : le joueur l'inventera.</span>",!S.recit&&!S.descLibre,()=>{S.recit="";S.descLibre=null;maj(false)}));
+  const rcs=t.recits.slice();if(S.recit&&!rcs.includes(S.recit))rcs.push(S.recit);
+  rcs.forEach(r=>box.append(bouton("card","<span>"+esc(r)+"</span>",!S.descLibre&&S.recit===r,()=>{S.recit=r;S.descLibre=null;maj(false)})));
+  box.append(plusBtn("fRecit","Écrire la mienne"));
   $("roleNote").textContent=maison?"Règle maison : le métier fixe le dé de vie (d"+c.base+").":"Deux aspects au choix.";
   $("blocAspect3").hidden=!c.fx.aspect3;$("iAspect3").value=S.aspect3||"";
   box=$("cArmure");box.innerHTML="";
@@ -1198,7 +1295,7 @@ function ecrireTexte(){
   const t=T(), c=calculer(), g=S.f?1:0;
   $("nom").value=S.nom;
   $("aspect1").value=S.passe;$("aspect2").value=S.metier;$("aspect3").value=c.fx.aspect3?(S.aspect3||""):"";
-  $("origine").value="Originaire "+S.origine;
+  $("origine").value=S.origineLibre||texteOrigine(S.origine);
   $("armure").value=t.armures[S.armure]+(S.bouclier?" + "+t.bouclier.toLowerCase():"")+" : armure "+c.arm;
   const A=listes.A();
   $("armes").value=S.armes.map(n=>{const a=A.find(x=>x.n===n);return a?a.n+" ("+deEffectif(a,c.fx)+")":n}).join("\n");
@@ -1207,7 +1304,7 @@ function ecrireTexte(){
   $("dons").value=lignesDons(c).join("\n");
   const P=listes.P();
   $("parchemins").value=S.sorts.map(n=>{const p=P.find(x=>x.n===n);return p?FMT_SORT(p):n}).join("\n");
-  $("description").value=(S.f?"Une coureuse ":"Un coureur ")+PHYS[S.phys][g]+", "+CAR[S.car][g]+". "+S.recit;
+  $("description").value=S.descLibre?S.descLibre:(S.descLibre===""?"":[portraitTexte(),S.recit].filter(Boolean).join(" "));
 }
 function maj(portrait){rendreChoix();rendreStats();ecrireTexte();majBarre();rendreApercu();rendreMesCoureurs();finDD()}
 function toutRendre(portrait){rendreThemes();maj(portrait)}
@@ -1537,6 +1634,25 @@ $("btnCurio").addEventListener("click",()=>{const t=T();let c=S.curio;for(let i=
 $("bouclier").addEventListener("change",e=>{S.bouclier=e.target.checked;if(S.bouclier&&S.armure===0)S.armure=1;maj(false)});
 [["regleMaison","dvMetier"],["donsMaison","donsMaison"],["lectureLibre","lectureLibre"]].forEach(([id,k])=>{$(id).checked=!!REG[k];$(id).addEventListener("change",e=>{REG[k]=e.target.checked;sauverReg();maj(false)})});
 $("iAspect3").addEventListener("input",e=>{S.aspect3=e.target.value.slice(0,60);ecrireTexte();rendreApercu()});
+/* Origine : texte affiché, choix libre, et retouches gardées */
+function physTexte(){const g=S.f?1:0;return S.physTxt||(S.phys>=0&&PHYS[S.phys]?PHYS[S.phys][g]:"")}
+function carTexte(){const g=S.f?1:0;return S.carTxt||(S.car>=0&&CAR[S.car]?CAR[S.car][g]:"")}
+function portraitTexte(){const parts=[physTexte(),carTexte()].filter(Boolean);return parts.length?(S.f?"Une coureuse ":"Un coureur ")+parts.join(", ")+".":""}
+[["fPhys","iPhys","physTxt","phys"],["fCar","iCar","carTxt","car"]].forEach(([fid,iid,k,ki])=>{
+  $(fid).addEventListener("submit",e=>{e.preventDefault();const v=$(iid).value.trim().replace(/\s+/g," ").replace(/[.]+$/,"").slice(0,80);if(!v)return;S[k]=v;S[ki]=-1;S.descLibre=null;$(fid).reset();$(fid).hidden=true;maj(false)});
+  $(fid).querySelector("[data-close]").addEventListener("click",()=>{$(fid).reset();$(fid).hidden=true})});
+function texteOrigine(o){o=String(o||"").trim();return /^(de |des |du |d'|d’)/i.test(o)?"Originaire "+o:o}
+$("fOrigine").addEventListener("submit",e=>{e.preventDefault();const o=$("iOrigine").value.trim().replace(/\s+/g," ").slice(0,100);if(!o)return;
+  S.origine=o;S.origineLibre=null;$("fOrigine").reset();$("fOrigine").hidden=true;maj(false);setStatus("Origine : "+texteOrigine(o)+".")});
+$("fOrigine").querySelector("[data-close]").addEventListener("click",()=>{$("fOrigine").reset();$("fOrigine").hidden=true});
+$("fRecit").addEventListener("submit",e=>{e.preventDefault();const r=$("iRecit").value.trim().replace(/\s+/g," ").slice(0,300);if(!r)return;
+  S.recit=/[.!?…]$/.test(r)?r:r+".";S.descLibre=null;$("fRecit").reset();$("fRecit").hidden=true;maj(false);setStatus("Histoire enregistrée.")});
+$("fRecit").querySelector("[data-close]").addEventListener("click",()=>{$("fRecit").reset();$("fRecit").hidden=true});
+$("origine").addEventListener("input",e=>{S.origineLibre=e.target.value.slice(0,140)||null;resumeDD()});
+$("description").addEventListener("input",e=>{S.descLibre=e.target.value.slice(0,600)||null});
+$("aspect1").addEventListener("change",e=>{const v=e.target.value.trim().slice(0,60);if(!v)return;assurePerso(S.theme,"passes",v);S.passe=v;maj(true)});
+$("aspect2").addEventListener("change",e=>{const v=e.target.value.trim().slice(0,60);if(!v)return;assurePerso(S.theme,"metiers",{n:v,r:"p"});S.metier=v;maj(true)});
+$("aspect3").addEventListener("change",e=>{S.aspect3=e.target.value.trim().slice(0,60);maj(false)});
 $("niveau").addEventListener("change",()=>{
   const niv=parseInt($("niveau").value,10), t=T();
   if(S.dons.length>niv)S.dons=S.dons.slice(0,niv);
@@ -2136,7 +2252,8 @@ function assurePerso(theme,cat,item){
 /* Recopie dans l'état de la Forge ce qui a changé en jeu */
 function syncForge(p){
   const F=p.forge,f=p.fiche;if(!F)return;
-  F.nom=f.nom;F.niveau=f.niveau;
+  F.nom=f.nom;F.niveau=f.niveau;if(f.origine)F.origineLibre=f.origine;else{F.origine="";F.origineLibre=null}
+  F.descLibre=f.description||"";if(!f.description)F.recit="";
   if(f.aspects[0]){F.passe=f.aspects[0];assurePerso(f.theme,"passes",f.aspects[0])}
   if(f.aspects[1]){F.metier=f.aspects[1];assurePerso(f.theme,"metiers",{n:f.aspects[1],r:"p"})}
   if(f.aspects[2])F.aspect3=f.aspects[2];
@@ -2213,7 +2330,7 @@ function changerArmes(maj,message){
 function rendreModif(){
   const p=actif();if(!p)return;const f=p.fiche,t=THEMES.find(x=>x.id===f.theme)||THEMES[0];
   $("mNom").value=f.nom;$("mAsp1").value=f.aspects[0]||"";$("mAsp2").value=f.aspects[1]||"";
-  $("mAsp3L").hidden=!(f.aspects.length>2||nomsDons(f).includes("Talents variés"));$("mAsp3").value=f.aspects[2]||"";
+  $("mAsp3L").hidden=!(f.aspects.length>2||nomsDons(f).includes("Talents variés"));$("mAsp3").value=f.aspects[2]||"";$("mOrigine").value=f.origine||"";$("mDesc").value=f.description||"";
   let box=$("mArmure");box.innerHTML="";
   t.armures.forEach((a,i)=>{const b=document.createElement("button");b.type="button";b.className="chip";b.innerHTML=esc(a)+'<span class="t">'+ARMC[i]+" · "+ARMV[i]+"</span>";
     b.setAttribute("aria-pressed",(f.armureCat??0)===i?"true":"false");b.addEventListener("click",()=>{if((f.armureCat??0)!==i)changerArmure(i,!!f.bouclier)});box.append(b)});
@@ -2230,6 +2347,10 @@ function rendreModif(){
   sel._liste=liste;$("mArmeLibre").hidden=sel.value!=="autre";
   $("mForge").hidden=!p.forge;
 }
+$("mOrigine").addEventListener("change",e=>{const p=actif(),v=e.target.value.trim().slice(0,140);p.fiche.origine=v;syncForge(p);sauverRoster();
+  $("jPasse").textContent=[p.fiche.origine,p.fiche.description].filter(Boolean).join(". ").replace(/\.\./g,".");$("mEtat").textContent="Origine mise à jour."});
+$("mDesc").addEventListener("change",e=>{const p=actif(),v=e.target.value.trim().slice(0,600);p.fiche.description=v;syncForge(p);sauverRoster();
+  $("jPasse").textContent=[p.fiche.origine,p.fiche.description].filter(Boolean).join(". ").replace(/\.\./g,".");$("mEtat").textContent="Histoire mise à jour."});
 $("mNom").addEventListener("change",e=>{const p=actif(),v=e.target.value.trim().slice(0,60);if(!v){e.target.value=p.fiche.nom;return}p.fiche.nom=v;syncForge(p);sauverRoster();majEntete();$("mEtat").textContent="Nom mis à jour."});
 ["mAsp1","mAsp2","mAsp3"].forEach(id=>$(id).addEventListener("change",()=>{const p=actif();p.fiche.aspects=[$("mAsp1").value,$("mAsp2").value,$("mAsp3L").hidden?"":$("mAsp3").value].map(s=>s.trim().slice(0,60)).filter(Boolean);syncForge(p);sauverRoster();majEntete();$("mEtat").textContent="Aspects mis à jour."}));
 $("mBouclier").addEventListener("change",e=>{const p=actif(),f=p.fiche;let cat=f.armureCat??0;if(e.target.checked&&cat===0)cat=0;changerArmure(cat,e.target.checked)});
@@ -2244,7 +2365,7 @@ $("btnNouveau").addEventListener("click",()=>{tirer(S.theme);photo=null;toutRend
 
 
 /* ---------- Menus déroulants des étapes ---------- */
-const DD_SIMPLE=new Set(["theme","passe","metier","armure","kit","artefact","depart","format"]);
+const DD_SIMPLE=new Set(["theme","passe","metier","origine","physique","caractere","recit","armure","kit","artefact","depart","format"]);
 let ddDernier=null;
 function ouvrirDD(nom,ouvrir){document.querySelectorAll(".dd").forEach(d=>{const on=d.dataset.dd===nom&&ouvrir;d.querySelector(".ddb").hidden=!on;d.querySelector(".ddh").setAttribute("aria-expanded",on?"true":"false");d.classList.toggle("ouvert",on)})}
 document.querySelectorAll(".dd").forEach(d=>{
@@ -2258,7 +2379,9 @@ document.querySelectorAll(".dd").forEach(d=>{
 });
 function resumeDD(){
   const t=T(),c=calculer(),niv=c.niv,set=(n,v)=>{const el=$("v_"+n);if(el)el.textContent=v};
-  set("theme",t.nom);set("passe",S.passe||"à choisir");set("metier",(S.metier||"à choisir")+(REG.dvMetier?" · d"+c.base:""));
+  set("theme",t.nom);set("passe",S.passe||"à choisir");set("metier",(S.metier||"à choisir")+(REG.dvMetier?" · d"+c.base:""));set("origine",S.origineLibre||texteOrigine(S.origine)||"aucune");
+  set("physique",physTexte()||"aucun");set("caractere",carTexte()||"aucun");
+  const court=x=>x.length>70?x.slice(0,68)+"…":x;set("recit",S.descLibre?court(S.descLibre):S.recit?court(S.recit):"aucune");
   set("armure",t.armures[S.armure]+" · "+ARMV[S.armure]);
   const A=listes.A();set("armes",S.armes.map(n=>{const a=A.find(x=>x.n===n);return a?n+" "+deEffectif(a,c.fx):n}).join(", ")||"aucune");
   set("kit",S.kit);
