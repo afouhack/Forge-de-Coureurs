@@ -251,6 +251,85 @@ details.jcarte[open] summary{margin-bottom:6px}
 .hold span{position:relative}
 @media (prefers-reduced-motion:reduce){.hold.tient::before{transition:none;transform:scaleX(.5)}}
 
+.jbtns.trois{grid-template-columns:repeat(3,minmax(0,1fr))}
+.jbtns.trois button{font-size:15px}
+.rune{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-left:4px solid var(--t-acc);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.rune.libre{border-style:dashed;border-left-style:dashed}
+.rune .rh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.rune .rh b{font-weight:600;font-size:17px}
+.rune .rh em{font-style:normal;font-family:var(--t-font);font-size:24px;color:var(--t-acc)}
+.rune .rinfo{font-family:var(--f-small);font-size:14px;color:var(--muted);line-height:1.35}
+.rune .echelle{display:flex;flex-wrap:wrap;gap:6px}
+.rune .echelle span{font-family:var(--f-label);font-size:13px;letter-spacing:.03em;padding:2px 8px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}
+.rune .echelle span.on{background:var(--t-acc);border-color:var(--t-acc);color:var(--bg)}
+.rune .echelle span.use{text-decoration:line-through;opacity:.5}
+.rune .rpan{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:8px}
+.rune .rpan .jbtns button.maxd{outline:2px solid var(--t-acc);outline-offset:-3px}
+.rune .rpan .seg.nb button{font-size:17px}
+/* Feuille de jeu : onglets, barre PV, fenêtre de résultat */
+.jeu{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+#jCorps[data-onglet="combat"] .jcarte:not([data-tab="combat"]),
+#jCorps[data-onglet="magie"] .jcarte:not([data-tab="magie"]),
+#jCorps[data-onglet="notes"] .jcarte:not([data-tab="notes"]),
+#jCorps[data-onglet="plus"] .jcarte:not([data-tab="plus"]){display:none}
+.jonglets{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08);padding-bottom:env(safe-area-inset-bottom,0px)}
+.jonglets button{border:0;border-radius:0;background:transparent;min-height:58px;font-family:var(--f-label);letter-spacing:.05em;font-size:16px;color:var(--muted)}
+.jonglets button+button{border-left:1px solid var(--line)}
+.jonglets button[aria-selected="true"]{color:var(--ink);font-weight:700;box-shadow:inset 0 3px 0 var(--accent);background:var(--accent-soft)}
+.jpvbar{position:fixed;top:6px;left:12px;right:12px;max-width:536px;margin:0 auto;z-index:25;display:flex;align-items:center;gap:6px;padding:6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.jpvbar[hidden]{display:none}
+.jpvbar button{flex:0 0 auto;min-width:46px;min-height:46px;padding:0 8px;font-size:17px}
+.jpvbar output{flex:1;text-align:center;font-family:var(--t-font);font-size:24px;font-variant-numeric:tabular-nums}
+.jtoast{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:40;max-width:536px;margin:0 auto;background:var(--surface);box-shadow:0 6px 24px rgba(0,0,0,.28);border-left:4px solid var(--t-acc,var(--accent));cursor:pointer}
+.jtoast[hidden]{display:none}
+.jsauve{margin:4px 0 0;font-family:var(--f-small);font-size:15px;color:var(--muted)}
+.jsauve .lien{border:0;background:none;color:var(--t-acc,var(--accent));text-decoration:underline;font:inherit;padding:0 0 0 6px;min-height:32px;cursor:pointer}
+.jeu .jetat,.jeu .hint,.jeu .sort span,.jeu .jlab small{font-size:15px}
+/* Création : étapes */
+.pasnav{position:sticky;top:0;z-index:15;background:var(--bg);padding:6px 0 0}
+.pasnav>button{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;min-height:48px;padding:6px 14px;border-radius:8px 8px 0 0;background:var(--surface);font-size:17px;font-weight:600;text-align:left}
+.pasnav .pasplus{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
+.pasbarre{height:5px;background:var(--line);border-radius:0 0 4px 4px;overflow:hidden}
+.pasbarre i{display:block;height:100%;width:12.5%;background:var(--accent);transition:width .25s}
+.pasfeuille{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.45);display:flex;align-items:flex-end}
+.pasfeuille[hidden]{display:none}
+.pasbox{width:100%;max-width:560px;margin:0 auto;background:var(--bg);border-radius:14px 14px 0 0;padding:10px 14px calc(14px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.pasbh{display:flex;justify-content:space-between;align-items:center}
+.pasbh button{min-width:44px;min-height:44px}
+.pasbox>button{display:flex;gap:14px;align-items:center;justify-content:flex-start;min-height:52px;font-size:17px;text-align:left}
+.pasbox>button[aria-current]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.step-h{scroll-margin-top:64px}
+.mbar button{flex:0 0 auto;min-height:44px;padding:0 20px;font-size:17px}
+/* Runes : fenêtre plein écran */
+body.rm-ouvert{overflow:hidden}
+.rmodal{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.rmodal[hidden]{display:none}
+.rmbox{max-width:560px;margin:0 auto;min-height:100%;padding:14px 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.rmh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.rmh b{font-family:var(--t-font);font-size:24px;font-weight:600}
+.rmh span{font-family:var(--t-font);font-size:24px;color:var(--t-acc);white-space:pre}
+.rmh button{min-width:48px;min-height:48px;font-size:20px}
+#rmEch.rune{border:0;border-left:0;padding:0;background:transparent}
+#rmEch .echelle span{font-size:15px;padding:3px 10px}
+.rmbox .rpan{display:flex;flex-direction:column;gap:14px;border:0;padding:0;background:none}
+.rmbox .rpan .rinfo{font-family:var(--f-small);line-height:1.4}
+.rmbox .rpan .rinfo{font-size:16px}
+.rmbox .jbtns button,.rmbox .seg button{min-height:64px;font-size:26px}
+.rmbox .rpan>button,.rmbox .jbtns.deux button{font-size:17px;min-height:54px}
+.rmbox .jres{margin-top:4px}
+.rmbox .jres .tot{font-size:56px}
+/* Création : cartes de runes */
+.runecs{display:grid;gap:8px}
+.runec{border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:hidden}
+.runec[data-on="true"]{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.runec>button{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:10px;border:0;border-radius:0;background:transparent;padding:10px 14px;min-height:56px;text-align:left}
+.runec>button b{font-weight:600}
+.runec>button .t{font-family:var(--t-font);font-size:20px;color:var(--t-acc,var(--accent))}
+.runec p{margin:0;padding:0 14px 8px;font-size:15px;color:var(--muted)}
+.runec details{padding:0 14px 10px;font-size:15px;border:0;border-radius:0;background:none;margin:0;box-shadow:none}
+.runec summary{cursor:pointer;min-height:36px;display:flex;align-items:center;color:var(--t-acc,var(--accent))}
+.runec ol{margin:4px 0 6px;padding-left:1.3em}
+.runec ol li{margin:3px 0}
 .sort .note{color:var(--t-acc);font-family:var(--f-label);font-size:12.5px;letter-spacing:.04em}
 #jInit{min-height:44px}
 #jCmd .pip{font-size:20px;color:var(--t-acc)}
@@ -324,6 +403,14 @@ details.jcarte[open] summary{margin-bottom:6px}
     <p class="lede">Choisis un thème : un coureur complet est tiré tout de suite. Change ensuite ce que tu veux, étape par étape ; les points de vie et les bonus suivent tes choix.</p>
   </header>
 
+  <nav class="pasnav" id="pasNav" aria-label="Étapes de création">
+    <button type="button" id="pasBtn" aria-haspopup="dialog" aria-controls="pasFeuille"><span id="pasTxt">Étape 1 sur 8 : Thème</span><span class="pasplus">Liste ▾</span></button>
+    <div class="pasbarre" aria-hidden="true"><i id="pasFill"></i></div>
+  </nav>
+  <div class="pasfeuille" id="pasFeuille" role="dialog" aria-modal="true" aria-label="Choisir une étape" hidden>
+    <div class="pasbox"><div class="pasbh"><b>Aller à l'étape…</b><button type="button" id="pasX" aria-label="Fermer">✕</button></div><button type="button" data-t="tT" data-n="1">1<span>Thème</span></button><button type="button" data-t="t2" data-n="2">2<span>Aspects</span></button><button type="button" data-t="t3" data-n="3">3<span>Armes</span></button><button type="button" data-t="t4" data-n="4">4<span>Équipement</span></button><button type="button" data-t="t5" data-n="5">5<span>Dons</span></button><button type="button" data-t="t5s" data-n="6">6<span>Sorts</span></button><button type="button" data-t="t6" data-n="7">7<span>Fiche</span></button><button type="button" data-t="tFin" data-n="8">8<span>Prêt</span></button></div>
+  </div>
+
   <section class="step" id="mesCoureurs" aria-labelledby="tMes">
     <div class="step-h"><h2 id="tMes">Mes coureurs</h2><small>enregistrés sur cet appareil</small></div>
     <div class="dd" data-dd="coureurs"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_coureurs"><span class="ddl">Coureurs enregistrés · importer · exporter</span><span class="ddv" id="v_coureurs"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_coureurs" hidden><div class="roster" id="rosterListe"></div>
@@ -395,6 +482,7 @@ details.jcarte[open] summary{margin-bottom:6px}
           <select id="dSort" aria-label="Dés lancés"><option value="">Sans dé</option><option>1d6</option><option>2d4</option><option>2d6</option><option>3d6</option><option>1d8</option><option>2d8</option></select>
           <select id="tSort" aria-label="Type d'effet"><option value="degats">Dégâts</option><option value="soin">Soin</option><option value="autre">Autre</option></select>
           <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form><button type="button" class="ddok">Valider</button></div></div>
+        <div id="blocRune" hidden><p class="sub">Rune de départ du Magicien <small>(les autres runes se trouvent en jeu)</small></p><p class="hint" style="margin:0 0 6px">Les quatre effets vont du plus faible au plus fort : plus le dé gardé est haut, plus l'effet est fort.</p><div class="runecs" id="cRune" role="group" aria-label="Rune de départ"></div></div>
         <div id="blocConnus" hidden><div class="dd" data-dd="connus"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_connus"><span class="ddl">Sorts connus (dons de magie)</span><span class="ddv" id="v_connus"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_connus" hidden><div id="cConnus"></div><button type="button" class="ddok">Valider</button></div></div></div>
       </section>
 
@@ -497,26 +585,34 @@ details.jcarte[open] summary{margin-bottom:6px}
 </div>
 
 
-<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span></div>
+<div class="mbar" id="mbar" role="region" aria-label="Résumé du coureur"><span id="mStats"></span><button type="button" id="mJouer" class="primary">Jouer</button></div>
 
 <div class="jeu" id="vueJouer" hidden>
   <div class="jtop">
     <button id="jRetour" type="button">← Forge</button>
-    <select id="jListe" aria-label="Mes coureurs"></select>
   </div>
   <div id="jVide" class="vide-jeu" hidden>
     <p>Aucun coureur enregistré sur cet appareil.</p>
     <button class="primary" id="jVersForge" type="button">Créer un coureur</button>
   </div>
-  <div id="jCorps" class="jcol">
+  <div id="jCorps" class="jcol" data-onglet="combat">
     <header class="jtete" id="jTete">
       <img id="jPhoto" alt="" hidden>
       <span class="eyebrow" id="jTheme"></span>
       <h1 id="jNom"></h1>
       <p id="jAspects"></p>
+      <p class="jsauve" id="jSauve" hidden></p>
     </header>
+    <div class="jpvbar" id="jPvBar" hidden>
+      <button type="button" id="jPvAnnulerMini" aria-label="Annuler le dernier changement de PV" hidden>↶</button>
+      <button type="button" data-pv="-5" aria-label="Perdre 5 PV">−5</button>
+      <button type="button" data-pv="-1" aria-label="Perdre 1 PV">−1</button>
+      <output id="jPvMini" aria-label="Points de vie"></output>
+      <button type="button" data-pv="1" aria-label="Regagner 1 PV">+1</button>
+      <button type="button" data-pv="5" aria-label="Regagner 5 PV">+5</button>
+    </div>
 
-    <section class="jcarte" aria-labelledby="jPvT">
+    <section class="jcarte" data-tab="combat" aria-labelledby="jPvT">
       <div class="jlab"><span id="jPvT">Points de vie</span><small id="jDv"></small></div>
       <div class="jpv"><output id="jPv" aria-live="polite"></output><span>/ <span id="jPvMax"></span></span></div>
       <div class="barre" id="jBarre"><i></i></div>
@@ -527,10 +623,11 @@ details.jcarte[open] summary{margin-bottom:6px}
         <button type="button" data-pv="5" aria-label="Regagner 5 PV">+5</button>
       </div>
       <p class="jetat" id="jPvEtat"></p>
+      <button type="button" id="jPvAnnuler" hidden>Annuler le dernier changement</button>
       <button type="button" id="jRelanceDV" hidden>Relancer mes dés de vie (après le repos)</button>
     </section>
 
-    <section class="jcarte" aria-labelledby="jDhT">
+    <section class="jcarte" data-tab="combat" aria-labelledby="jDhT">
       <div class="jlab"><span id="jDhT">Dés d'héroïsme</span><small id="jDhDe">touche un dé pour le lancer</small></div>
       <div class="pips" id="jDh"></div>
       <div class="jbtns deux">
@@ -541,7 +638,7 @@ details.jcarte[open] summary{margin-bottom:6px}
       <div id="jCmd" hidden><p class="sub" style="margin:0">Jetons de relance (Commandement) : touche pour en donner un</p><div class="pips" id="jJetons"></div></div>
     </section>
 
-    <section class="jcarte" aria-labelledby="jJetT">
+    <section class="jcarte" data-tab="combat" aria-labelledby="jJetT">
       <div class="jlab"><span id="jJetT">Jets</span><small>1d20 + bonus</small></div>
       <div class="jres vide" id="jRes" aria-live="polite">Touche un jet ou un dé : le résultat s'affiche ici.</div>
       <div class="resactions" id="jResActions" hidden></div>
@@ -558,7 +655,7 @@ details.jcarte[open] summary{margin-bottom:6px}
       <button type="button" id="jInit">Initiative du groupe (d6)</button>
     </section>
 
-    <section class="jcarte" aria-labelledby="jArmT">
+    <section class="jcarte" data-tab="combat" aria-labelledby="jArmT">
       <div class="jlab"><span id="jArmT">Dégâts</span><small>touche une arme</small></div>
       <div class="jres vide" id="jDegRes" aria-live="polite">Touche une arme : les dégâts s'affichent ici.</div>
       <div class="armes" id="jArmes"></div>
@@ -567,29 +664,45 @@ details.jcarte[open] summary{margin-bottom:6px}
       <div class="des" id="jDes" role="group" aria-label="Dés libres"></div>
     </section>
 
-    <section class="jcarte" id="jTalentsCarte" aria-labelledby="jTaT" hidden>
+    <section class="jcarte" data-tab="combat" id="jTalentsCarte" aria-labelledby="jTaT" hidden>
       <div class="jlab"><span id="jTaT">Dons en jeu</span><small>appliqués par la feuille</small></div>
       <div class="jres vide" id="jTalRes" aria-live="polite" hidden></div>
       <div class="talents" id="jTalents"></div>
     </section>
 
-    <section class="jcarte" aria-labelledby="jLogT">
+    <section class="jcarte" data-tab="combat" aria-labelledby="jLogT">
       <div class="jlab"><span id="jLogT">Derniers jets</span></div>
       <ul class="journal" id="jLog"></ul>
     </section>
 
-    <details class="jcarte" open>
+    <details class="jcarte" data-tab="notes" open>
       <summary>Dons et talents</summary>
       <ul class="jdons" id="jDons"></ul>
     </details>
 
-    <section class="jcarte" id="jConnusCarte" aria-labelledby="jCoT" hidden>
+    <section class="jcarte" data-tab="magie" id="jRunesCarte" aria-labelledby="jRuT" hidden>
+      <div class="jlab"><span id="jRuT">Runes</span><small id="jRuNote"></small></div>
+      <div class="jres vide" id="jRuneRes" aria-live="polite" hidden></div>
+      <div class="sorts" id="jRunes"></div>
+      <form class="sortform" id="jRuneForm" hidden>
+        <label for="jRuneSel">Rune<select id="jRuneSel"></select></label>
+        <div id="jRuneLibre" class="sortlibre" hidden>
+          <input id="jRuneNom" placeholder="Nom de la rune" aria-label="Nom de la rune">
+          <input id="jRuneEff" placeholder="Effet" aria-label="Effet de la rune">
+          <input id="jRuneRec" placeholder="Comment la recharger" aria-label="Recharge de la rune">
+        </div>
+        <label for="jRuneDe">Dé de départ<select id="jRuneDe"></select></label>
+        <div class="jbtns deux"><button class="primary">Ajouter</button><button type="button" id="jRuneFermer">Fermer</button></div>
+      </form>
+    </section>
+
+    <section class="jcarte" data-tab="magie" id="jConnusCarte" aria-labelledby="jCoT" hidden>
       <div class="jlab"><span id="jCoT">Sorts connus</span><small>une fois chacun par repos long</small></div>
       <div class="jres vide" id="jConnusRes" aria-live="polite" hidden></div>
       <div class="sorts" id="jConnus"></div>
     </section>
 
-    <section class="jcarte" aria-labelledby="jSoT">
+    <section class="jcarte" data-tab="magie" aria-labelledby="jSoT">
       <div class="jlab"><span id="jSoT">Sorts</span><small id="jSoNote"></small></div>
       <div class="jres vide" id="jSortRes" aria-live="polite" hidden></div>
       <div class="sorts" id="jSorts"></div>
@@ -617,23 +730,23 @@ details.jcarte[open] summary{margin-bottom:6px}
       </details>
     </section>
 
-    <section class="jcarte" aria-labelledby="jEqT">
+    <section class="jcarte" data-tab="notes" aria-labelledby="jEqT">
       <div class="jlab"><span id="jEqT">Équipement</span><small>modifiable</small></div>
       <textarea id="jEquip" rows="5" aria-labelledby="jEqT"></textarea>
     </section>
 
-    <section class="jcarte" aria-labelledby="jNoT">
+    <section class="jcarte" data-tab="notes" aria-labelledby="jNoT">
       <div class="jlab"><span id="jNoT">Notes, butin et blessures</span></div>
       <textarea id="jNotes" rows="6" aria-labelledby="jNoT" placeholder="Ce qui s'est passé, ce que tu as trouvé, qui te doit quoi…"></textarea>
     </section>
 
-    <details class="jcarte">
+    <details class="jcarte" data-tab="plus">
       <summary>Passé et rappel des règles</summary>
       <p id="jPasse" style="margin:0"></p>
       <ul class="jdons" id="jRegles"></ul>
     </details>
 
-    <details class="jcarte" id="jModif">
+    <details class="jcarte" data-tab="plus" id="jModif">
       <summary>Modifier le coureur</summary>
       <p class="hint">Pour un changement en cours de partie : nouvelle arme, armure perdue, nouveau nom…</p>
       <label for="mNom">Nom<input id="mNom"></label>
@@ -659,7 +772,7 @@ details.jcarte[open] summary{margin-bottom:6px}
       <button type="button" id="mForge">Tout modifier dans la Forge</button>
     </details>
 
-    <details class="jcarte" id="jProg">
+    <details class="jcarte" data-tab="plus" id="jProg">
       <summary>Progression</summary>
       <p class="hint">Le Conteur décide quand le coureur monte de niveau : après un moment clé, une session ou un scénario.</p>
       <button type="button" id="jNivOuvrir">Passer au niveau suivant…</button>
@@ -692,10 +805,17 @@ details.jcarte[open] summary{margin-bottom:6px}
       <p class="jetat" id="jPdfEtat" aria-live="polite"></p>
     </details>
 
-    <details class="jcarte">
+    <details class="jcarte" data-tab="plus" id="jAppareil">
       <summary>Appareil et sauvegarde</summary>
       <label class="toggle"><input type="checkbox" id="jEveil"> Garder l'écran allumé pendant la partie</label>
       <p class="jetat" id="jEveilEtat"></p>
+      <p class="jetat" id="jSauveEtat"></p>
+      <p class="sub" style="margin:0">Affichage</p>
+      <div class="seg" id="jThemeSeg" role="group" aria-label="Thème d'affichage">
+        <button type="button" data-th="auto" aria-pressed="true">Auto</button>
+        <button type="button" data-th="clair" aria-pressed="false">Clair</button>
+        <button type="button" data-th="sombre" aria-pressed="false">Sombre</button>
+      </div>
       <p class="hint">Les coureurs sont enregistrés dans le navigateur de cet appareil. Pour jouer ce coureur ailleurs, exporte-le en fichier puis importe-le depuis « Mes coureurs » sur l'autre appareil.</p>
       <div class="jbtns deux">
         <button type="button" id="jExporter" class="primary">Exporter ce coureur</button>
@@ -716,6 +836,21 @@ details.jcarte[open] summary{margin-bottom:6px}
       </div>
     </details>
   </div>
+  <div class="rmodal" id="jRuneModal" role="dialog" aria-modal="true" aria-labelledby="rmTitre" hidden>
+    <div class="rmbox">
+      <div class="rmh"><div><b id="rmTitre"></b><span id="rmDe"></span></div><button type="button" id="rmX" aria-label="Fermer">✕</button></div>
+      <div id="rmEch"></div>
+      <div id="rmCorps"></div>
+      <div class="jres vide" id="rmRes" aria-live="polite" hidden></div>
+    </div>
+  </div>
+  <div class="jres jtoast" id="jToast" role="status" aria-live="polite" hidden></div>
+  <nav class="jonglets" id="jOnglets" aria-label="Sections de la feuille de jeu">
+    <button type="button" data-onglet="combat" aria-selected="true">Combat</button>
+    <button type="button" data-onglet="magie" aria-selected="false">Magie</button>
+    <button type="button" data-onglet="notes" aria-selected="false">Notes</button>
+    <button type="button" data-onglet="plus" aria-selected="false">Plus</button>
+  </nav>
 </div>
 
 <script src="pdf-lib.min.js"></script>
@@ -940,6 +1075,29 @@ const FMT_SORT=s=>s.n+(s.niv?" (niv. "+s.niv+")":"")+" : "+(s.c||s.e);
 function lisibleMax(niv,libre){return niv>=6?3:niv>=4?2:niv>=2?1:(libre?1:0)}
 function niveauPourLire(sn){return sn>=3?6:sn===2?4:2}
 
+/* ---------- Runes : données ---------- */
+const LADDER=[20,12,10,8,6,4];
+const PALIERS=["Faible","Moyen","Fort","Prodigieux"];
+const RUNES=[
+ {id:"flamme",n:"Rune de Flamme",de:8,r:"plongée une heure dans un vrai feu.",
+  t:["Une flamme de bougie, allume une torche.","Torche vive : 1d8 de dégâts à une cible proche.","Gerbe de feu : 2d8 sur une zone (une pièce), le décor s'enflamme.","Brasier : 3d8 sur une grande zone, très difficile à éteindre."]},
+ {id:"foudre",n:"Rune de Foudre",de:10,r:"laissée une nuit d'orage sur un point haut.",
+  t:["Étincelle : on lâche un objet métallique.","Éclair : 1d8 de dégâts à une cible.","2d8 de dégâts, l'armure métallique ne protège pas.","3d8 en chaîne sur jusqu'à trois cibles proches."]},
+ {id:"vent",n:"Rune de Vent",de:8,r:"une nuit entière au sommet d'une colline ou à une fenêtre grande ouverte.",
+  t:["Souffle léger : éteint une flamme, disperse une fumée.","Bourrasque qui repousse une cible ; une chute est ralentie.","Renverse des créatures de taille humaine ; le groupe a l'avantage à la fuite ou à la poursuite 1d6 tours.","Tempête locale, 1d6 tours : tout est repoussé et les projectiles déviés."]},
+ {id:"pierre",n:"Rune de Pierre",de:8,r:"enterrée en pleine terre un jour et une nuit.",
+  t:["Fissure ou éboulis léger, ouvre un passage minuscule.","Peau de pierre : +2 en armure pendant 1d6 tours.","Ouvre ou ferme une paroi de roche large comme une porte, 1d6 tours.","Scelle un couloir ou une pièce de roche pendant 1d6 heures."]},
+ {id:"eau",n:"Rune d'Eau",de:8,r:"trempée une nuit dans une eau vive (source, torrent).",
+  t:["Purifie une gourde, éteint une torche.","Soigne 1 dé de vie de la cible (une cible blessée seulement).","Soigne 1 dé de vie + niveau du lanceur, ou le groupe respire sous l'eau 1d6 heures.","Soigne 2 dés de vie + niveau, ou purge un poison."]},
+ {id:"ombre",n:"Rune d'Ombre",de:10,r:"gardée une nuit entière sans aucune lumière.",
+  t:["Ombre épaisse autour du lanceur, il éteint une lumière proche.","Invisibilité du lanceur 1d6 tours, brisée par une attaque.","Invisibilité du lanceur et d'un allié 1d6 tours, avantage pour la surprise.","Manteau d'ombre pour tout le groupe pendant 1d6 heures."]},
+ {id:"voix",n:"Rune de Voix",de:8,r:"on la fait résonner dans un lieu clos et silencieux (crypte, cave) en y disant un secret à voix haute.",
+  t:["Comprend une phrase d'une langue inconnue, calme une bête.","Comprend toutes les langues pendant 1d6 heures, parle à un animal.","Message à distance, ou change l'attitude d'une créature (jet).","Une créature faible obéit à un ordre simple, ou un cadavre répond à une question."]},
+ {id:"sang",n:"Rune de Sang",de:12,sombre:"le porteur perd des PV égaux à la moitié du résultat gardé (arrondi au supérieur).",
+  r:"le sang d'un adversaire tué de sa main, rune au poing, ou 1d6 PV sacrifiés par le porteur.",
+  t:["Retrouve la trace de quelqu'un grâce à une goutte de sang.","Arme affamée : +1d4 de dégâts pendant 1d6 tours.","3d8 de dégâts à une cible, ou domine un esprit faible 1d6 tours.","4d8 de dégâts, ou contrôle total d'une créature pendant 1d6 heures."]}
+];
+
 /* ---------- Dons du livre (p. 6-7) ---------- */
 const DONS_OFF=[
  {n:"Armes de prédilection (contact)",e:"Le dé de dégâts des armes de contact augmente d'une taille.",fx:{predi:"contact"}},
@@ -952,6 +1110,7 @@ const DONS_OFF=[
  {n:"Enchaînement",e:"Après une attaque réussie, enchaîne une deuxième attaque.",min:3},
  {n:"Enchaînement (second)",e:"Si la deuxième attaque réussit, enchaîne une troisième.",min:5,req:"Enchaînement"},
  {n:"Esquive acrobatique",e:"Sans armure ou en armure légère : +2 à la valeur d'armure (Défense).",fx:{esquive:1}},
+ {n:"Magicien",e:"Porte des runes : un emplacement par niveau, à remplir en jeu. Dé de vie diminué d'une taille.",fx:{dv:-1,magicien:1}},
  {n:"Magie du cercle premier",e:"Connaît deux sorts de niveau 1, lancés une fois chacun entre deux repos longs, sans parchemin. Dé de vie diminué d'une taille.",min:4,fx:{dv:-1,magie1:2}},
  {n:"Magie du cercle second",e:"Connaît un sort de niveau 2, lancé une fois entre deux repos longs, sans parchemin. Dé de vie diminué d'une taille.",min:4,fx:{dv:-1,magie2:1}},
  {n:"Maîtrise des armures",e:"En armure mixte ou lourde : malus d'encombrement réduit de 2 (+2 aux Arts du mouvement).",fx:{maitrise:1}},
@@ -976,7 +1135,7 @@ const TAILLES_DE=[4,6,8,10,12];
 function tailleDe(base,pas){let i=TAILLES_DE.indexOf(base);if(i<0)i=2;return TAILLES_DE[Math.max(0,Math.min(TAILLES_DE.length-1,i+pas))]}
 function deArme(d,pas){return pas?String(d).replace(/^d(\d+)/,(m,n)=>"d"+tailleDe(+n,pas)):d}
 function fxDons(noms,D){
-  const fx={pvNiv:0,pv:0,def:0,mvt:0,std:0,dh:0,parch:0,dv:0,esquive:0,maitrise:0,chance:0,aspect3:0,magie1:0,magie2:0,init:0,sournois:0,cmd:0,predi:[]},src={};
+  const fx={pvNiv:0,pv:0,def:0,mvt:0,std:0,dh:0,parch:0,dv:0,esquive:0,maitrise:0,chance:0,aspect3:0,magie1:0,magie2:0,magicien:0,init:0,sournois:0,cmd:0,predi:[]},src={};
   noms.forEach(n=>{const d=D.find(x=>x.n===n);if(!d||!d.fx)return;Object.keys(d.fx).forEach(k=>{if(k==="predi")fx.predi.push(d.fx.predi);else if(k in fx)fx[k]+=d.fx[k];(src[k]=src[k]||[]).push(d.n)})});
   return {fx,src};
 }
@@ -1162,6 +1321,38 @@ function plus(list){return list.length?" + "+list.join(", "):""}
 function deEffectif(a,fx){return deArme(a.d,fx.predi.includes(a.dist?"dist":"contact")?1:0)}
 
 /* ---------- Rendu des choix ---------- */
+const RUNE_RESUME={flamme:"Le feu : lumière, flammes et dégâts.",vent:"L'air : souffle, fuite, chute ralentie.",pierre:"La terre : protéger son armure, ouvrir ou fermer des parois de roche.",eau:"L'eau : soigner les blessures, purifier.",voix:"La parole : comprendre les langues, parler aux bêtes, donner des ordres."};
+function rendreRunesCreation(){
+  const bx=$("cRune");bx.innerHTML="";
+  RUNES.filter(r=>r.de===8).forEach(r=>{
+    const c=document.createElement("div");c.className="runec";c.dataset.on=String(S.rune===r.id);
+    c.append(bouton("",'<b>'+esc(r.n)+'</b><span class="t">d'+r.de+'</span>',S.rune===r.id,()=>{S.rune=r.id;maj(false)}));
+    const p=document.createElement("p");p.textContent=RUNE_RESUME[r.id]||"";c.append(p);
+    const d=document.createElement("details");
+    d.innerHTML="<summary>Voir les 4 effets et la recharge</summary><ol>"+r.t.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ol><span>Se recharge : "+esc(r.r)+"</span>";
+    c.append(d);bx.append(c);
+  });
+}
+/* Limite atteinte : on demande lequel remplacer (une seule action) */
+function demanderRemplacement(quoi,nouveau,actuels,raisonPour,appliquer){
+  if(actuels.length===1&&!(raisonPour&&raisonPour(actuels[0]))){appliquer(actuels[0]);maj(false);return}
+  const old=$("remplFeuille");if(old)old.remove();
+  const f=document.createElement("div");f.className="pasfeuille";f.id="remplFeuille";f.setAttribute("role","dialog");f.setAttribute("aria-modal","true");
+  const bx=document.createElement("div");bx.className="pasbox";
+  const h=document.createElement("div");h.className="pasbh";
+  const t=document.createElement("b");t.textContent="Remplacer lequel par « "+nouveau+" » ?";
+  const x=document.createElement("button");x.type="button";x.textContent="✕";x.setAttribute("aria-label","Annuler");h.append(t,x);bx.append(h);
+  const sous=document.createElement("p");sous.className="hint";sous.style.margin="0";sous.textContent="Tu as déjà le maximum. Touche "+quoi.replace("ce ","celui ").replace("cette ","celle ")+" à retirer.";bx.append(sous);
+  const fermer=()=>{f.remove();document.body.classList.remove("rm-ouvert")};
+  actuels.slice().forEach(o=>{
+    const r=raisonPour?raisonPour(o):"";
+    const b=document.createElement("button");b.type="button";b.disabled=!!r;
+    b.innerHTML="<b>"+esc(o)+"</b>"+(r?"<span style=\"color:var(--muted);font-size:14px\"> · "+esc(r)+"</span>":"");
+    b.addEventListener("click",()=>{appliquer(o);fermer();maj(false)});bx.append(b);
+  });
+  x.addEventListener("click",fermer);f.addEventListener("click",e=>{if(e.target===f)fermer()});
+  f.append(bx);document.body.append(f);document.body.classList.add("rm-ouvert");
+}
 function bouton(cls,html,pressed,on,dis){const b=document.createElement("button");b.type="button";b.className=cls;b.innerHTML=html;b.setAttribute("aria-pressed",pressed?"true":"false");if(dis)b.disabled=true;b.addEventListener("click",on);return b}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function avecRetrait(btn,cat,n,carte){
@@ -1227,7 +1418,7 @@ function rendreChoix(){
   $("lBouclier").hidden=!t.bouclier;$("bouclierNom").textContent=t.bouclier||"Bouclier";$("bouclier").checked=S.bouclier;
   box=$("cArmes");box.innerHTML="";
   const A=listes.A();
-  A.forEach(a=>{const on=S.armes.includes(a.n),d=deEffectif(a,c.fx);box.append(avecRetrait(bouton("chip",esc(a.n)+'<span class="t">'+(d!==a.d?a.d+" → ":"")+d+(a.dist?" · distance":"")+"</span>",on,()=>{if(on)S.armes=S.armes.filter(x=>x!==a.n);else if(S.armes.length<3)S.armes.push(a.n);maj(false)},!on&&S.armes.length>=3),"armes",a.n))});
+  A.forEach(a=>{const on=S.armes.includes(a.n),d=deEffectif(a,c.fx);box.append(avecRetrait(bouton("chip",esc(a.n)+'<span class="t">'+(d!==a.d?a.d+" → ":"")+d+(a.dist?" · distance":"")+"</span>",on,()=>{if(on)S.armes=S.armes.filter(x=>x!==a.n);else if(S.armes.length<3)S.armes.push(a.n);else{demanderRemplacement("cette arme",a.n,S.armes,null,o=>{S.armes=S.armes.map(x=>x===o?a.n:x)});return}maj(false)}),"armes",a.n))});
   box.append(plusBtn("fArme","Autre arme"));
   const choisies=S.armes.map(n=>A.find(a=>a.n===n)).filter(Boolean);
   const encombre=S.bouclier||choisies.some(a=>!a.dist&&/^d1[02]/.test(a.d)), tir=choisies.some(a=>a.dist&&!/^d4/.test(a.d));
@@ -1241,7 +1432,7 @@ function rendreChoix(){
   D.forEach(d=>{const on=S.dons.includes(d.n),autres=S.dons.filter(x=>x!==d.n),dispo=donDispo(d,niv,autres,true),raison=raisonDon(d,niv,autres,true);
     const tags=[];if(d.min)tags.push("niveau "+d.min+"+");if(d.unique)tags.push("un seul par équipe");if(d.creation)tags.push("création");if(d.maison)tags.push("maison");
     const fxNum=d.maison&&d.fx?Object.keys(d.fx).filter(k=>FXN[k]).map(k=>(d.fx[k]>0?"+":"")+d.fx[k]+" "+FXN[k]):[];
-    box.append(avecRetrait(bouton("card","<b>"+esc(d.n)+"</b><span>"+esc(d.e)+"</span>"+(tags.length||fxNum.length||raison?'<span class="fx">'+esc(tags.concat(fxNum).join(" · ")+(raison&&!on&&!d.min?" · "+raison:""))+"</span>":""),on,()=>{if(on)S.dons=S.dons.filter(x=>x!==d.n);else if(S.dons.length<niv&&dispo)S.dons.push(d.n);maj(false)},!on&&(plein||!dispo)),"dons",d.n,true))});
+    box.append(avecRetrait(bouton("card","<b>"+esc(d.n)+"</b><span>"+esc(d.e)+"</span>"+(tags.length||fxNum.length||raison?'<span class="fx">'+esc(tags.concat(fxNum).join(" · ")+(raison&&!on&&!d.min?" · "+raison:""))+"</span>":""),on,()=>{if(on)S.dons=S.dons.filter(x=>x!==d.n);else if(dispo){if(S.dons.length<niv)S.dons.push(d.n);else{demanderRemplacement("ce don",d.n,S.dons,o=>raisonDon(d,niv,S.dons.filter(x=>x!==o),true),o=>{S.dons=S.dons.map(x=>x===o?d.n:x)});return}}maj(false)},!on&&!dispo),"dons",d.n,true))});
   box.append(plusBtn("fDon","Autre don"));
   $("donsNote").textContent=S.dons.length+" sur "+niv+" (un par niveau)";
   const aArt=S.dons.includes("Artefact légendaire");$("blocArtefact").hidden=!aArt;
@@ -1257,17 +1448,19 @@ function rendreChoix(){
   const pleinS=S.sorts.length>=c.maxSorts;
   box=$("cSorts");box.innerHTML="";
   listes.P().forEach(p=>{const on=S.sorts.includes(p.n),choisissable=ok.includes(p.n);
-    box.append(avecRetrait(carteSort(p,on,()=>{if(on)S.sorts=S.sorts.filter(x=>x!==p.n);else if(S.sorts.length<c.maxSorts)S.sorts.push(p.n);maj(false)},!on&&(pleinS||!choisissable),choisissable?"":"lisible au niveau "+niveauPourLire(p.niv||1)),"sorts",p.n,true))});
+    box.append(avecRetrait(carteSort(p,on,()=>{if(on)S.sorts=S.sorts.filter(x=>x!==p.n);else if(S.sorts.length<c.maxSorts)S.sorts.push(p.n);else{demanderRemplacement("ce sort",p.n,S.sorts,null,o=>{S.sorts=S.sorts.map(x=>x===o?p.n:x)});return}maj(false)},!on&&!choisissable,choisissable?"":"lisible au niveau "+niveauPourLire(p.niv||1)),"sorts",p.n,true))});
   box.append(plusBtn("fSort","Autre sort"));
   $("sortsNote").textContent=S.sorts.length+" sur "+c.maxSorts+(c.maxSorts>S.nbSorts?" (dont +"+(c.maxSorts-S.nbSorts)+" par un don)":"");
   // sorts connus (dons de magie)
+  const aMag=!!c.fx.magicien;$("blocRune").hidden=!aMag;
+  if(aMag){if(!S.rune)S.rune="flamme";rendreRunesCreation()}
   const mag=c.fx.magie1||c.fx.magie2;$("blocConnus").hidden=!mag;
   if(mag){box=$("cConnus");box.innerHTML="";
     [[1,"connus1",c.fx.magie1?2:0],[2,"connus2",c.fx.magie2?1:0]].forEach(([nv,cle,max])=>{if(!max)return;
       S[cle]=S[cle].filter(n=>listes.P().some(p=>p.n===n)).slice(0,max);
       const h=document.createElement("p");h.className="sub";h.textContent="Niveau "+nv+" : "+S[cle].length+" sur "+max;box.append(h);
       const g=document.createElement("div");g.className="cards";box.append(g);
-      listes.P().filter(p=>(p.niv||1)===nv).forEach(p=>{const on=S[cle].includes(p.n);g.append(carteSort(p,on,()=>{if(on)S[cle]=S[cle].filter(x=>x!==p.n);else if(S[cle].length<max)S[cle].push(p.n);maj(false)},!on&&S[cle].length>=max,""))})})}
+      listes.P().filter(p=>(p.niv||1)===nv).forEach(p=>{const on=S[cle].includes(p.n);g.append(carteSort(p,on,()=>{if(on)S[cle]=S[cle].filter(x=>x!==p.n);else if(S[cle].length<max)S[cle].push(p.n);else{demanderRemplacement("ce sort",p.n,S[cle],null,o=>{S[cle]=S[cle].map(x=>x===o?p.n:x)});return}maj(false)},false,""))})})}
   // fiche
   box=$("cFormat");box.innerHTML="";
   Object.keys(FORMATS).forEach(f=>box.append(bouton("chip",esc(FORMATS[f].nom)+'<span class="t">'+FORMATS[f].mm+"</span>",S.format===f,()=>{S.format=f;maj(false)})));
@@ -1396,6 +1589,29 @@ const NB_LIGNES_SORTS=4;
 function lignesSorts(b){const [x,y,w,h]=b, top=y+40, rh=(h-48)/NB_LIGNES_SORTS, out=[];
   for(let i=0;i<NB_LIGNES_SORTS;i++){const ry=top+i*rh, cs=Math.min(24,rh-14);const by=ry+(rh-cs)/2;out.push({box:[x+14,by,cs,cs],txt:[x+14+cs+12,by-3,w-28-cs-12,ry+rh-4-(by-3)],sep:ry+rh})}
   return out}
+
+/* Runes sur le papier */
+const CRANS_PAPIER=[["d12",12],["d10",10],["d8",8],["d6",6],["d4",4],["vide",0]];
+function runesPapier(){const c=calculer();if(!c.fx.magicien)return null;const n=Math.min(6,c.niv),def=RUNES.find(x=>x.id===(S.rune||"flamme"))||RUNES[0];
+  return Array.from({length:n},(_,i)=>i===0?{nom:def.n,dep:def.de}:{nom:"",dep:0})}
+function lignesRunes(b,n,note){const [x,y,w,h]=b,top=y+40,rh=(h-48-note)/n,nameW=118,gx=x+14+nameW+8,cw=(w-28-nameW-8)/CRANS_PAPIER.length,rows=[];
+  for(let i=0;i<n;i++){const ry=top+i*rh,cs=Math.min(26,rh-12),by=ry+(rh-cs)/2,bw=Math.min(cw-3,cs+6);
+    rows.push({nom:[x+14,by-3,nameW,ry+rh-4-(by-3)],cells:CRANS_PAPIER.map((cr,j)=>({lab:cr[0],v:cr[1],box:[gx+j*cw+(cw-bw)/2,by,bw,cs]})),sep:ry+rh})}
+  return {rows,noteY:top+n*rh+4}}
+function dessinerRunes(c,k,s,Lm,RP,withValues){
+  boite(c,k,Lm.parch,s,"Runes · dé d'usure",44);
+  const G=lignesRunes(Lm.parch,RP.length,56);
+  G.rows.forEach((r,i)=>{
+    if(i<RP.length-1){c.globalAlpha=.25;c.beginPath();c.moveTo((Lm.parch[0]+14)*k,r.sep*k);c.lineTo((Lm.parch[0]+Lm.parch[2]-14)*k,r.sep*k);st(c,k,1,s.ink);c.globalAlpha=1}
+    if(withValues&&RP[i].nom)valeurC(c,k,RP[i].nom,r.nom,TAILLES.sort[0],TAILLES.sort[1],false,s.val);
+    r.cells.forEach(cl=>{const [bx,by,bw,bh]=cl.box;P(c,k,rectP(bx,by,bw,bh));st(c,k,1.2,s.ink);
+      texte(c,k,cl.lab,bx+bw/2,by+bh/2+4,11,SMALL,s.ink,"center");
+      if(withValues&&RP[i].dep&&cl.v===RP[i].dep){c.beginPath();c.ellipse((bx+bw/2)*k,(by+bh/2)*k,(bw/2+3)*k,(bh/2+3)*k,0,0,Math.PI*2);st(c,k,2,s.acc)}})});
+  const mes=(t,sz)=>{c.font=(sz*k)+"px "+SMALL;return c.measureText(t).width/k},w=Lm.parch[2]-28;
+  couper(t=>mes(t,12),"Lance 1 dé à ton niveau, garde-en 1. Un dé au maximum : la rune baisse d'un cran (barre-le). Recharger : efface.",w).slice(0,2).forEach((l,i)=>texte(c,k,l,Lm.parch[0]+14,G.noteY+12+i*14,12,SMALL,s.ink,"left"));
+  const sortsTxt=v("parchemins").split("\n").map(x=>x.trim()).filter(Boolean);
+  if(withValues&&sortsTxt.length){let sz=12;const t="Parchemins : "+sortsTxt.map(x=>x.split(" · ")[0]).join(", ");while(sz>8&&mes(t,sz)>w)sz-=0.5;texte(c,k,t,Lm.parch[0]+14,G.noteY+40,sz,SMALL,s.val,"left")}
+}
 /* Zones de saisie (intérieur des cadres) */
 function zones(Lm){
   const inn=(b,top)=>[b[0]+14,b[1]+(top||36),b[2]-28,b[3]-(top||36)-10];
@@ -1551,11 +1767,14 @@ function verso(c,k,withValues){
   texte(c,k,"Carnet de route",M,M+70,40,s.font,s.ink);
   if(v("nom")){c.font=(26*k)+"px "+VALF;texte(c,k,v("nom"),966,M+70,26,VALF,s.val,"right")}
   boite(c,k,Lm.desc,s,"Origine et passé",41);
+  const RP=runesPapier();
+  if(RP)dessinerRunes(c,k,s,Lm,RP,withValues);else{
   boite(c,k,Lm.parch,s,t.sortsTitre+" · usage unique",44);
   const LS2=Z.sorts, sortsTxt=v("parchemins").split("\n").map(x=>x.trim()).filter(Boolean);
   LS2.forEach((r,i)=>{const [bx,by,bw,bh]=r.box;if(withValues){P(c,k,rectP(bx,by,bw,bh));st(c,k,1.6,s.ink)}
     if(i<LS2.length-1){c.globalAlpha=.25;c.beginPath();c.moveTo((Lm.parch[0]+14)*k,r.sep*k);c.lineTo((Lm.parch[0]+Lm.parch[2]-14)*k,r.sep*k);st(c,k,1,s.ink);c.globalAlpha=1}
     if(withValues&&sortsTxt[i])valeurC(c,k,sortsTxt[i],r.txt,TAILLES.sort[0],TAILLES.sort[1],false,s.val)});
+  }
   boite(c,k,Lm.notes,s,"Notes",42);
   c.globalAlpha=.25;for(let y=Lm.notes[1]+68;y<Lm.notes[1]+Lm.notes[3]-12;y+=32){c.beginPath();c.moveTo((Lm.notes[0]+14)*k,y*k);c.lineTo((Lm.notes[0]+Lm.notes[2]-14)*k,y*k);st(c,k,1,s.ink)}c.globalAlpha=1;
   boite(c,k,Lm.regles,s,"Rappel des règles",43);
@@ -1611,9 +1830,18 @@ async function construirePdf(){
   champ(p2,"passe",Z2.desc,V.desc,TAILLES.desc,false);
   champ(p2,"notes",Z2.notes,"",TAILLES.notes,false);
   const sortsTxt=v("parchemins").split("\n").map(x=>x.trim()).filter(Boolean);
+  const Lm2p=mise(S.format,false).parch;
+  const RPp=runesPapier();
+  if(RPp){const G=lignesRunes(mise(S.format,false).parch,RPp.length,56);
+    G.rows.forEach((r,i)=>{champ(p2,"rune_"+(i+1),r.nom,RPp[i].nom,TAILLES.sort,false);
+      r.cells.forEach(cl=>{const [bx,by,bw,bh]=cl.box.map(n=>n*u),cb=form.createCheckBox("rune_"+(i+1)+"_"+cl.lab);
+        cb.addToPage(p2,{x:bx,y:F.h-by-bh,width:bw,height:bh,textColor:col,borderWidth:0,backgroundColor:undefined})})});
+    if(sortsTxt.length)champ(p2,"parchemins_note",[Lm2p[0]+14,G.noteY+34,Lm2p[2]-28,16],"Parchemins : "+sortsTxt.map(x=>x.split(" · ")[0]).join(", "),[12,8],false)}
+  else{
   Z2.sorts.forEach((r,i)=>{champ(p2,"sort_"+(i+1),r.txt,sortsTxt[i]||"",TAILLES.sort,false);
     const [bx,by,bw,bh]=r.box.map(n=>n*u), cb=form.createCheckBox("sort_"+(i+1)+"_lu");
     cb.addToPage(p2,{x:bx,y:F.h-by-bh,width:bw,height:bh,textColor:col,borderWidth:0.8,borderColor:rgb(0.15,0.15,0.15),backgroundColor:undefined})});
+  }
   form.updateFieldAppearances(times);
   return await doc.save();
 }
@@ -1704,7 +1932,7 @@ function instantane(){
     artefact:S.dons.includes("Artefact légendaire")?S.artefact:null,
     dons:v("dons").split("\n").map(s=>s.trim()).filter(Boolean), donsNoms:S.dons.slice(), equip:equipTexte(),
     regles:{donsMaison:REG.donsMaison,lectureLibre:REG.lectureLibre,dvMetier:REG.dvMetier},
-    sortsTitre:t.sortsTitre, sortsUn:t.sortsUn,
+    sortsTitre:t.sortsTitre, sortsUn:t.sortsUn, rune:(c.fx.magicien?(S.rune||"flamme"):null),
     sorts:S.sorts.map(n=>P.find(x=>x.n===n)).filter(Boolean).map(sortObj),
     portrait:vignette(),
     forge:Object.assign(JSON.parse(JSON.stringify(S)),{niveau:c.niv}),
@@ -1719,6 +1947,7 @@ function jouerCeCoureur(){
   else{p={id:"c"+Date.now().toString(36)+Math.floor(Math.random()*1e4),fiche:snap,pv:snap.pvMax,dh:snap.dhMax,equip:snap.equip,notes:"",log:[],
     sorts:snap.sorts.map(s=>Object.assign({},s,{lu:false})),connus:snap.connus.map(s=>Object.assign({},s,{lance:false})),jetons:snap.cmd};ROSTER.liste.unshift(p);S.playId=p.id}
   p.forge=snap.forge;delete p.fiche.forge;
+  if(snap.rune&&(!Array.isArray(p.runes)||!p.runes.some(Boolean))){const dr=RUNES.find(x=>x.id===snap.rune)||RUNES[0];p.runes=[{id:dr.id,n:dr.n,dep:dr.de,de:dr.de}]}
   ROSTER.actif=p.id;
   if(!sauverRoster())setStatus("Ce navigateur refuse d'enregistrer : la feuille de jeu marchera, mais sera perdue en fermant la page.");
   allerA("jouer");
@@ -1731,6 +1960,7 @@ function montrer(force){
   const jeu=vue==="jouer";
   $("vueJouer").hidden=!jeu;document.querySelector(".wrap").hidden=jeu;
   document.body.classList.toggle("forge",!jeu);
+  if(jeu)choisirOnglet(ongletCourant,false);
   $("mbar").hidden=jeu;
   if(jeu)rendreJeu();else{const p=S&&S.playId&&ROSTER.liste.find(x=>x.id===S.playId);if(p&&p.forge)chargerDansForge(p,true);else rendreMesCoureurs()}
   window.scrollTo(0,0);
@@ -1740,10 +1970,8 @@ window.addEventListener("hashchange",()=>montrer());
 /* Rendu */
 let modeJet="norm", dernier=null, bonusDegats=0;
 function rendreJeu(){
+  pvAvant=null;
   const p=actif();
-  $("jListe").innerHTML="";
-  ROSTER.liste.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.fiche.nom+" · "+x.fiche.themeNom+" niv. "+x.fiche.niveau;if(p&&x.id===p.id)o.selected=true;$("jListe").append(o)});
-  $("jListe").hidden=!ROSTER.liste.length;
   $("jVide").hidden=!!p;$("jCorps").hidden=!p;
   if(!p)return;
   const f=p.fiche, s=STY[f.theme]||STY.fantasy;
@@ -1772,7 +2000,7 @@ function rendreJeu(){
   $("jDons").innerHTML="";
   f.dons.forEach(d=>{const li=document.createElement("li");const i=d.indexOf(" : ");if(i>0){const b=document.createElement("b");b.textContent=d.slice(0,i);li.append(b," : "+d.slice(i+3))}else li.textContent=d;$("jDons").append(li)});
   if(!f.dons.length)$("jDons").innerHTML='<li class="jetat">Aucun don.</li>';
-  sortArme=null;$("jSortRes").hidden=true;$("jSortForm").hidden=true;$("jConnusRes").hidden=true;rendreSorts();rendreConnus();rendreProgression();$("jNivEtat").textContent="";$("jPdfEtat").textContent="";
+  sortArme=null;$("jSortRes").hidden=true;$("jSortForm").hidden=true;$("jConnusRes").hidden=true;runePanneau=null;runeJet=null;runeNb=1;$("jRuneRes").hidden=true;$("rmRes").hidden=true;$("jRuneForm").hidden=true;rendreSorts();rendreConnus();rendreRunes();rendreProgression();rendreSauve();$("jNivEtat").textContent="";$("jPdfEtat").textContent="";
   $("jEquip").value=p.equip;$("jNotes").value=p.notes;
   $("jPasse").textContent=[f.origine,f.description].filter(Boolean).join(". ").replace(/\.\./g,".");
   $("jRegles").innerHTML="";REGLES.forEach(r=>{const li=document.createElement("li");li.textContent=r;$("jRegles").append(li)});
@@ -1784,6 +2012,8 @@ function rendreJeu(){
 function rendrePv(){
   const p=actif(),f=p.fiche;
   $("jPv").value=String(p.pv);$("jPvMax").textContent=f.pvMax;
+  $("jPvMini").textContent=p.pv+" / "+f.pvMax;
+  {const au=pvAvant!==null&&pvAvant!==p.pv;$("jPvAnnuler").hidden=!au;$("jPvAnnulerMini").hidden=!au;if(au)$("jPvAnnuler").textContent="Annuler (revenir à "+pvAvant+" PV)"}
   const pc=f.pvMax?Math.max(0,Math.min(100,p.pv/f.pvMax*100)):0;
   $("jBarre").firstElementChild.style.width=pc+"%";$("jBarre").classList.toggle("bas",pc<=25);
   const e=$("jPvEtat");
@@ -1850,7 +2080,7 @@ function lancerDegats(a,b2){
   const o={quoi,tot,det:parts.join(" · ")+(parts.length>(b2?2:1)?" = "+tot:"")};if(notes.length){o.ver=notes.join(" ");o.neutre=true}
   afficher(o,"jDegRes");montrerRes("jDegRes");journal(quoi,tot);sauverRoster();
 }
-function montrerRes(id){const el=$(id);el.hidden=false;try{const r=el.getBoundingClientRect();if(r.top<0||r.bottom>window.innerHeight)el.scrollIntoView({block:"nearest",behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}catch(e){}}
+function montrerRes(id){const el=$(id);el.hidden=false;try{const r=el.getBoundingClientRect();if(r.top<0||r.bottom>window.innerHeight-70)toast(id)}catch(e){}}
 function videActions(){$("jResActions").innerHTML="";$("jResActions").hidden=true}
 function actionRes(label,fn,primary){const b=document.createElement("button");b.type="button";b.textContent=label;if(primary)b.className="primary";b.addEventListener("click",fn);$("jResActions").append(b);$("jResActions").hidden=false}
 function lancerJet(cle,chaine){
@@ -1931,7 +2161,7 @@ function rendreTalents(){
   }
   $("jTalentsCarte").hidden=!box.children.length;
 }
-document.querySelectorAll("[data-pv]").forEach(b=>b.addEventListener("click",()=>{const p=actif();if(!p)return;p.pv=Math.max(0,Math.min(p.fiche.pvMax,p.pv+parseInt(b.dataset.pv,10)));sauverRoster();rendrePv()}));
+document.querySelectorAll("[data-pv]").forEach(b=>b.addEventListener("click",()=>{const p=actif();if(!p)return;pvAvant=p.pv;p.pv=Math.max(0,Math.min(p.fiche.pvMax,p.pv+parseInt(b.dataset.pv,10)));sauverRoster();rendrePv()}));
 document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{modeJet=b.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"))}));
 document.querySelectorAll("[data-jet]").forEach(b=>b.addEventListener("click",()=>{if(actif())lancerJet(b.dataset.jet)}));
 $("jInit").addEventListener("click",()=>{const f=actif().fiche,n=f.init||6,r=de(n);dernier=null;afficher({quoi:"Initiative du groupe",tot:r,det:"d"+n+" : "+r+", ne peut être ni modifié ni relancé",ver:r>=4?"4 ou plus : le groupe agit en premier":"3 ou moins : les adversaires agissent en premier",ok:r>=4});journal("Initiative",r)});
@@ -1949,7 +2179,6 @@ document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#vu
 let tSave=0;
 $("jEquip").addEventListener("input",e=>{const p=actif();p.equip=e.target.value;clearTimeout(tSave);tSave=setTimeout(sauverRoster,400)});
 $("jNotes").addEventListener("input",e=>{const p=actif();p.notes=e.target.value;clearTimeout(tSave);tSave=setTimeout(sauverRoster,400)});
-$("jListe").addEventListener("change",e=>{ROSTER.actif=e.target.value;sauverRoster();rendreJeu()});
 $("jRetour").addEventListener("click",()=>allerA("forge"));
 $("jVersForge").addEventListener("click",()=>allerA("forge"));
 $("btnJouer").addEventListener("click",jouerCeCoureur);
@@ -1961,7 +2190,7 @@ $("jSupprOui").addEventListener("click",()=>{const p=actif();ROSTER.liste=ROSTER
 function codeSauvegarde(){return btoa(unescape(encodeURIComponent(JSON.stringify(ROSTER))))}
 $("jCopier").addEventListener("click",()=>{
   const code=codeSauvegarde(),ta=$("jCode");ta.hidden=false;ta.value=code;$("jImporterOk").hidden=true;
-  const ok=()=>$("jSauvEtat").textContent="Code copié. Colle-le sur l'autre appareil, dans « Importer un code ».";
+  const ok=()=>{noterSauvegarde();$("jSauvEtat").textContent="Code copié. Colle-le sur l'autre appareil, dans « Importer un code ».";};
   const ko=()=>{ta.focus();ta.select();$("jSauvEtat").textContent="Copie automatique refusée : le code est sélectionné, copie-le à la main."};
   try{navigator.clipboard.writeText(code).then(ok,ko)}catch(e){ko()}
 });
@@ -2034,6 +2263,218 @@ function rendreConnus(){
   c.forEach(s=>{const arme=sortArme===s;
     box.append(ligneSort(s,s.lance?{label:"Lancé",dis:true,note:"Revient après un repos long"}:{label:arme?"Confirmer":"Lancer",primary:arme},()=>tapConfirme(s,()=>lireSort(s,true),rendreConnus)))});
 }
+/* ---------- Runes du Magicien (v1 de test) ---------- */
+function runeDef(r){return RUNES.find(x=>x.id===r.id)||null}
+function palierDe(v){return v>=10?3:v>=7?2:v>=4?1:0}
+function cranMoins(d){const i=LADDER.indexOf(d);return i<0||i===LADDER.length-1?0:LADDER[i+1]}
+function cranPlus(d,plafond){const bas=LADDER[LADDER.length-1];if(!d)return bas<=plafond?bas:0;const i=LADDER.indexOf(d);if(i<=0)return d;return LADDER[i-1]<=plafond?LADDER[i-1]:d}
+function deRune(r){return r.de?"d"+r.de:"vide"}
+let runePanneau=null, runeNb=1, runeJet=null, runeSlot=0;
+
+function echelleRune(r){
+  const w=document.createElement("div");w.className="echelle";
+  LADDER.filter(x=>x<=r.dep).forEach(x=>{const s=document.createElement("span");s.textContent="d"+x;s.className=x===r.de?"on":(x>r.de?"use":"");w.append(s)});
+  const v=document.createElement("span");v.textContent="vide";v.className=r.de?"":"on";w.append(v);return w;
+}
+function emplacementLibre(i){
+  const d=document.createElement("div");d.className="rune libre";
+  const b=document.createElement("b");b.textContent="Emplacement libre";
+  const s=document.createElement("span");s.className="rinfo";s.textContent="Une rune trouvée en jeu viendra ici.";
+  d.append(b,s,btn("＋ Ajouter une rune",()=>ouvrirFormRune(i)));return d;
+}
+function basculerRune(i,t){runePanneau={i,t};runeJet=null;runeNb=1;$("rmRes").hidden=true;rendreRunes()}
+function fermerRune(){runePanneau=null;runeJet=null;$("rmRes").hidden=true;rendreRunes()}
+function carteRune(p,r,i){
+  const def=runeDef(r);
+  const d=document.createElement("div");d.className="rune";
+  const h=document.createElement("div");h.className="rh";
+  const b=document.createElement("b");b.textContent=r.n;
+  const dd=document.createElement("em");dd.textContent=deRune(r);
+  h.append(b,dd);d.append(h,echelleRune(r));
+  const info=document.createElement("span");info.className="rinfo";
+  info.textContent="Recharge : "+((def&&def.r)||r.r||"à définir avec le Conteur")+(def&&def.sombre?" Rune sombre : "+def.sombre:"");
+  d.append(info);
+  const bt=document.createElement("div");bt.className="jbtns trois";
+  bt.append(btn(r.de?"Lancer":"Vide",()=>basculerRune(i,"lancer"),r.de?"primary":"",!r.de),
+            btn("Recharger",()=>basculerRune(i,"recharge")),
+            btn("Gérer",()=>basculerRune(i,"gerer")));
+  d.append(bt);
+  return d;
+}
+function panneauRune(p,r,i){
+  const f=p.fiche,t=runePanneau.t;
+  const z=document.createElement("div");z.className="rpan";
+  const note=x=>{const s=document.createElement("span");s.className="rinfo";s.textContent=x;z.append(s)};
+  if(t==="lancer"){
+    if(!runeJet||runeJet.i!==i){
+      const max=Math.min(f.niveau,6);
+      note("Combien de dés d"+r.de+" lancer ? Plus on en lance, plus l'effet est fort, mais plus la rune s'use.");
+      const sg=document.createElement("div");sg.className="seg nb";sg.style.gridTemplateColumns="repeat("+max+",minmax(0,1fr))";
+      for(let k=1;k<=max;k++){const b=document.createElement("button");b.type="button";b.textContent=k;b.setAttribute("aria-pressed",String(k===runeNb));b.addEventListener("click",()=>{runeNb=k;rendreRunes()});sg.append(b)}
+      z.append(sg,btn("Lancer "+runeNb+" dé"+(runeNb>1?"s":"")+" d"+r.de,()=>lancerRune(p,i),"primary"));
+    }else{
+      const J=runeJet;
+      note(J.kept===null?"Touche le dé que tu gardes pour l'effet.":"Dé gardé : "+J.dice[J.kept]+".");
+      const g=document.createElement("div");g.className="jbtns";g.style.gridTemplateColumns="repeat("+Math.min(J.dice.length,6)+",minmax(0,1fr))";
+      J.dice.forEach((x,k)=>{const b=document.createElement("button");b.type="button";b.textContent=x;
+        if(x===J.taille)b.classList.add("maxd");if(J.kept===k)b.classList.add("primary");
+        if(J.kept!==null)b.disabled=true;else b.addEventListener("click",()=>garderDe(p,i,k));g.append(b)});
+      z.append(g);
+      note((J.usure?"Un dé a montré le maximum : la rune passe de d"+J.taille+" à "+(r.de?"d"+r.de:"vide")+".":"Aucun maximum : la rune ne s'use pas.")+" (Les dés marqués d'un cadre sont des maximums.)");
+      z.append(btn("Fermer",fermerRune));
+    }
+  }else if(t==="recharge"){
+    note("Recharge : "+(((runeDef(r)||{}).r)||r.r||"à définir avec le Conteur")+" Complète : retour au dé de départ (d"+r.dep+"). Incomplète : un cran seulement.");
+    const jb=document.createElement("div");jb.className="jbtns deux";
+    jb.append(btn("Complète",()=>{r.de=r.dep;sauverRoster();journal(r.n,"rechargée (d"+r.dep+")");fermerRune()},"primary"),
+              btn("Incomplète (+1 cran)",()=>{r.de=cranPlus(r.de,r.dep);sauverRoster();journal(r.n,"rechargée d'un cran ("+deRune(r)+")");fermerRune()},"",r.de===r.dep));
+    z.append(jb,btn("Annuler",fermerRune));
+  }else if(t==="gerer"){
+    note("Rite d'élévation : réservé au Magicien, une fois par rune, plafond d12. Le Conteur décide du résultat (jet standard 1d20 + niveau).");
+    const jb=document.createElement("div");jb.className="jbtns deux";
+    jb.append(btn("Rite réussi (+1 cran)",()=>{const n=cranPlus(r.dep,12);r.dep=n;r.de=n;sauverRoster();journal(r.n,"rite réussi : d"+n);fermerRune()},"primary",r.dep>=12),
+              btn("Rite raté (−1 cran)",()=>{const n=cranMoins(r.dep);if(!n){p.runes[i]=null;journal(r.n,"brisée par un rite raté")}else{r.dep=n;r.de=Math.min(r.de,n);journal(r.n,"rite raté : d"+n)}sauverRoster();fermerRune()}));
+    z.append(jb,btn("Retirer la rune (brisée ou perdue)",()=>{runePanneau={i,t:"retirer"};rendreRunes()},"danger"),btn("Fermer",fermerRune));
+  }else if(t==="retirer"){
+    note("Retirer « "+r.n+" » de cet emplacement ? C'est définitif.");
+    const jb=document.createElement("div");jb.className="jbtns deux";
+    jb.append(btn("Oui, retirer",()=>{p.runes[i]=null;sauverRoster();journal(r.n,"retirée");fermerRune()},"danger"),btn("Garder",fermerRune));
+    z.append(jb);
+  }
+  return z;
+}
+function lancerRune(p,i){
+  const r=p.runes[i];if(!r||!r.de)return;
+  const taille=r.de,dice=[];for(let k=0;k<runeNb;k++)dice.push(de(taille));
+  const usure=dice.includes(taille);
+  runeJet={i,dice,taille,usure,kept:null};
+  if(usure)r.de=cranMoins(taille);
+  sauverRoster();
+  if(dice.length===1)garderDe(p,i,0);else rendreRunes();
+}
+function garderDe(p,i,k){
+  const r=p.runes[i],J=runeJet;if(!r||!J)return;
+  J.kept=k;
+  const v=J.dice[k],pal=palierDe(v),def=runeDef(r);
+  const effet=def?def.t[pal]:(r.e||"Effet à décider avec le Conteur.");
+  const derap=v===J.taille;
+  let cout="";
+  if(def&&def.id==="sang"){const c=Math.ceil(v/2);p.pv=Math.max(0,p.pv-c);cout=" Le porteur perd "+c+" PV (rune de Sang).";rendrePv()}
+  afficher({quoi:r.n+" · "+PALIERS[pal],tot:v,det:effet,ver:(derap?"Dérapage : le Conteur ajoute une complication. ":"")+(J.usure?"La rune passe à "+deRune(r)+".":"La rune ne s'use pas.")+cout,neutre:true},"rmRes");
+  $("rmRes").hidden=false;
+  try{if(navigator.vibrate)navigator.vibrate(derap?[70,40,70]:(J.usure?[40]:0))}catch(e){}
+  journal(r.n+" ("+J.dice.length+" × d"+J.taille+")",v+" · "+PALIERS[pal]+(J.usure?" · rune "+deRune(r):""));
+  rendreRunes();
+}
+function ouvrirFormRune(i){
+  runeSlot=i;const sel=$("jRuneSel");sel.innerHTML="";
+  RUNES.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.n+" (d"+x.de+")";sel.append(o)});
+  const o=document.createElement("option");o.value="perso";o.textContent="Rune inventée…";sel.append(o);
+  const dsel=$("jRuneDe");dsel.innerHTML="";LADDER.forEach(x=>{const o2=document.createElement("option");o2.value=x;o2.textContent="d"+x;dsel.append(o2)});
+  majFormRune();$("jRuneForm").hidden=false;sel.focus();
+}
+function majFormRune(){
+  const id=$("jRuneSel").value,def=RUNES.find(x=>x.id===id);
+  $("jRuneLibre").hidden=!!def;if(def)$("jRuneDe").value=def.de;
+}
+$("jRuneSel").addEventListener("change",majFormRune);
+$("jRuneFermer").addEventListener("click",()=>{$("jRuneForm").hidden=true});
+$("jRuneForm").addEventListener("submit",e=>{
+  e.preventDefault();const p=actif();if(!p)return;
+  if(!Array.isArray(p.runes))p.runes=[];
+  const id=$("jRuneSel").value,def=RUNES.find(x=>x.id===id),dep=+$("jRuneDe").value;
+  let r;
+  if(def)r={id:def.id,n:def.n,dep,de:dep};
+  else{const nom=$("jRuneNom").value.trim().slice(0,60);if(!nom){$("jRuneNom").focus();return}
+    r={id:"perso",n:nom,dep,de:dep,e:$("jRuneEff").value.trim().slice(0,300),r:$("jRuneRec").value.trim().slice(0,200)}}
+  p.runes[runeSlot]=r;sauverRoster();
+  $("jRuneForm").hidden=true;$("jRuneNom").value="";$("jRuneEff").value="";$("jRuneRec").value="";
+  journal("Nouvelle rune",r.n+" ("+deRune(r)+")");rendreRunes();
+});
+function rendreModalRune(){
+  const p=actif(),m=$("jRuneModal"),ouvert=!!(p&&runePanneau&&p.runes&&p.runes[runePanneau.i]);
+  document.body.classList.toggle("rm-ouvert",ouvert);
+  if(!ouvert){m.hidden=true;return}
+  const r=p.runes[runePanneau.i];
+  $("rmTitre").textContent=r.n;$("rmDe").textContent=r.de?"  ·  "+deRune(r):"  ·  vide";
+  const e=$("rmEch");e.innerHTML="";e.append(echelleRune(r));e.className="rune";
+  const c=$("rmCorps");c.innerHTML="";c.append(panneauRune(p,r,runePanneau.i));
+  const t=runePanneau.t;$("rmX").setAttribute("aria-label","Fermer");
+  m.hidden=false;
+}
+$("rmX").addEventListener("click",fermerRune);
+$("jRuneModal").addEventListener("click",e=>{if(e.target===$("jRuneModal"))fermerRune()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&runePanneau)fermerRune()});
+function rendreRunes(){
+  const p=actif();if(!p)return;
+  const mag=aDon(p.fiche,"Magicien");
+  $("jRunesCarte").hidden=!mag;if(!mag)return;
+  if(!Array.isArray(p.runes))p.runes=[];
+  const n=p.fiche.niveau;
+  $("jRuNote").textContent=p.runes.slice(0,n).filter(Boolean).length+" / "+n+" emplacement"+(n>1?"s":"");
+  const box=$("jRunes");box.innerHTML="";
+  for(let i=0;i<n;i++){const r=p.runes[i];box.append(r?carteRune(p,r,i):emplacementLibre(i))}
+  rendreModalRune();
+}
+/* ---------- Navigation, retours et sauvegarde (v1 de test) ---------- */
+let ongletCourant="combat", pvAvant=null, toastT=0;
+function choisirOnglet(n,haut){
+  ongletCourant=n;$("jCorps").dataset.onglet=n;
+  document.querySelectorAll("#jOnglets button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.onglet===n)));
+  if(haut!==false)window.scrollTo(0,0);
+}
+document.querySelectorAll("#jOnglets button").forEach(b=>b.addEventListener("click",()=>choisirOnglet(b.dataset.onglet)));
+try{new IntersectionObserver(es=>{$("jPvBar").hidden=es[es.length-1].isIntersecting},{threshold:0}).observe(document.querySelector('[aria-labelledby="jPvT"]'))}catch(e){}
+document.querySelectorAll("#jPvAnnuler,#jPvAnnulerMini").forEach(b=>b.addEventListener("click",()=>{
+  const p=actif();if(!p||pvAvant===null)return;p.pv=pvAvant;pvAvant=null;sauverRoster();rendrePv();
+}));
+function toast(id){
+  const el=$(id),t=$("jToast");t.innerHTML=el.innerHTML;t.hidden=false;
+  t.classList.remove("anim");void t.offsetWidth;t.classList.add("anim");
+  clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},6000);
+}
+$("jToast").addEventListener("click",()=>{$("jToast").hidden=true});
+function noterSauvegarde(){ROSTER.sauve=Date.now();sauverRoster();rendreSauve()}
+function rendreSauve(){
+  const d=ROSTER.sauve,vieux=!d||Date.now()-d>14*864e5,l=$("jSauve");
+  l.hidden=!vieux||!actif();l.textContent=d?"Dernière sauvegarde il y a plus de 14 jours.":"Ce coureur n'est enregistré que sur cet appareil.";
+  const b=document.createElement("button");b.type="button";b.className="lien";b.textContent="Sauvegarder";
+  b.addEventListener("click",()=>{choisirOnglet("plus");$("jAppareil").open=true;$("jAppareil").scrollIntoView()});l.append(b);
+  $("jSauveEtat").textContent=d?"Dernière sauvegarde : "+new Date(d).toLocaleDateString("fr-BE",{day:"numeric",month:"long",year:"numeric"})+".":"Jamais sauvegardé hors de cet appareil.";
+}
+const LST="cdo-theme";
+function appliquerTheme(t){
+  const r=document.documentElement;
+  if(t==="clair")r.dataset.theme="light";else if(t==="sombre")r.dataset.theme="dark";else delete r.dataset.theme;
+  document.querySelectorAll("#jThemeSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.th===t)));
+}
+let themeChoisi="auto";try{themeChoisi=localStorage.getItem(LST)||"auto"}catch(e){}
+appliquerTheme(themeChoisi);
+document.querySelectorAll("#jThemeSeg button").forEach(b=>b.addEventListener("click",()=>{themeChoisi=b.dataset.th;try{localStorage.setItem(LST,themeChoisi)}catch(e){}appliquerTheme(themeChoisi)}));
+const PAS=[...document.querySelectorAll("#pasFeuille .pasbox>button")];
+function pasMaj(id){
+  const b=PAS.find(x=>x.dataset.t===id);if(!b)return;
+  PAS.forEach(x=>x.toggleAttribute("aria-current",x===b));
+  const n=+b.dataset.n;$("pasTxt").textContent="Étape "+n+" sur "+PAS.length+" : "+b.querySelector("span").textContent;
+  $("pasFill").style.width=(n/PAS.length*100)+"%";
+}
+function pasFermer(){$("pasFeuille").hidden=true;document.body.classList.remove("rm-ouvert")}
+$("pasBtn").addEventListener("click",()=>{$("pasFeuille").hidden=false;document.body.classList.add("rm-ouvert")});
+$("pasX").addEventListener("click",pasFermer);
+$("pasFeuille").addEventListener("click",e=>{if(e.target===$("pasFeuille"))pasFermer()});
+PAS.forEach(b=>b.addEventListener("click",()=>{
+  pasFermer();const h=$(b.dataset.t);if(h)h.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+}));
+PAS.forEach(b=>{const h=$(b.dataset.t);if(h)h.style.scrollMarginTop="72px"});
+let pasT=0;
+function pasSuivre(){
+  pasT=0;let cur=PAS[0].dataset.t;
+  PAS.forEach(b=>{const h=$(b.dataset.t);if(h&&h.getBoundingClientRect().top<=110)cur=b.dataset.t});
+  pasMaj(cur);
+}
+window.addEventListener("scroll",()=>{if(!pasT)pasT=requestAnimationFrame(pasSuivre)},{passive:true});
+pasMaj("tT");
+$("mJouer").addEventListener("click",()=>$("btnJouer").click());
 function catalogue(f){const t=THEMES.find(x=>x.id===f.theme)||THEMES[0];return t.P.concat((PERSO[t.id]&&PERSO[t.id].sorts)||[])}
 function lancerDes(n,faces){const d=[];for(let i=0;i<n;i++)d.push(de(faces));return {tot:d.reduce((a,b)=>a+b,0),d}}
 function lireSort(s,connu){
@@ -2307,7 +2748,6 @@ function majEntete(){
   const p=actif(),f=p.fiche;
   $("jNom").textContent=f.nom;$("jAspects").textContent=f.aspects.join(" · ");
   if(f.portrait)$("jPhoto").alt="Photo de "+f.nom;
-  [...$("jListe").options].forEach(o=>{const x=ROSTER.liste.find(y=>y.id===o.value);if(x)o.textContent=x.fiche.nom+" · "+x.fiche.themeNom+" niv. "+x.fiche.niveau});
 }
 function prediDe(f,dist){const n=nomsDons(f);return n.includes(dist?"Armes de prédilection (distance)":"Armes de prédilection (contact)")?1:0}
 function ligneArmes(f){return f.armes.map(a=>a.n+" ("+a.d+")").join(", ")}
@@ -2367,10 +2807,19 @@ $("btnNouveau").addEventListener("click",()=>{tirer(S.theme);photo=null;toutRend
 /* ---------- Menus déroulants des étapes ---------- */
 const DD_SIMPLE=new Set(["theme","passe","metier","origine","physique","caractere","recit","armure","kit","artefact","depart","format"]);
 let ddDernier=null;
-function ouvrirDD(nom,ouvrir){document.querySelectorAll(".dd").forEach(d=>{const on=d.dataset.dd===nom&&ouvrir;d.querySelector(".ddb").hidden=!on;d.querySelector(".ddh").setAttribute("aria-expanded",on?"true":"false");d.classList.toggle("ouvert",on)})}
+function ouvrirDD(nom,ouvrir){
+  const tous=[...document.querySelectorAll(".dd")],cible=tous.find(d=>d.dataset.dd===nom);
+  const etaitOuvert=tous.find(d=>!d.querySelector(".ddb").hidden);
+  const ancre=ouvrir?cible:etaitOuvert, avant=ancre?ancre.getBoundingClientRect().top:0;
+  tous.forEach(d=>{const on=d.dataset.dd===nom&&ouvrir;d.querySelector(".ddb").hidden=!on;d.querySelector(".ddh").setAttribute("aria-expanded",on?"true":"false");d.classList.toggle("ouvert",on)});
+  if(!ancre)return;
+  const apres=ancre.getBoundingClientRect().top;
+  if(ouvrir)window.scrollBy(0,apres-avant); /* l'onglet touché reste sous le doigt */
+  else if(apres<72||apres>window.innerHeight*0.6)window.scrollBy(0,apres-72); /* à la fermeture, on revient à l'onglet */
+}
 document.querySelectorAll(".dd").forEach(d=>{
   const h=d.querySelector(".ddh"),b=d.querySelector(".ddb");
-  h.addEventListener("click",()=>{const ouvert=!b.hidden;ouvrirDD(d.dataset.dd,!ouvert);if(!ouvert)setTimeout(()=>{try{const r=d.getBoundingClientRect();if(r.top<0)d.scrollIntoView({block:"start"})}catch(e){}},0)});
+  h.addEventListener("click",()=>{const ouvert=!b.hidden;ouvrirDD(d.dataset.dd,!ouvert);});
   b.addEventListener("click",e=>{const x=e.target.closest("button");if(!x||x.disabled)return;
     if(x.classList.contains("ddok")){ouvrirDD(d.dataset.dd,false);return}
     if(x.classList.contains("plus")||x.classList.contains("x")||x.hasAttribute("data-close")||x.closest("form"))return;
@@ -2409,7 +2858,7 @@ function paquetCoureur(x){
 function nomFichier(x){return ((x.fiche.nom||"coureur").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"")||"coureur")+".coureur.json"}
 async function exporterCoureur(x,btn){
   const st=$("statusTransfert")&&btn&&btn.closest("#mesCoureurs")?$("statusTransfert"):$("jSauvEtat");
-  try{await enregistrer(nomFichier(x),new TextEncoder().encode(JSON.stringify(paquetCoureur(x))),"application/json");st.textContent="Fichier « "+nomFichier(x)+" » enregistré. Envoie-le sur l'autre appareil, puis « Importer un coureur »."}
+  try{await enregistrer(nomFichier(x),new TextEncoder().encode(JSON.stringify(paquetCoureur(x))),"application/json");noterSauvegarde();st.textContent="Fichier « "+nomFichier(x)+" » enregistré. Envoie-le sur l'autre appareil, puis « Importer un coureur »."}
   catch(e){const c=e&&e.code;st.textContent=c==="declined"?"Export annulé.":"L'export n'a pas abouti. Essaie « Copier son code » depuis la feuille de jeu."}
 }
 function codeCoureur(x){return btoa(unescape(encodeURIComponent(JSON.stringify(paquetCoureur(x)))))}
@@ -2443,7 +2892,7 @@ $("btnCodeAnnuler").addEventListener("click",()=>{$("blocCode").hidden=true;$("c
 $("btnCodeOk").addEventListener("click",()=>{if(importerTransfert($("codeImport").value,$("statusTransfert"))){$("blocCode").hidden=true;$("codeImport").value=""}});
 $("jExporter").addEventListener("click",()=>{const p=actif();if(p)exporterCoureur(p,null)});
 $("jCopierUn").addEventListener("click",()=>{const p=actif();if(!p)return;const code=codeCoureur(p),ta=$("jCode");ta.hidden=false;ta.value=code;$("jImporterOk").hidden=true;
-  const ok=()=>$("jSauvEtat").textContent="Code copié. Sur l'autre appareil : « Mes coureurs » → « Coller un code ».";
+  const ok=()=>{noterSauvegarde();$("jSauvEtat").textContent="Code copié. Sur l'autre appareil : « Mes coureurs » → « Coller un code ».";};
   const ko=()=>{ta.focus();ta.select();$("jSauvEtat").textContent="Copie automatique refusée : le code est sélectionné, copie-le à la main."};
   try{navigator.clipboard.writeText(code).then(ok,ko)}catch(e){ko()}});
 
@@ -2476,6 +2925,7 @@ $("btnPdf").addEventListener("click",async()=>{
 tirer("fantasy");toutRendre(true);dessinerPhoto();rendreMesCoureurs();
 montrer();
 if(window.claude&&claude.use){claude.use("downloads").then(x=>{dl=x;if(!x)setStatus("Le téléchargement du PDF n'est pas disponible dans cette vue.")}).catch(()=>{})}
+try{if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 })();
 </script>
 </body>
