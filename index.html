@@ -330,6 +330,19 @@ body.rm-ouvert{overflow:hidden}
 .runec summary{cursor:pointer;min-height:36px;display:flex;align-items:center;color:var(--t-acc,var(--accent))}
 .runec ol{margin:4px 0 6px;padding-left:1.3em}
 .runec ol li{margin:3px 0}
+.opt{display:inline-block;margin-left:8px;padding:1px 9px;border:1px solid var(--t-acc,var(--accent));border-radius:11px;font-family:var(--f-small);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--t-acc,var(--accent));vertical-align:middle}
+.reff{margin:2px 0;font-size:15px}
+.reff>summary,.runec summary{list-style:none}
+.reff>summary::-webkit-details-marker,.runec summary::-webkit-details-marker{display:none}
+.reff>summary::after,.runec summary::after{content:"";width:8px;height:8px;margin-left:auto;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .15s;flex:0 0 auto;margin-right:4px}
+.reff[open]>summary::after,.runec details[open]>summary::after{transform:rotate(-135deg)}
+.rune .reff{border:1px solid var(--line);border-radius:6px;background:var(--bg);padding:0 12px;box-shadow:none;margin:4px 0}
+.rune .reff[open]{padding-bottom:8px}
+.reff summary{cursor:pointer;min-height:36px;display:flex;align-items:center;color:var(--t-acc,var(--accent));font-family:var(--f-label)}
+.reff ul{margin:2px 0 6px;padding-left:1.1em;display:flex;flex-direction:column;gap:5px}
+.reff li{line-height:1.35}
+.reff .rprop,.runec .rprop{margin:6px 0 2px;padding:6px 10px;border-left:3px solid var(--t-acc,var(--accent));background:var(--surface);font-size:14px;font-style:italic;color:var(--muted)}
+.regm{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:0 12px 6px;margin-bottom:10px}
 .sort .note{color:var(--t-acc);font-family:var(--f-label);font-size:12.5px;letter-spacing:.04em}
 #jInit{min-height:44px}
 #jCmd .pip{font-size:20px;color:var(--t-acc)}
@@ -482,7 +495,7 @@ body.rm-ouvert{overflow:hidden}
           <select id="dSort" aria-label="Dés lancés"><option value="">Sans dé</option><option>1d6</option><option>2d4</option><option>2d6</option><option>3d6</option><option>1d8</option><option>2d8</option></select>
           <select id="tSort" aria-label="Type d'effet"><option value="degats">Dégâts</option><option value="soin">Soin</option><option value="autre">Autre</option></select>
           <button class="primary">Ajouter</button><button type="button" data-close>Annuler</button></form><button type="button" class="ddok">Valider</button></div></div>
-        <div id="blocRune" hidden><p class="sub">Rune de départ du Magicien <small>(les autres runes se trouvent en jeu)</small></p><p class="hint" style="margin:0 0 6px">Les quatre effets vont du plus faible au plus fort : plus le dé gardé est haut, plus l'effet est fort.</p><div class="runecs" id="cRune" role="group" aria-label="Rune de départ"></div></div>
+        <div id="blocRune" hidden><details class="reff regm"><summary>Règles de la magie <span class="opt">optionnel</span></summary><ul id="cMagieListe"></ul></details><p class="sub">Rune de départ du Magicien <small>(les autres runes se trouvent en jeu)</small></p><p class="hint" style="margin:0 0 6px">Les quatre effets vont du plus faible au plus fort : plus le dé gardé est haut, plus l'effet est fort.</p><div class="runecs" id="cRune" role="group" aria-label="Rune de départ"></div></div>
         <div id="blocConnus" hidden><div class="dd" data-dd="connus"><button type="button" class="ddh" aria-expanded="false" aria-controls="b_connus"><span class="ddl">Sorts connus (dons de magie)</span><span class="ddv" id="v_connus"></span><svg class="ddc" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button><div class="ddb" id="b_connus" hidden><div id="cConnus"></div><button type="button" class="ddok">Valider</button></div></div></div>
       </section>
 
@@ -678,6 +691,11 @@ body.rm-ouvert{overflow:hidden}
     <details class="jcarte" data-tab="notes" open>
       <summary>Dons et talents</summary>
       <ul class="jdons" id="jDons"></ul>
+    </details>
+
+    <details class="jcarte" data-tab="magie" id="jMagieRegles" hidden>
+      <summary>Règles de la magie <span class="opt">optionnel</span></summary>
+      <ul class="jdons" id="jMagieListe"></ul>
     </details>
 
     <section class="jcarte" data-tab="magie" id="jRunesCarte" aria-labelledby="jRuT" hidden>
@@ -1078,6 +1096,19 @@ function niveauPourLire(sn){return sn>=3?6:sn===2?4:2}
 /* ---------- Runes : données ---------- */
 const LADDER=[20,12,10,8,6,4];
 const PALIERS=["Faible","Moyen","Fort","Prodigieux"];
+const PLAGES=["1-3","4-6","7-9","10+"];
+const NOTE_PROP="Ces effets sont des propositions, pas une liste fermée. Tu peux proposer au Conteur un autre usage de ta rune : l'Eau soigne surtout, mais elle peut aussi frapper comme le feu. Il tranche, et la force dépend du dé gardé.";
+const REGLES_MAGIE=[
+ "Module optionnel : seul le Magicien s'en sert. Son dé de vie est réduit d'une taille.",
+ "Une rune est un objet porté : un emplacement par niveau, six au plus. Son dé d'usure descend : d20, d12, d10, d8, d6, d4, puis vide.",
+ "Les effets listés sont des propositions : le joueur peut proposer au Conteur un autre usage de sa rune (l'Eau soigne, mais peut aussi frapper comme le feu). Le Conteur tranche.",
+ "Pour s'en servir, le Magicien lance autant de dés d'usure que son niveau et en garde un seul.",
+ "Le dé gardé donne la force de l'effet : 1-3 faible, 4-6 moyen, 7-9 fort, 10 et plus prodigieux.",
+ "Si un des dés lancés montre le maximum de la rune, elle s'use d'un cran.",
+ "Si le dé gardé est lui-même au maximum : dérapage, le Conteur complique la scène.",
+ "Recharger : complète, la rune revient à son dé de départ ; incomplète, elle ne remonte que d'un cran.",
+ "Rite d'élévation : +1 cran (d12 au plus), une fois par rune, réservé au Magicien. Échec : −1 cran ; un 1 naturel brise la rune. Le d20 est réservé à l'Artefact légendaire."
+];
 const RUNES=[
  {id:"flamme",n:"Rune de Flamme",de:8,r:"plongée une heure dans un vrai feu.",
   t:["Une flamme de bougie, allume une torche.","Torche vive : 1d8 de dégâts à une cible proche.","Gerbe de feu : 2d8 sur une zone (une pièce), le décor s'enflamme.","Brasier : 3d8 sur une grande zone, très difficile à éteindre."]},
@@ -1324,12 +1355,13 @@ function deEffectif(a,fx){return deArme(a.d,fx.predi.includes(a.dist?"dist":"con
 const RUNE_RESUME={flamme:"Le feu : lumière, flammes et dégâts.",vent:"L'air : souffle, fuite, chute ralentie.",pierre:"La terre : protéger son armure, ouvrir ou fermer des parois de roche.",eau:"L'eau : soigner les blessures, purifier.",voix:"La parole : comprendre les langues, parler aux bêtes, donner des ordres."};
 function rendreRunesCreation(){
   const bx=$("cRune");bx.innerHTML="";
+  if(!$("cMagieListe").children.length)REGLES_MAGIE.forEach(r=>{const li=document.createElement("li");li.textContent=r;$("cMagieListe").append(li)});
   RUNES.filter(r=>r.de===8).forEach(r=>{
     const c=document.createElement("div");c.className="runec";c.dataset.on=String(S.rune===r.id);
     c.append(bouton("",'<b>'+esc(r.n)+'</b><span class="t">d'+r.de+'</span>',S.rune===r.id,()=>{S.rune=r.id;maj(false)}));
     const p=document.createElement("p");p.textContent=RUNE_RESUME[r.id]||"";c.append(p);
     const d=document.createElement("details");
-    d.innerHTML="<summary>Voir les 4 effets et la recharge</summary><ol>"+r.t.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ol><span>Se recharge : "+esc(r.r)+"</span>";
+    d.innerHTML="<summary>Voir les 4 effets et la recharge</summary><ol>"+r.t.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ol><span>Se recharge : "+esc(r.r)+"</span><p class=\"rprop\">"+esc(NOTE_PROP)+"</p>";
     c.append(d);bx.append(c);
   });
 }
@@ -1574,7 +1606,7 @@ const M=34;
 function mise(fmt,portrait){
   const F=FORMATS[fmt], LH=1000*F.h/F.w, bas=LH-M;
   const hx=portrait?M+104+22:M;
-  const r3=(bas-404-20)/3;
+  const r3=(bas-404-20)/3, MG=!!calculer().fx.magicien, YB=MG?400:350;
   return {LH,bas,hx,
     port:[M,M,104,130],
     nom:[hx,M+38,820-hx,56],
@@ -1582,7 +1614,8 @@ function mise(fmt,portrait){
     aspects:[M,184,576,104], dons:[M,302,576,bas-302-146], equip:[M,bas-132,576,132],
     pv:[632,184,160,104], dv:[806,184,160,104], dh:[632,302,334,70],
     std:[632,404,334,r3], mvt:[632,404+r3+10,334,r3], def:[632,404+2*(r3+10),334,r3],
-    desc:[M,128,932,206], parch:[M,350,360,bas-350], notes:[M+376,350,200,bas-350], regles:[632,350,334,bas-350]};
+    desc:[M,128,932,MG?96:206], magie:MG?[M,234,932,156]:null,
+    parch:[M,YB,360,bas-YB], notes:[M+376,YB,200,bas-YB], regles:[632,YB,334,bas-YB]};
 }
 /* 4 lignes de sort : case à cocher + texte */
 const NB_LIGNES_SORTS=4;
@@ -1598,6 +1631,17 @@ function lignesRunes(b,n,note){const [x,y,w,h]=b,top=y+40,rh=(h-48-note)/n,nameW
   for(let i=0;i<n;i++){const ry=top+i*rh,cs=Math.min(26,rh-12),by=ry+(rh-cs)/2,bw=Math.min(cw-3,cs+6);
     rows.push({nom:[x+14,by-3,nameW,ry+rh-4-(by-3)],cells:CRANS_PAPIER.map((cr,j)=>({lab:cr[0],v:cr[1],box:[gx+j*cw+(cw-bw)/2,by,bw,cs]})),sep:ry+rh})}
   return {rows,noteY:top+n*rh+4}}
+function dessinerMagie(c,k,s,Lm){
+  const def=RUNES.find(x=>x.id===(S.rune||"flamme"))||RUNES[0],b=Lm.magie;
+  boite(c,k,b,s,"Magie · module optionnel · "+def.n,45);
+  const w=b[2]-28,mes=(t,sz)=>{c.font=(sz*k)+"px "+SMALL;return c.measureText(t).width/k};
+  const lig=def.t.map((t,i)=>PLAGES[i]+" "+PALIERS[i]+" : "+t);
+  lig.push("Ces effets sont des propositions : propose-en d'autres au Conteur (l'Eau peut aussi frapper).","Dé gardé au maximum : dérapage. Rite d'élévation : +1 cran, une fois par rune.");
+  const zh=b[3]-40;let sz=13;const haut=z=>lig.reduce((a,t)=>a+couper(x=>mes(x,z),t,w).length*z*1.2+z*0.2,0);
+  while(sz>8&&haut(sz)>zh)sz-=0.5;
+  let y=b[1]+38;
+  lig.forEach(t=>{couper(x=>mes(x,sz),t,w).forEach(l=>{texte(c,k,l,b[0]+14,y+sz,sz,SMALL,s.ink,"left");y+=sz*1.2});y+=sz*0.2});
+}
 function dessinerRunes(c,k,s,Lm,RP,withValues){
   boite(c,k,Lm.parch,s,"Runes · dé d'usure",44);
   const G=lignesRunes(Lm.parch,RP.length,56);
@@ -1767,6 +1811,7 @@ function verso(c,k,withValues){
   texte(c,k,"Carnet de route",M,M+70,40,s.font,s.ink);
   if(v("nom")){c.font=(26*k)+"px "+VALF;texte(c,k,v("nom"),966,M+70,26,VALF,s.val,"right")}
   boite(c,k,Lm.desc,s,"Origine et passé",41);
+  if(Lm.magie)dessinerMagie(c,k,s,Lm);
   const RP=runesPapier();
   if(RP)dessinerRunes(c,k,s,Lm,RP,withValues);else{
   boite(c,k,Lm.parch,s,t.sortsTitre+" · usage unique",44);
@@ -2294,6 +2339,10 @@ function carteRune(p,r,i){
   const info=document.createElement("span");info.className="rinfo";
   info.textContent="Recharge : "+((def&&def.r)||r.r||"à définir avec le Conteur")+(def&&def.sombre?" Rune sombre : "+def.sombre:"");
   d.append(info);
+  if(def&&def.t){const det=document.createElement("details");det.className="reff";
+    const sm=document.createElement("summary");sm.textContent="Effets selon le dé gardé";det.append(sm);
+    const ol=document.createElement("ul");def.t.forEach((x,k)=>{const li=document.createElement("li");const b2=document.createElement("b");b2.textContent=PLAGES[k]+" "+PALIERS[k]+" : ";li.append(b2,document.createTextNode(x));ol.append(li)});
+    det.append(ol);const np=document.createElement("p");np.className="rprop";np.textContent=NOTE_PROP;det.append(np);d.append(det)}
   const bt=document.createElement("div");bt.className="jbtns trois";
   bt.append(btn(r.de?"Lancer":"Vide",()=>basculerRune(i,"lancer"),r.de?"primary":"",!r.de),
             btn("Recharger",()=>basculerRune(i,"recharge")),
@@ -2408,7 +2457,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&runePanneau)fermerR
 function rendreRunes(){
   const p=actif();if(!p)return;
   const mag=aDon(p.fiche,"Magicien");
-  $("jRunesCarte").hidden=!mag;if(!mag)return;
+  $("jRunesCarte").hidden=!mag;$("jMagieRegles").hidden=!mag;if(!mag)return;
+  if(!$("jMagieListe").children.length)REGLES_MAGIE.forEach(r=>{const li=document.createElement("li");li.textContent=r;$("jMagieListe").append(li)});
   if(!Array.isArray(p.runes))p.runes=[];
   const n=p.fiche.niveau;
   $("jRuNote").textContent=p.runes.slice(0,n).filter(Boolean).length+" / "+n+" emplacement"+(n>1?"s":"");
